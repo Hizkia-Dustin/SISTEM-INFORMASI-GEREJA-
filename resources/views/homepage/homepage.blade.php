@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>GraceGate Sanctuary - Digital Sanctuary</title>
+<title>GKI PAKUWON  -  </title>
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -27,9 +27,10 @@
 {{-- TopNavBar --}}
 <nav class="bg-white/80 backdrop-blur-md flex justify-between items-center h-16 px-8 w-full z-40 fixed top-0 border-b border-slate-100 shadow-sm">
     <div class="flex items-center gap-8">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#00236f]" style="font-variation-settings: 'FILL' 1;">church</span>
-            <span class="font-[Manrope] font-semibold text-[#00236f] tracking-tight">GraceGate</span>
+        <div class="flex items-center ">
+            <span class="flex items-center gap-2">  <img src="/img/gereja.png" class="h-10 w-auto" /> </span>
+
+            <span class="font-[Manrope] font-semibold text-[#00236f] tracking-tight">GKI PAKUWON</span>
         </div>
         <div class="hidden md:flex items-center gap-6">
             <a class="text-[#00236f] font-semibold border-b-2 border-[#00236f] px-1 py-5" href="#">Beranda</a>
@@ -41,13 +42,9 @@
     <div class="flex items-center gap-4">
         <div class="relative hidden lg:block">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-            <input class="pl-10 pr-4 py-2 bg-[#e5eeff] rounded-full border-none text-sm focus:ring-2 focus:ring-[#0058bf] w-64 outline-none" placeholder="Cari di Sanctuary..." type="text"/>
+            <input class="pl-10 pr-4 py-2 bg-[#e5eeff] rounded-full border-none text-sm focus:ring-2 focus:ring-[#0058bf] w-64 outline-none" placeholder="Cari di ..." type="text"/>
         </div>
         <button class="bg-[#00236f] text-white px-6 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all">Ikuti Ibadah</button>
-        <div class="flex items-center gap-2 border-l border-slate-200 pl-4 ml-2">
-            <span class="material-symbols-outlined text-slate-600 cursor-pointer">notifications</span>
-            <span class="material-symbols-outlined text-slate-600 cursor-pointer">account_circle</span>
-        </div>
     </div>
 </nav>
 
@@ -60,11 +57,11 @@
         </div>
         <div class="container mx-auto px-8 relative z-10">
             <div class="max-w-2xl text-white">
-                <span class="bg-[#0058bf]/20 backdrop-blur-md px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6 inline-block font-bold">Selamat Datang di GraceGate</span>
-                <h1 class="font-[Manrope] text-6xl font-bold leading-tight mb-6">Selamat Datang di Digital Sanctuary</h1>
+                <span class="bg-[#0058bf]/20 backdrop-blur-md px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6 inline-block font-bold">Selamat Datang di GKI PAKUWON</span>
+                <h1 class="font-[Manrope] text-6xl font-bold leading-tight mb-6">Selamat Datang di GKI PAKUWON </h1>
                 <p class="text-slate-200 mb-8 max-w-lg text-lg">Temukan kedamaian dan komunitas dalam perjalanan iman Anda. Mari bergabung dalam ibadah dan bertumbuh bersama dalam kasih Kristus.</p>
                 <div class="flex gap-4">
-                    <button class="bg-white text-[#00236f] px-8 py-3 rounded-lg text-sm font-bold shadow-lg hover:bg-slate-100 transition-all">Ikuti Ibadah Online</button>
+                    <button class="bg-white text-[#00236f] px-8 py-3 rounded-lg text-sm font-bold shadow-lg hover:bg-slate-100 transition-all">Ikuti Ibadah Offline</button>
                     <button class="border-2 border-white text-white px-8 py-3 rounded-lg text-sm font-bold hover:bg-white/10 transition-all">Jadwal Kegiatan</button>
                 </div>
             </div>
@@ -94,13 +91,13 @@
                     </div>
                 </div>
             </div>
-            <div class="lg:col-span-4 church-card bg-[#00236f] text-white border-none flex flex-col justify-between">
+            <div class="lg:col-span-4 church-card text-white border-none flex flex-col justify-between" style="background-color: #00236f;">
                 <div>
                     <h3 class="font-[Manrope] font-semibold text-2xl mb-6">Pertumbuhan Jemaat</h3>
                     <div class="space-y-6">
                         <div class="flex justify-between items-end border-b border-white/10 pb-4">
                             <div>
-                                <p class="text-slate-300 text-sm">Total Keluarga</p>
+                               
                                 <p class="text-4xl font-bold font-[Manrope]">1,240</p>
                             </div>
                             <span class="material-symbols-outlined text-[#d8e2ff]">family_restroom</span>
@@ -131,7 +128,68 @@
         <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
             <div class="max-w-xl">
                 <h2 class="font-[Manrope] font-bold text-4xl text-[#001142] mb-4">Jadwal Ibadah &amp; Kegiatan</h2>
-                <p class="text-slate-600">Mari bersekutu dan melayani bersama. Berikut adalah jadwal rutin pertemuan jemaat di GraceGate Sanctuary.</p>
+                <p class="text-slate-600">Mari bersekutu dan melayani bersama. Berikut adalah jadwal rutin pertemuan jemaat di GKI PAKUWON .</p>
+            </div>
+            <button class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
+                Unduh Kalender Liturgi
+                <span class="material-symbols-outlined">download</span>
+            </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="church-card group hover:border-[#0058bf] transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+                    </div>
+                    <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">Minggu</span>
+                </div>
+                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Ekaristi Kudus</h4>
+                <p class="text-slate-500 text-sm mb-6">Ibadah Raya Mingguan</p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">Sesi 1: 07:00 WIB</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">Sesi 2: 10:00 WIB</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Pemimpin: Pdt. Andreas Wijaya</span></div>
+                </div>
+            </div>
+            <div class="church-card group hover:border-[#0058bf] transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+                    </div>
+                    <span class="bg-[#d3e4fe] text-[#00236f] px-3 py-1 rounded-full text-xs font-bold uppercase">Rabu</span>
+                </div>
+                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Pendalaman Alkitab</h4>
+                <p class="text-slate-500 text-sm mb-6">Studi Firman Tematik</p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">19:00 WIB (Hybrid)</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">location_on</span><span class="text-sm">Ruang Konsistori / Zoom</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Pemimpin: Ev. Maria Susanti</span></div>
+                </div>
+            </div>
+            <div class="church-card group hover:border-[#0058bf] transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">music_note</span>
+                    </div>
+                    <span class="bg-[#d3e4fe] text-[#00236f] px-3 py-1 rounded-full text-xs font-bold uppercase">Jumat</span>
+                </div>
+                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Latihan Paduan Suara</h4>
+                <p class="text-slate-500 text-sm mb-6">Pelayanan Musik &amp; Pujian</p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">18:00 WIB</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">location_on</span><span class="text-sm">Balkon Utama Gereja</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Dirigen: Bpk. Samuel Hartono</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Sacramen Schedule --}}
+    <section class="py-10 container mx-auto px-8">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+            <div class="max-w-xl">
+                <h2 class="font-[Manrope] font-bold text-4xl text-[#001142] mb-4">Jadwal Sakramen </h2>
+                <p class="text-slate-600">Mari bersekutu dan melayani bersama. Berikut adalah jadwal rutin pertemuan jemaat di GKI PAKUWON .</p>
             </div>
             <button class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
                 Unduh Kalender Liturgi
@@ -205,7 +263,7 @@
                             <span class="text-slate-400 text-[10px] font-medium">12 Okt 2023</span>
                         </div>
                         <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">Aksi Sosial Kasih di Bantaran Sungai</h3>
-                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Gereja GraceGate mengadakan aksi pembagian paket sembako dan layanan kesehatan gratis bagi warga...</p>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Gereja GKI PAKUWON mengadakan aksi pembagian paket sembako dan layanan kesehatan gratis bagi warga...</p>
                         <a class="text-[#0058bf] font-bold text-sm flex items-center gap-2" href="#">Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
                     </div>
                 </div>
@@ -248,9 +306,9 @@
         <div class="flex flex-col items-center gap-2">
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-[#00236f] text-3xl" style="font-variation-settings: 'FILL' 1;">church</span>
-                <span class="font-[Manrope] font-semibold text-slate-900">GraceGate Digital Sanctuary</span>
+                <span class="font-[Manrope] font-semibold text-slate-900">GKI PAKUWON  </span>
             </div>
-            <p class="text-slate-500 max-w-md">Menjadi jembatan kasih dan kasih karunia bagi komunitas di era digital.</p>
+            <p class="text-slate-500 max-w-md">Menjadi jembatan kasih dan kasih karunia bagi komunitas di era .</p>
         </div>
         <div class="flex flex-wrap justify-center gap-8">
             <a class="text-slate-500 text-sm no-underline hover:text-[#0058bf] transition-colors" href="#">Kebijakan Privasi</a>
@@ -269,7 +327,7 @@
                 <span class="material-symbols-outlined">camera_alt</span>
             </div>
         </div>
-        <p class="text-slate-500 text-xs mt-4">© 2024 GraceGate Digital Sanctuary. Seluruh hak cipta dilindungi.</p>
+        <p class="text-slate-500 text-xs mt-4">© 2024 GKI PAKUWON  . Seluruh hak cipta dilindungi.</p>
     </div>
 </footer>
 
