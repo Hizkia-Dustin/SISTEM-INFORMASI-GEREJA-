@@ -1,4 +1,4 @@
-﻿<x-layout title="Baca Artikel" :fullWidth="true">
+﻿<x-layout title="Baca Renungan" :fullWidth="true">
     <div class="max-w-[1440px] mx-auto px-8 py-12 md:py-16">
         
         @php
@@ -11,8 +11,8 @@
             // =================================================================
             
             $article = (object)[
-                'title' => 'Menemukan Damai Sejahtera di Tengah Badai Kehidupan',
-                'category' => 'Renungan Harian',
+                'title' => 'Kasih Karunia yang Menyelamatkan',
+                'category' => 'Renungan Pagi',
                 'author' => 'Pdt. Dr. Yerusa Maria Agustini',
                 'date' => '12 Mei 2024',
                 'image' => 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=1200&auto=format&fit=crop',
@@ -41,9 +41,9 @@
 
         <x-article-detail 
             :article="$article"
-            backRoute="{{ route('artikel.index') }}"
-            backText="Kembali ke Daftar Artikel"
-            breadcrumbParent="Artikel"
+            backRoute="{{ route('renungan.index') }}"
+            backText="Kembali ke Daftar Renungan"
+            breadcrumbParent="Renungan"
         />
         
     </div>

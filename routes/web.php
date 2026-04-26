@@ -47,10 +47,14 @@ Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
 Route::view('artikel', 'pages.artikel.index')->name('artikel.index');
 Route::view('artikel/{slug}', 'pages.artikel.show')->name('artikel.show');
 Route::view('racakitri', 'pages.racakitri.index')->name('racakitri.index');
+Route::view('racakitri/{slug}', 'pages.racakitri.show')->name('racakitri.show');
 Route::view('informasi', 'pages.informasi.index')->name('informasi.index');
+Route::view('informasi/{slug}', 'pages.informasi.show')->name('informasi.show');
 Route::view('video', 'pages.video.index')->name('video.index');
 Route::view('renungan-harian', 'pages.renungan.index')->name('renungan.index');
+Route::view('renungan-harian/{slug}', 'pages.renungan.show')->name('renungan.show');
 Route::view('warta-jemaat', 'pages.warta.index')->name('warta.index');
+Route::view('warta-jemaat/{slug}', 'pages.warta.show')->name('warta.show');
 Route::view('kontak', 'pages.kontak.index')->name('kontak.index');
 
 // Download
