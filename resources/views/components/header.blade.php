@@ -1,17 +1,17 @@
 <nav class="bg-white/80 backdrop-blur-md flex justify-between items-center h-16 px-8 w-full z-40 fixed top-0 border-b border-slate-100 shadow-sm">
-    <div class="flex items-center gap-8 h-full">
+    <div class="flex items-center gap-6 h-full">
         <div class="flex items-center ">
             <a href="{{ route('home') }}" class="flex items-center gap-2 cursor-pointer">
                 <img src="/img/gereja.png" class="h-10 w-auto" />
                 <span class="font-[Manrope] font-semibold text-[#00236f] tracking-tight ml-2">GKI PAKUWON</span>
             </a>
         </div>
-        <div class="hidden md:flex items-center gap-6 h-full">
-            <a class="text-[#00236f] font-semibold border-b-2 border-[#00236f] px-1 py-5 h-full flex items-center" href="{{ route('home') }}">Beranda</a>
+        <div class="hidden lg:flex items-center gap-3 h-full">
+            <a class="px-1 py-5 h-full flex items-center transition-colors text-sm {{ request()->routeIs('home') ? 'text-[#00236f] font-semibold border-b-2 border-[#00236f]' : 'text-slate-600 hover:text-[#0058bf] font-medium' }}" href="{{ route('home') }}">Beranda</a>
             
             <!-- Dropdown About -->
             <div x-data="{ isOpen: false }" @click.outside="isOpen = false" class="relative h-full flex items-center">
-                <a @click.prevent="isOpen = !isOpen" class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium h-full flex items-center gap-1 cursor-pointer" :class="{'text-[#0058bf]': isOpen}" href="#">About <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="{'rotate-180': isOpen}">expand_more</span></a>
+                <a @click.prevent="isOpen = !isOpen" class="transition-colors text-sm h-full flex items-center gap-1 cursor-pointer px-1 {{ request()->routeIs('about.*') ? 'text-[#00236f] font-semibold border-b-2 border-[#00236f]' : 'text-slate-600 hover:text-[#0058bf] font-medium' }}" :class="{'text-[#0058bf]': isOpen}" href="#">About <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="{'rotate-180': isOpen}">expand_more</span></a>
                 
                 <div x-cloak x-show="isOpen" 
                     x-transition:enter="transition ease-out duration-200"
@@ -31,7 +31,7 @@
 
             <!-- Dropdown Pelayanan Jemaat -->
             <div x-data="{ isOpen: false }" @click.outside="isOpen = false" class="relative h-full flex items-center">
-                <a @click.prevent="isOpen = !isOpen" class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium h-full flex items-center gap-1 cursor-pointer" :class="{'text-[#0058bf]': isOpen}" href="#">Pelayanan Jemaat <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="{'rotate-180': isOpen}">expand_more</span></a>
+                <a @click.prevent="isOpen = !isOpen" class="transition-colors text-sm h-full flex items-center gap-1 cursor-pointer px-1 {{ request()->routeIs('pelayanan.*', 'artikel.*', 'racakitri.*', 'informasi.*', 'video.*') ? 'text-[#00236f] font-semibold border-b-2 border-[#00236f]' : 'text-slate-600 hover:text-[#0058bf] font-medium' }}" :class="{'text-[#0058bf]': isOpen}" href="#">Pelayanan Jemaat <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="{'rotate-180': isOpen}">expand_more</span></a>
                 
                 <div x-cloak x-show="isOpen" 
                     x-transition:enter="transition ease-out duration-200"
@@ -96,13 +96,13 @@
                 </div>
             </div>
 
-            <a class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium h-full flex items-center" href="{{ route('renungan.index') }}">Renungan Harian</a>
-            <a class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium h-full flex items-center" href="{{ route('warta.index') }}">Warta Jemaat</a>
-            <a class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium h-full flex items-center" href="{{ route('kontak.index') }}">Kontak</a>
+            <a class="transition-colors text-sm h-full flex items-center px-1 {{ request()->routeIs('renungan.*') ? 'text-[#00236f] font-semibold border-b-2 border-[#00236f]' : 'text-slate-600 hover:text-[#0058bf] font-medium' }}" href="{{ route('renungan.index') }}">Renungan Harian</a>
+            <a class="transition-colors text-sm h-full flex items-center px-1 {{ request()->routeIs('warta.*') ? 'text-[#00236f] font-semibold border-b-2 border-[#00236f]' : 'text-slate-600 hover:text-[#0058bf] font-medium' }}" href="{{ route('warta.index') }}">Warta Jemaat</a>
+            <a class="transition-colors text-sm h-full flex items-center px-1 {{ request()->routeIs('kontak.*') ? 'text-[#00236f] font-semibold border-b-2 border-[#00236f]' : 'text-slate-600 hover:text-[#0058bf] font-medium' }}" href="{{ route('kontak.index') }}">Kontak</a>
 
             <!-- Dropdown Download -->
             <div x-data="{ isOpen: false }" @click.outside="isOpen = false" class="relative h-full flex items-center">
-                <a @click.prevent="isOpen = !isOpen" class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium h-full flex items-center gap-1 cursor-pointer" :class="{'text-[#0058bf]': isOpen}" href="#">Download <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="{'rotate-180': isOpen}">expand_more</span></a>
+                <a @click.prevent="isOpen = !isOpen" class="transition-colors text-sm h-full flex items-center gap-1 cursor-pointer px-1 {{ request()->routeIs('download.*') ? 'text-[#00236f] font-semibold border-b-2 border-[#00236f]' : 'text-slate-600 hover:text-[#0058bf] font-medium' }}" :class="{'text-[#0058bf]': isOpen}" href="#">Download <span class="material-symbols-outlined text-[16px] transition-transform duration-200" :class="{'rotate-180': isOpen}">expand_more</span></a>
                 
                 <div x-cloak x-show="isOpen" 
                     x-transition:enter="transition ease-out duration-200"

@@ -8,4 +8,99 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* === Primary Colors === */
+    --color-primary: #001142;
+    --color-on-primary: #ffffff;
+    --color-primary-container: #00236f;
+    --color-on-primary-container: #778ede;
+
+    /* === Secondary Colors === */
+    --color-secondary: #0058bf;
+    --color-on-secondary: #ffffff;
+    --color-secondary-container: #2170e4;
+    --color-on-secondary-container: #fefcff;
+
+    /* === Surface Colors === */
+    --color-surface: #f8f9ff;
+    --color-on-surface: #0b1c30;
+    --color-surface-variant: #d3e4fe;
+    --color-on-surface-variant: #444651;
+    --color-surface-dim: #cbdbf5;
+    --color-surface-bright: #f8f9ff;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #eff4ff;
+    --color-surface-container: #e5eeff;
+    --color-surface-container-high: #dce9ff;
+    --color-surface-container-highest: #d3e4fe;
+
+    /* === Background === */
+    --color-background: #f8f9ff;
+    --color-on-background: #0b1c30;
+
+    /* === Outline === */
+    --color-outline: #757682;
+    --color-outline-variant: #c5c5d3;
+    --color-outline-light: #E2E8F0;
+
+    /* === Accent === */
+    --color-accent-gold: #C5A059;
+
+    /* === Inverse === */
+    --color-inverse-surface: #213145;
+    --color-inverse-on-surface: #eaf1ff;
+    --color-inverse-primary: #b5c4ff;
+
+    /* === Fonts === */
+    --font-serif: "Playfair Display", serif;
+    --font-heading: "Manrope", sans-serif;
+    --font-h1: "Manrope", sans-serif;
+    --font-h2: "Manrope", sans-serif;
+    --font-h3: "Manrope", sans-serif;
+    --font-label-md: "Manrope", sans-serif;
+    --font-label-sm: "Manrope", sans-serif;
+    --font-body-lg: "Manrope", sans-serif;
+    --font-body-md: "Manrope", sans-serif;
+    --font-caption: "Manrope", sans-serif;
+    --font-headline-xl: "Manrope";
+    --font-headline-md: "Manrope";
+    --font-stat-value: "Manrope";
+    --font-caption-bold: "Manrope";
+
+    /* === Text Sizes === */
+    --text-h1: 32px;
+    --text-h2: 24px;
+    --text-h3: 20px;
+    --text-label-md: 14px;
+    --text-label-sm: 12px;
+    --text-body-lg: 16px;
+    --text-body-md: 14px;
+}
+
+@utility editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+}
+
+@utility line-clamp-vertical {
+    writing-mode: vertical-rl;
+}
+
+@utility bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+}
+
+@utility glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0px 4px 6px rgba(0, 35, 111, 0.05);
+}
+
+::selection {
+    background-color: var(--color-accent-gold);
+    color: white;
 }

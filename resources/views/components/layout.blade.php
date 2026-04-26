@@ -25,13 +25,17 @@
 <body class="bg-[#f8f9ff] font-[Inter] text-[#0b1c30]">
     <x-header />
     
-    <main class="page-container container mx-auto px-8">
-        <div class="bg-white border border-slate-100 shadow-sm rounded-2xl p-10">
-            <h1 class="font-[Manrope] text-4xl font-bold text-[#001142] mb-6">{{ $title ?? 'Halaman' }}</h1>
-            <div class="text-slate-600 prose max-w-none">
-                {{ $slot }}
+    <main class="page-container container mx-auto px-8 {{ isset($fullWidth) && $fullWidth ? 'max-w-[1600px]' : '' }}">
+        @if(isset($fullWidth) && $fullWidth)
+            {{ $slot }}
+        @else
+            <div class="bg-white border border-slate-100 shadow-sm rounded-2xl p-10">
+                <h1 class="font-[Manrope] text-4xl font-bold text-[#001142] mb-6">{{ $title ?? 'Halaman' }}</h1>
+                <div class="text-slate-600 prose max-w-none">
+                    {{ $slot }}
+                </div>
             </div>
-        </div>
+        @endif
     </main>
 
     <x-footer />
