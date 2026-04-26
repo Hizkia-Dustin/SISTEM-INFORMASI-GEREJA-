@@ -7,7 +7,9 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <style>
+[x-cloak] { display: none !important; }
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     display: inline-block;
@@ -24,29 +26,7 @@
 </head>
 <body class="bg-[#f8f9ff] font-[Inter] text-[#0b1c30]">
 
-{{-- TopNavBar --}}
-<nav class="bg-white/80 backdrop-blur-md flex justify-between items-center h-16 px-8 w-full z-40 fixed top-0 border-b border-slate-100 shadow-sm">
-    <div class="flex items-center gap-8">
-        <div class="flex items-center ">
-            <span class="flex items-center gap-2">  <img src="/img/gereja.png" class="h-10 w-auto" /> </span>
-
-            <span class="font-[Manrope] font-semibold text-[#00236f] tracking-tight">GKI PAKUWON</span>
-        </div>
-        <div class="hidden md:flex items-center gap-6">
-            <a class="text-[#00236f] font-semibold border-b-2 border-[#00236f] px-1 py-5" href="#">Beranda</a>
-            <a class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium" href="#">Khotbah</a>
-            <a class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium" href="#">Acara</a>
-            <a class="text-slate-600 hover:text-[#0058bf] transition-colors text-sm font-medium" href="#">Persembahan</a>
-        </div>
-    </div>
-    <div class="flex items-center gap-4">
-        <div class="relative hidden lg:block">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-            <input class="pl-10 pr-4 py-2 bg-[#e5eeff] rounded-full border-none text-sm focus:ring-2 focus:ring-[#0058bf] w-64 outline-none" placeholder="Cari di ..." type="text"/>
-        </div>
-        <button class="bg-[#00236f] text-white px-6 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all">Ikuti Ibadah</button>
-    </div>
-</nav>
+<x-header />
 
 <main class="pt-16">
     {{-- Hero Section --}}
@@ -300,36 +280,7 @@
     </section>
 </main>
 
-{{-- Footer --}}
-<footer class="bg-slate-50 border-t border-slate-200 py-12 w-full">
-    <div class="container mx-auto px-8 flex flex-col items-center gap-8 text-center">
-        <div class="flex flex-col items-center gap-2">
-            <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-[#00236f] text-3xl" style="font-variation-settings: 'FILL' 1;">church</span>
-                <span class="font-[Manrope] font-semibold text-slate-900">GKI PAKUWON  </span>
-            </div>
-            <p class="text-slate-500 max-w-md">Menjadi jembatan kasih dan kasih karunia bagi komunitas di era .</p>
-        </div>
-        <div class="flex flex-wrap justify-center gap-8">
-            <a class="text-slate-500 text-sm no-underline hover:text-[#0058bf] transition-colors" href="#">Kebijakan Privasi</a>
-            <a class="text-slate-500 text-sm no-underline hover:text-[#0058bf] transition-colors" href="#">Ketentuan Layanan</a>
-            <a class="text-slate-500 text-sm no-underline hover:text-[#0058bf] transition-colors" href="#">Pusat Bantuan</a>
-            <a class="text-slate-500 text-sm no-underline hover:text-[#0058bf] transition-colors" href="#">Panduan Pelayanan Aman</a>
-        </div>
-        <div class="flex gap-4">
-            <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-[#00236f] cursor-pointer hover:bg-[#0058bf] hover:text-white transition-all">
-                <span class="material-symbols-outlined">social_leaderboard</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-[#00236f] cursor-pointer hover:bg-[#0058bf] hover:text-white transition-all">
-                <span class="material-symbols-outlined">play_circle</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-[#00236f] cursor-pointer hover:bg-[#0058bf] hover:text-white transition-all">
-                <span class="material-symbols-outlined">camera_alt</span>
-            </div>
-        </div>
-        <p class="text-slate-500 text-xs mt-4">© 2024 GKI PAKUWON  . Seluruh hak cipta dilindungi.</p>
-    </div>
-</footer>
+<x-footer />
 
 </body>
 </html>
