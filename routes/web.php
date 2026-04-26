@@ -7,6 +7,11 @@ Route::get('/', function () {
     return view('homepage.homepage');
 })->name('home');
 
+// Auth & Dashboard
+Route::view('login', 'pages.auth.login')->name('login');
+Route::view('dashboard', 'pages.dashboard.index')->name('dashboard');
+
+
 // Kelompok About
 Route::prefix('about')->name('about.')->group(function () {
     Route::view('sejarah', 'pages.about.sejarah')->name('sejarah');
@@ -23,11 +28,7 @@ Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
     Route::view('kesaksian', 'pages.pelayanan.kesaksian')->name('kesaksian');
     
     // Badan Kategorial
-    Route::view('komisi-anak', 'pages.pelayanan.komisi-anak')->name('komisi-anak');
-    Route::view('komisi-dewasa', 'pages.pelayanan.komisi-dewasa')->name('komisi-dewasa');
-    Route::view('komisi-remaja', 'pages.pelayanan.komisi-remaja')->name('komisi-remaja');
-    Route::view('komisi-pemuda', 'pages.pelayanan.komisi-pemuda')->name('komisi-pemuda');
-    Route::view('komisi-usia-indah', 'pages.pelayanan.komisi-usia-indah')->name('komisi-usia-indah');
+    Route::view('komisi', 'pages.pelayanan.komisi')->name('komisi');
     
     // Badan Non Kategorial
     Route::view('peribadatan', 'pages.pelayanan.peribadatan')->name('peribadatan');
@@ -39,6 +40,7 @@ Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
     Route::view('kebaktian', 'pages.pelayanan.kebaktian')->name('kebaktian');
     Route::view('konseling', 'pages.pelayanan.konseling')->name('konseling');
     Route::view('katekisasi', 'pages.pelayanan.katekisasi')->name('katekisasi');
+    Route::view('katekisasi/{slug}', 'pages.pelayanan.katekisasi-show')->name('katekisasi.show');
     Route::view('pernikahan', 'pages.pelayanan.pernikahan')->name('pernikahan');
     Route::view('atestasi', 'pages.pelayanan.atestasi')->name('atestasi');
 });
@@ -62,3 +64,4 @@ Route::prefix('download')->name('download.')->group(function () {
     Route::view('formulir', 'pages.download.formulir')->name('formulir');
     Route::view('lagu-rohani', 'pages.download.lagu-rohani')->name('lagu-rohani');
 });
+

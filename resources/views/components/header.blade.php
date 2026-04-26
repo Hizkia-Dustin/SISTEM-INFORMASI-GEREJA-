@@ -55,11 +55,11 @@
                         <h4 class="px-3 text-[11px] font-bold text-[#00236f] uppercase tracking-wider mb-2">Badan Pelayanan</h4>
                         
                         <h5 class="px-3 text-[10px] font-bold text-slate-400 uppercase mt-1 mb-0.5">Kategorial</h5>
-                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi-anak') }}">Komisi Anak</a>
-                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi-dewasa') }}">Komisi Dewasa</a>
-                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi-remaja') }}">Komisi Remaja</a>
-                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi-pemuda') }}">Komisi Pemuda</a>
-                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi-usia-indah') }}">Komisi Usia Indah</a>
+                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi') }}#anak">Komisi Anak</a>
+                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi') }}#dewasa">Komisi Dewasa</a>
+                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi') }}#remaja">Komisi Remaja</a>
+                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi') }}#pemuda">Komisi Pemuda</a>
+                        <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.komisi') }}#usiaindah">Komisi Usia Indah</a>
 
                         <h5 class="px-3 text-[10px] font-bold text-slate-400 uppercase mt-3 mb-0.5">Non Kategorial</h5>
                         <a class="px-3 py-2.5 text-sm text-slate-600 font-medium hover:bg-[#f8f9ff] hover:text-[#0058bf] rounded-lg transition-colors whitespace-nowrap" href="{{ route('pelayanan.peribadatan') }}">Peribadatan</a>
@@ -134,6 +134,9 @@
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
             <input class="pl-10 pr-4 py-2 bg-[#e5eeff] rounded-full border-none text-sm focus:ring-2 focus:ring-[#0058bf] w-64 outline-none" placeholder="Cari di ..." type="text"/>
         </div>
-        <button class="bg-[#00236f] text-white px-6 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all">Ikuti Ibadah</button>
+        <a href="{{ route('login') }}" class="bg-[#00236f] text-white px-8 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">login</span>
+            Login
+        </a>
     </div>
 </nav>
