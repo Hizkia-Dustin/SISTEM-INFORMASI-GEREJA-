@@ -45,6 +45,7 @@ Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
 
 // Media & Lainnya
 Route::view('artikel', 'pages.artikel.index')->name('artikel.index');
+Route::view('artikel/{slug}', 'pages.artikel.show')->name('artikel.show');
 Route::view('racakitri', 'pages.racakitri.index')->name('racakitri.index');
 Route::view('informasi', 'pages.informasi.index')->name('informasi.index');
 Route::view('video', 'pages.video.index')->name('video.index');
