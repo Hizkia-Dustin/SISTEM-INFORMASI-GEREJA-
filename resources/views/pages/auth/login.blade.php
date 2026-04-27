@@ -87,7 +87,13 @@
                     <h2 class="font-h1 text-2xl text-primary-container font-bold">Portal GKI Pakuwon</h2>
                 </div>
 
-                <div class="mb-10 text-center lg:text-left">
+                <div class="mb-10 text-center lg:text-left relative">
+                    <!-- Back Button for Mobile -->
+                    <a href="{{ route('home') }}" class="lg:hidden absolute -top-16 left-0 flex items-center gap-2 text-primary/60 hover:text-primary transition-all font-bold text-xs uppercase tracking-wider group">
+                        <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                        Kembali
+                    </a>
+
                     <h2 class="font-h1 text-4xl text-primary-container font-extrabold mb-3">Selamat Datang</h2>
                     <p class="font-body-md text-on-surface-variant font-medium">Silakan masuk untuk melanjutkan.</p>
                 </div>
