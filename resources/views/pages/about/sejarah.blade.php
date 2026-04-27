@@ -1,4 +1,4 @@
-<x-layout title="Sejarah Gereja" :fullWidth="true">
+<x-layouts.main title="Sejarah Gereja" :fullWidth="true">
     <!-- Hero Header -->
     <header class="pt-12 lg:pt-24 pb-16 lg:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
         <div class="lg:col-span-7">
@@ -243,4 +243,4 @@
             </p>
         </div>
     </section>
-</x-layout>
+</x-layouts.main>

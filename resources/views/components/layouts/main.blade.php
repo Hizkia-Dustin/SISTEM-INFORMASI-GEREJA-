@@ -24,7 +24,7 @@
 </style>
 </head>
 <body class="bg-[#f8f9ff] font-[Inter] text-[#0b1c30]">
-    <x-header />
+    <x-navigation.header />
     
     <main class="page-container container mx-auto px-8 {{ isset($fullWidth) && $fullWidth ? 'max-w-[1600px]' : '' }}">
         @if(isset($fullWidth) && $fullWidth)
@@ -39,6 +39,6 @@
         @endif
     </main>
 
-    <x-footer />
+    <x-navigation.footer />
 </body>
 </html>

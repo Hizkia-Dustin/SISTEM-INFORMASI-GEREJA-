@@ -1,4 +1,4 @@
-﻿<x-layout title="Artikel Renungan" :fullWidth="true">
+<x-layouts.main title="Artikel Renungan" :fullWidth="true">
     <div class="max-w-[1440px] mx-auto px-8 py-12 md:py-16">
         
         <!-- Header Section -->
@@ -77,7 +77,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                 <!-- Looping Data Artikel (Gunakan foreach($articles as $article) nanti) -->
                 @foreach($dummyArticles as $article)
-                    <x-article-card 
+                    <x-article.card 
                         :article="$article" 
                         url="{{ route('artikel.show', $article->slug) }}"
                         buttonText="Baca Artikel" 
@@ -86,16 +86,16 @@
             </div>
 
             <!-- Pagination (Backend Note: cukup gunakan $articles->links() jika pakai Tailwind pagination bawaan Laravel) -->
-            <x-pagination-mock />
+            <x-ui.pagination />
 
         @else
             <!-- ========================================== -->
             <!-- EMPTY STATE / PEMELIHARAAN                 -->
             <!-- ========================================== -->
-            <x-empty-state title="Sedang Menyusun Inspirasi">
+            <x-ui.empty-state title="Sedang Menyusun Inspirasi">
                 <p>Halaman Artikel saat ini belum memiliki konten atau sedang dalam masa pemeliharaan sistem. Ruang ini nantinya akan menjadi sumber <strong>Bahan Khotbah</strong>, <strong>Renungan Harian</strong>, dan inspirasi rohani lainnya bagi Jemaat GKI Pakuwon.</p>
-            </x-empty-state>
+            </x-ui.empty-state>
         @endif
         
     </div>
-</x-layout>
+</x-layouts.main>

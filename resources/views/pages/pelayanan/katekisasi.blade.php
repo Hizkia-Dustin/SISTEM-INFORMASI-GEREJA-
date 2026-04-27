@@ -1,4 +1,4 @@
-﻿<x-layout title="Kelas Katekisasi" :fullWidth="true">
+<x-layouts.main title="Kelas Katekisasi" :fullWidth="true">
     <div class="max-w-[1440px] mx-auto px-8 py-12 md:py-16">
         
         <!-- Header Section -->
@@ -152,15 +152,15 @@
             </div>
 
             <!-- Pagination Mock -->
-            <x-pagination-mock />
+            <x-ui.pagination />
 
         @else
             <!-- Empty State -->
-            <x-empty-state title="Belum Ada Kelas Aktif" icon="school">
+            <x-ui.empty-state title="Belum Ada Kelas Aktif" icon="school">
                 <p>Saat ini belum ada jadwal kelas Katekisasi yang dibuka. Silakan hubungi Sekretariat Gereja untuk informasi pendaftaran gelombang berikutnya.</p>
-            </x-empty-state>
+            </x-ui.empty-state>
         @endif
         
     </div>
-</x-layout>
+</x-layouts.main>
 

@@ -1,4 +1,4 @@
-﻿<x-layout title="Badan Kategorial (Komisi)" :fullWidth="true">
+<x-layouts.main title="Badan Kategorial (Komisi)" :fullWidth="true">
     <div class="max-w-[1024px] mx-auto px-8 py-12 md:py-16" 
          x-data="{ 
             activeTab: window.location.hash ? window.location.hash.substring(1) : 'anak',
@@ -40,7 +40,7 @@
                         <p class="mb-2 text-on-surface">Untuk Komisi Anak terdapat beberapa kelas yaitu:</p>
                         <ul class="list-disc pl-5 mb-6 text-on-surface space-y-1">
                             <li><strong>Betlehem:</strong> Kelas sekolah minggu yang melayani anak usia 1 bln-3 thn</li>
-                            <li><strong>Roma:</strong> Kelas sekolah minggu yang melayani anak usia 4-6 thn/Play Group – TKB</li>
+                            <li><strong>Roma:</strong> Kelas sekolah minggu yang melayani anak usia 4-6 thn/Play Group � TKB</li>
                             <li><strong>Yerusalem:</strong> Kelas sekolah minggu yang melayani anak usia 6-8thn/kls 1-2 SD</li>
                             <li><strong>Zipora:</strong> Kelas sekolah minggu yang melayani anak usia 8-10thn/ kls 3-4 SD</li>
                             <li><strong>Daniel:</strong> Kelas sekolah minggu yang melayani anak usia 10-12thn/ kls 5-6 SD</li>
@@ -154,6 +154,6 @@
         </div>
 
     </div>
-</x-layout>
+</x-layouts.main>
 
 

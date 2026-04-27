@@ -92,7 +92,7 @@
                     <p class="font-body-md text-on-surface-variant font-medium">Silakan masuk untuk melanjutkan.</p>
                 </div>
 
-                <form action="{{ route('dashboard') }}" method="GET" class="space-y-6">
+                <form action="{{ route('dashboard.index') }}" method="GET" class="space-y-6">
                     <!-- Email Field -->
                     <div class="space-y-2">
                         <label for="email" class="text-sm font-bold text-primary-container/80 ml-1">Email / ID Jemaat</label>

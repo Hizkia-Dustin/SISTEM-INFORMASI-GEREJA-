@@ -1,3 +1,3 @@
-﻿<x-layout title="Video">
+<x-layouts.main title="Video">
     <p>Halaman Video sedang dalam tahap pengembangan. Konten akan segera tersedia.</p>
-</x-layout>
+</x-layouts.main>

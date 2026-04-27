@@ -1,4 +1,4 @@
-﻿<x-layout title="Baca Warta Jemaat" :fullWidth="true">
+<x-layouts.main title="Baca Warta Jemaat" :fullWidth="true">
     <div class="max-w-[1440px] mx-auto px-8 py-12 md:py-16">
         
         @php
@@ -39,7 +39,7 @@
             ];
         @endphp
 
-        <x-article-detail 
+        <x-article.detail 
             :article="$article"
             backRoute="{{ route('warta.index') }}"
             backText="Kembali ke Daftar Warta"
@@ -47,4 +47,4 @@
         />
         
     </div>
-</x-layout>
+</x-layouts.main>

@@ -1,4 +1,4 @@
-﻿<x-layout title="Detail Kelas Katekisasi" :fullWidth="true">
+<x-layouts.main title="Detail Kelas Katekisasi" :fullWidth="true">
     <div class="max-w-[1440px] mx-auto px-8 py-12 md:py-16">
         
         @php
@@ -235,5 +235,5 @@
         </div>
         
     </div>
-</x-layout>
+</x-layouts.main>
 

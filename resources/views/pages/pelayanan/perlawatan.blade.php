@@ -1,3 +1,3 @@
-﻿<x-layout title="Perlawatan">
+<x-layouts.main title="Perlawatan">
     <p>Halaman Perlawatan sedang dalam tahap pengembangan. Konten akan segera tersedia.</p>
-</x-layout>
+</x-layouts.main>

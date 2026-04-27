@@ -1,3 +1,3 @@
-﻿<x-layout title="Peribadatan">
+<x-layouts.main title="Peribadatan">
     <p>Halaman Peribadatan sedang dalam tahap pengembangan. Konten akan segera tersedia.</p>
-</x-layout>
+</x-layouts.main>

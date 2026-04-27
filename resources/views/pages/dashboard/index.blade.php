@@ -1,4 +1,4 @@
-<x-layout title="Dashboard Admin" :fullWidth="true">
+<x-layouts.main title="Dashboard Admin" :fullWidth="true">
     <div class="max-w-[1440px] mx-auto px-8 py-12 md:py-16">
         
         <header class="mb-10">
@@ -64,4 +64,4 @@
         </div>
         
     </div>
-</x-layout>
+</x-layouts.main>

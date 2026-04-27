@@ -1,0 +1,75 @@
+@extends('dashboard.layouts.app')
+@section('title', 'Program Kerja')
+
+@section('content')
+<x-dashboard.page-header title="Program Kerja & RAPB" subtitle="Arsip rancangan program kerja dan anggaran jemaat GKI Pakuwon.">
+    <a href="{{ route('dashboard.program_kerja.create') }}" class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4"/></svg>
+        Tambah Program
+    </a>
+</x-dashboard.page-header>
+
+<div class="grid grid-cols-2 gap-8">
+    <!-- Rancangan Program Kerja Column -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-8 py-5 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
+            <h3 class="text-xs font-bold text-gray-700 uppercase tracking-widest">Rancangan Program Kerja</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <tr>
+                        <th class="px-8 py-4">Tahun</th>
+                        <th class="px-8 py-4 text-center">Lampiran</th>
+                        <th class="px-8 py-4 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    <tr>
+                        <td colspan="3" class="px-8 py-12 text-center text-gray-400 italic">Belum ada data program kerja.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- RAPB Column -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-8 py-5 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
+            <h3 class="text-xs font-bold text-gray-700 uppercase tracking-widest">Daftar RAPB</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <tr>
+                        <th class="px-8 py-4">Tahun</th>
+                        <th class="px-8 py-4 text-center">Lampiran</th>
+                        <th class="px-8 py-4 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    @for($i=2026; $i>=2024; $i--)
+                    <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
+                        <td class="px-8 py-5 font-extrabold text-gray-700">{{ $i }}</td>
+                        <td class="px-8 py-5 text-center">
+                            <button class="text-primary font-bold text-xs hover:underline inline-flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                Lihat File
+                            </button>
+                        </td>
+                        <td class="px-8 py-5 text-right flex items-center justify-end gap-3">
+                            <a href="{{ route('dashboard.program_kerja.edit', 1) }}" class="text-gray-400 hover:text-primary transition-colors">Ubah</a>
+                            <form action="{{ route('dashboard.program_kerja.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-gray-400 hover:text-rose-500 transition-colors">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

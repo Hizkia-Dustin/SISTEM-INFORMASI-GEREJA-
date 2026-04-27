@@ -26,7 +26,7 @@
 </head>
 <body class="bg-[#f8f9ff] font-[Inter] text-[#0b1c30]">
 
-<x-header />
+<x-navigation.header />
 
 <main class="pt-16">
     {{-- Hero Section --}}
@@ -280,7 +280,7 @@
     </section>
 </main>
 
-<x-footer />
+<x-navigation.footer />
 
 </body>
 </html>

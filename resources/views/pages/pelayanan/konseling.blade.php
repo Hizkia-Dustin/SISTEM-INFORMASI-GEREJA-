@@ -1,4 +1,4 @@
-<x-layout title="Konseling Pastoral" :fullWidth="true">
+<x-layouts.main title="Konseling Pastoral" :fullWidth="true">
     <div class="max-w-[1440px] mx-auto px-8 py-12 md:py-16">
         
         <!-- Header Section -->
@@ -94,4 +94,4 @@
         </div>
 
     </div>
-</x-layout>
+</x-layouts.main>

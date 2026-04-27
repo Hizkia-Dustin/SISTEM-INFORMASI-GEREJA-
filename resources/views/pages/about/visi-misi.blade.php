@@ -1,4 +1,4 @@
-<x-layout title="Visi dan Misi" :fullWidth="true">
+<x-layouts.main title="Visi dan Misi" :fullWidth="true">
     <!-- Hero Section: Editorial Asymmetry -->
     <header class="editorial-grid mb-32 items-start">
         <div class="col-span-12 lg:col-span-1 mb-8 lg:mb-0">
@@ -247,4 +247,4 @@
         </div>
     </section>
 
-</x-layout>
+</x-layouts.main>

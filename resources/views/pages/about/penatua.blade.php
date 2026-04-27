@@ -1,4 +1,4 @@
-<x-layout title="Susunan Majelis Jemaat" :fullWidth="true">
+<x-layouts.main title="Susunan Majelis Jemaat" :fullWidth="true">
 <div class="max-w-[1440px] mx-auto px-8 py-8">
 
 <!-- Header Section -->
@@ -222,4 +222,4 @@
 </footer>
 
 </div>
-</x-layout>
+</x-layouts.main>

@@ -1,4 +1,4 @@
-﻿<x-layout title="Profil Pendeta" :fullWidth="true">
+<x-layouts.main title="Profil Pendeta" :fullWidth="true">
 <div class="max-w-[1440px] mx-auto px-8 py-8">
 <div class="bento-grid">
 <section class="col-span-12 lg:col-span-8 flex flex-col gap-6">
@@ -122,5 +122,5 @@
 </div>
 </main>
 
-</x-layout>
+</x-layouts.main>
 

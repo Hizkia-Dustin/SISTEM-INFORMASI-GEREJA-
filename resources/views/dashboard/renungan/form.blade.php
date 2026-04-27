@@ -1,0 +1,38 @@
+@extends('dashboard.layouts.app')
+@section('title', $type . ' Renungan')
+
+@section('content')
+<x-dashboard.page-header 
+    title="{{ $type }} Renungan Harian" 
+    subtitle="Tuliskan pesan rohani dan kutipan ayat untuk pertumbuhan iman jemaat." 
+    backUrl="{{ route('dashboard.renungan.index') }}" 
+/>
+
+<div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 max-w-5xl overflow-hidden relative">
+    <form action="#" method="POST">
+        <div class="flex flex-col gap-10">
+            <div class="grid grid-cols-2 gap-8">
+                <x-form.input label="Tanggal Renungan" name="tanggal" type="date" />
+                <x-form.input label="Ayat Renungan" name="ayat" placeholder="Contoh: Yohanes 3:16 atau Mazmur 23:1" />
+            </div>
+
+            <x-form.input label="Judul Renungan" name="judul" placeholder="Masukkan judul yang menginspirasi..." />
+
+            <div>
+                <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Isi Renungan</label>
+                <textarea name="isi" rows="15" placeholder="Tuliskan detail renungan di sini..." class="w-full px-6 py-5 rounded-2xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium leading-relaxed shadow-inner"></textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex items-center gap-4 pt-8 border-t border-gray-50">
+                <button type="submit" class="px-10 py-4 bg-primary text-white rounded-2xl text-sm font-bold shadow-xl shadow-primary/20 hover:bg-blue-700 transition-all">
+                    {{ $type == 'Tambah' ? 'Simpan Renungan' : 'Ubah Renungan' }}
+                </button>
+                <button type="reset" class="px-10 py-4 bg-gray-50 text-gray-400 rounded-2xl text-sm font-bold hover:bg-gray-100 transition-all">
+                    Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+@endsection
