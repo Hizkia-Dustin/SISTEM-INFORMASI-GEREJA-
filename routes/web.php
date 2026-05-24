@@ -40,6 +40,10 @@ Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
     Route::view('/kebaktian', 'pages.pelayanan.kebaktian')->name('kebaktian');
     Route::view('/konseling', 'pages.pelayanan.konseling')->name('konseling');
     Route::view('/katekisasi', 'pages.pelayanan.katekisasi')->name('katekisasi');
+
+    // Detail kelas katekisasi (dummy view)
+    Route::view('/katekisasi/{slug}', 'pages.pelayanan.katekisasi-show')->name('katekisasi.show');
+
     Route::view('/pernikahan', 'pages.pelayanan.pernikahan')->name('pernikahan');
     Route::view('/atestasi', 'pages.pelayanan.atestasi')->name('atestasi');
 });
