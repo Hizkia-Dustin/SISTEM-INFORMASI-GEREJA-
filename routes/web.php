@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\DashboardController;
 
 /*
@@ -29,6 +30,7 @@ Route::prefix('about')->name('about.')->group(function () {
 
 // Pelayanan Section
 Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
+
     Route::view('/persekutuan', 'pages.pelayanan.persekutuan')->name('persekutuan');
     Route::view('/pembinaan', 'pages.pelayanan.pembinaan')->name('pembinaan');
     Route::view('/kesaksian', 'pages.pelayanan.kesaksian')->name('kesaksian');
@@ -42,7 +44,8 @@ Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
     Route::view('/katekisasi', 'pages.pelayanan.katekisasi')->name('katekisasi');
 
     // Detail kelas katekisasi (dummy view)
-    Route::view('/katekisasi/{slug}', 'pages.pelayanan.katekisasi-show')->name('katekisasi.show');
+    Route::view('/katekisasi/{slug}', 'pages.pelayanan.katekisasi')->name('katekisasi.show');
+
 
     Route::view('/pernikahan', 'pages.pelayanan.pernikahan')->name('pernikahan');
     Route::view('/atestasi', 'pages.pelayanan.atestasi')->name('atestasi');
@@ -66,7 +69,9 @@ Route::prefix('warta')->name('warta.')->group(function () {
 
 // Others
 Route::view('/racakitri', 'pages.racakitri.index')->name('racakitri.index');
+Route::view('/racakitri/{slug}', 'pages.racakitri.show')->name('racakitri.show');
 Route::view('/informasi', 'pages.informasi.index')->name('informasi.index');
+
 Route::view('/video', 'pages.video.index')->name('video.index');
 Route::view('/kontak', 'pages.kontak.index')->name('kontak.index');
 
