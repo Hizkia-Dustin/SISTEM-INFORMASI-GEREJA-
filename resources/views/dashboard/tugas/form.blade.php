@@ -9,7 +9,9 @@
 />
 
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 overflow-hidden relative">
-    <form action="#" method="POST">
+    <form action="{{ $type == 'Edit' ? route('dashboard.tugas.update', $tugas->id ?? 0) : route('dashboard.tugas.store') }}" method="POST">
+        @csrf
+        @if($type == 'Edit') @method('PUT') @endif
         <div class="grid grid-cols-3 gap-12">
             <!-- Core Roles -->
             <div class="flex flex-col gap-8">

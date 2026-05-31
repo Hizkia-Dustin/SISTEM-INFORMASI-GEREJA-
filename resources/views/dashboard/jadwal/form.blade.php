@@ -9,30 +9,32 @@
 />
 
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 max-w-4xl overflow-hidden relative">
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{ $type == 'Edit' ? route('dashboard.jadwal.update', $jadwal->id ?? 0) : route('dashboard.jadwal.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @if($type == 'Edit') @method('PUT') @endif
         <div class="grid grid-cols-2 gap-10">
             <div class="col-span-2">
-                <x-form.input label="Nama Ibadah / Kebaktian" name="nama" placeholder="Contoh: Ibadah Minggu Pagi, Kebaktian Penyamaran, dll." />
+                <x-form.input label="Nama Ibadah / Kebaktian" name="nama" value="{{ old('nama', $jadwal->nama ?? '') }}" placeholder="Contoh: Ibadah Minggu Pagi, Kebaktian Penyamaran, dll." />
             </div>
 
-            <x-form.input label="Tanggal" name="tanggal" type="date" />
-            <x-form.input label="Waktu / Pukul" name="waktu" type="time" />
+            <x-form.input label="Tanggal" name="tanggal" value="{{ old('tanggal', $jadwal->tanggal ?? '') }}" type="date" />
+            <x-form.input label="Waktu / Pukul" name="waktu" value="{{ old('waktu', $jadwal->waktu ?? '') }}" type="time" />
             
             <x-form.select label="Jenis Ibadah" name="jenis">
-                <option value="Umum">Ibadah Umum</option>
-                <option value="Pemuda">Ibadah Pemuda</option>
-                <option value="Anak">Ibadah Anak (Sekolah Minggu)</option>
-                <option value="Khusus">Ibadah Khusus (Natal/Paskah)</option>
+                <option value="Umum" {{ old('jenis', $jadwal->jenis ?? '') == 'Umum' ? 'selected' : '' }}>Ibadah Umum</option>
+                <option value="Pemuda" {{ old('jenis', $jadwal->jenis ?? '') == 'Pemuda' ? 'selected' : '' }}>Ibadah Pemuda</option>
+                <option value="Anak" {{ old('jenis', $jadwal->jenis ?? '') == 'Anak' ? 'selected' : '' }}>Ibadah Anak (Sekolah Minggu)</option>
+                <option value="Khusus" {{ old('jenis', $jadwal->jenis ?? '') == 'Khusus' ? 'selected' : '' }}>Ibadah Khusus (Natal/Paskah)</option>
             </x-form.select>
 
-            <x-form.input label="Estimasi / Jumlah Kehadiran" name="jumlah_hadir" type="number" placeholder="Jumlah jemaat..." />
+            <x-form.input label="Estimasi / Jumlah Kehadiran" name="jumlah_hadir" value="{{ old('jumlah_hadir', $jadwal->jumlah_hadir ?? '') }}" type="number" placeholder="Jumlah jemaat..." />
 
             <div class="col-span-2">
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Lampiran Tata Ibadah (PDF)</label>
-                <div class="border-2 border-dashed border-gray-100 rounded-2xl p-10 text-center bg-gray-50 hover:bg-white hover:border-primary transition-all cursor-pointer group">
-                    <svg class="w-10 h-10 text-gray-300 mx-auto mb-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                    <p class="text-sm font-bold text-gray-400">Pilih file Tata Ibadah (PDF)</p>
-                </div>
+                <input type="file" name="lampiran" accept=".pdf" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                @if(isset($jadwal) && $jadwal->lampiran)
+                    <p class="mt-2 text-xs text-gray-500">File saat ini: <a href="{{ asset('storage/' . $jadwal->lampiran) }}" target="_blank" class="text-primary underline">Lihat PDF</a></p>
+                @endif
             </div>
 
             <!-- Submit -->

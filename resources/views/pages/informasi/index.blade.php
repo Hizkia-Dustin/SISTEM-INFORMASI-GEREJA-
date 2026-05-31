@@ -27,66 +27,37 @@
         </div>
 
         @php
-            // =================================================================
-            // CATATAN UNTUK BACKEND DEVELOPER:
-            // 
-            // Ubah variabel $hasArticles di bawah ini menjadi alse untuk 
-            // melihat tampilan "Empty State / Maintenance".
-            // 
-            // Di level controller nantinya, cukup berikan array/collection 
-            // dari hasil query paginate().
-            // =================================================================
-            
-            $hasArticles = true; 
-            
-            // Dummy Data untuk keperluan UI
-            $dummyArticles = [
-                (object)[
-                    'title' => 'Penyesuaian Jadwal Kebaktian Minggu',
-                    'category' => 'Renungan Harian',
-                    'author' => 'Pdt. Dr. Yerusa Maria Agustini',
-                    'date' => '12 Mei 2024',
-                    'excerpt' => 'Seringkali kita merasa sendirian saat menghadapi cobaan berat. Namun, firman Tuhan menjanjikan damai sejahtera yang melampaui segala akal.',
-                    'image' => 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop',
-                    'slug' => 'artikel-1'
-                ],
-                (object)[
-                    'title' => 'Pendaftaran Katekisasi Tahun 2024',
-                    'category' => 'Kajian Teologi',
-                    'author' => 'Pnt. Alex R. Jacobus',
-                    'date' => '08 Mei 2024',
-                    'excerpt' => 'Menjadi kawan sekerja Allah menyiratkan hubungan timbal balik yang mesra antara Allah dan manusia dalam mengerjakan keselamatan dunia.',
-                    'image' => 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=800&auto=format&fit=crop',
-                    'slug' => 'artikel-2'
-                ],
-                (object)[
-                    'title' => 'Laporan Pertanggungjawaban Panitia Paskah',
-                    'category' => 'Bahan Khotbah',
-                    'author' => 'Pdt. Dodi Wijaja',
-                    'date' => '01 Mei 2024',
-                    'excerpt' => 'Di tengah kesibukan gawai dan media sosial, menyisihkan waktu 15 menit untuk mezbah keluarga dapat membawa transformasi rohani yang luar biasa.',
-                    'image' => 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop',
-                    'slug' => 'artikel-3'
-                ],
-            ];
+            $hasArticles = $informasi->count() > 0;
         @endphp
 
-        @if($hasArticles && count($dummyArticles) > 0)
+        @if($hasArticles)
             
             <!-- Grid Artikel -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                <!-- Looping Data Artikel (Gunakan foreach($articles as $article) nanti) -->
-                @foreach($dummyArticles as $article)
+                <!-- Looping Data Artikel -->
+                @foreach($informasi as $dbInformasi)
+                    @php
+                        $articleObj = (object)[
+                            'title' => $dbInformasi->judul,
+                            'category' => $dbInformasi->kategori ?? 'Informasi',
+                            'author' => 'Admin GKI',
+                            'date' => $dbInformasi->created_at->format('d M Y'),
+                            'excerpt' => Str::limit(strip_tags($dbInformasi->isi), 100),
+                            'image' => $dbInformasi->gambar ? asset('storage/' . $dbInformasi->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop',
+                        ];
+                    @endphp
                     <x-article.card 
-                        :article="$article" 
-                        url="{{ route('informasi.show', $article->slug) }}"
+                        :article="$articleObj" 
+                        url="{{ route('informasi.show', $dbInformasi->id) }}"
                         buttonText="Baca Informasi" 
                     />
                 @endforeach
             </div>
 
-            <!-- Pagination (Backend Note: cukup gunakan $articles->links() jika pakai Tailwind pagination bawaan Laravel) -->
-            <x-ui.pagination />
+            <!-- Pagination -->
+            <div class="mt-10">
+                {{ $informasi->links() }}
+            </div>
 
         @else
             <!-- ========================================== -->

@@ -9,36 +9,37 @@
 />
 
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 max-w-2xl overflow-hidden relative">
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{ $type == 'Edit' ? route('dashboard.program_kerja.update', $program_kerja->id ?? 0) : route('dashboard.program_kerja.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @if($type == 'Edit') @method('PUT') @endif
         <div class="flex flex-col gap-8">
             <x-form.select label="Jenis Dokumen" name="jenis">
-                <option value="Rancangan Program Kerja">Rancangan Program Kerja</option>
-                <option value="RAPB">Rancangan Anggaran Penerimaan dan Belanja (RAPB)</option>
+                <option value="Rancangan Program Kerja" {{ old('jenis', $program_kerja->jenis ?? '') == 'Rancangan Program Kerja' ? 'selected' : '' }}>Rancangan Program Kerja</option>
+                <option value="RAPB" {{ old('jenis', $program_kerja->jenis ?? '') == 'RAPB' ? 'selected' : '' }}>Rancangan Anggaran Penerimaan dan Belanja (RAPB)</option>
             </x-form.select>
 
             <x-form.select label="Tahun Program" name="tahun">
                 @for($i=date('Y')+1; $i>=2024; $i--)
-                    <option value="{{ $i }}">{{ $i }}</option>
+                    <option value="{{ $i }}" {{ old('tahun', $program_kerja->tahun ?? '') == $i ? 'selected' : '' }}>{{ $i }}</option>
                 @endfor
             </x-form.select>
 
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Unggah Lampiran (PDF)</label>
-                <div class="border-2 border-dashed border-gray-100 rounded-2xl p-12 text-center bg-gray-50 hover:bg-white hover:border-primary transition-all cursor-pointer group">
-                    <svg class="w-10 h-10 text-gray-300 mx-auto mb-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                    <p class="text-sm font-bold text-gray-400">Pilih file program kerja (PDF)</p>
-                    <p class="text-[10px] text-gray-300 mt-2 uppercase font-bold tracking-widest">Maksimal 5MB</p>
-                </div>
+                <input type="file" name="lampiran" accept=".pdf" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                @if(isset($program_kerja) && $program_kerja->lampiran)
+                    <p class="mt-2 text-xs text-gray-500">File saat ini: <a href="{{ asset('storage/' . $program_kerja->lampiran) }}" target="_blank" class="text-primary underline">Lihat PDF</a></p>
+                @endif
             </div>
 
             <!-- Submit -->
             <div class="flex items-center gap-4 pt-8 border-t border-gray-50">
                 <button type="submit" class="px-10 py-4 bg-primary text-white rounded-2xl text-sm font-bold shadow-xl shadow-primary/20 hover:bg-blue-700 transition-all">
-                    Simpan Program
+                    {{ $type == 'Tambah' ? 'Simpan Program' : 'Ubah Program' }}
                 </button>
-                <button type="reset" class="px-10 py-4 bg-gray-50 text-gray-400 rounded-2xl text-sm font-bold hover:bg-gray-100 transition-all">
-                    Reset
-                </button>
+                <a href="{{ route('dashboard.program_kerja.index') }}" class="px-10 py-4 bg-gray-50 text-gray-400 rounded-2xl text-sm font-bold hover:bg-gray-100 transition-all">
+                    Batal
+                </a>
             </div>
         </div>
     </form>

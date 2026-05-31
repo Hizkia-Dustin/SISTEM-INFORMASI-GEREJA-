@@ -7,6 +7,9 @@
         name="{{ $name }}" 
         value="{{ $value }}" 
         placeholder="{{ $placeholder }}" 
-        class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm shadow-sm"
+        {{ $attributes->merge(['class' => 'w-full px-4 py-3 rounded-xl border border-gray-200 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm shadow-sm' . ($errors->has($name) ? ' border-red-500' : '')]) }}
     >
+    @error($name)
+        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+    @enderror
 </div>

@@ -9,7 +9,9 @@
 />
 
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 max-w-5xl overflow-hidden relative">
-    <form action="#" method="POST">
+    <form action="{{ $type == 'Edit' ? route('dashboard.renungan.update', $renungan->id ?? 0) : route('dashboard.renungan.store') }}" method="POST">
+        @csrf
+        @if($type == 'Edit') @method('PUT') @endif
         <div class="flex flex-col gap-10">
             <div class="grid grid-cols-2 gap-8">
                 <x-form.input label="Tanggal Renungan" name="tanggal" type="date" />

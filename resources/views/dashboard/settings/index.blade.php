@@ -63,19 +63,21 @@
                 <div class="flex items-center gap-8 mb-10">
                     <div class="relative group">
                         <div class="w-24 h-24 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden">
-                            <img src="https://ui-avatars.com/api/?name=Admin+GKI&background=00236f&color=fff&size=200" alt="avatar" class="w-full h-full object-cover">
+                            @if(!empty($user->foto_profil))
+                                <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-[#001a57] text-white flex items-center justify-center text-3xl font-bold">{{ strtoupper(substr($user->name ?? 'A', 0, 2)) }}</div>
+                            @endif
                         </div>
-                        <button class="absolute -bottom-2 -right-2 w-8 h-8 bg-white border border-gray-100 rounded-xl shadow-lg flex items-center justify-center text-primary hover:bg-blue-50 transition-all">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        </button>
+                        <a href="{{ route('dashboard.profil.edit') }}" class="absolute -bottom-2 -right-2 w-8 h-8 bg-white border border-gray-100 rounded-xl shadow-lg flex items-center justify-center text-primary hover:bg-blue-50 transition-all">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                        </a>
                     </div>
                     <div>
                         <h3 class="text-sm font-bold text-gray-700">Foto Profil</h3>
-                        <p class="text-xs text-gray-400 mt-1">Format JPG, PNG atau GIF. Maksimal 2MB.</p>
+                        <p class="text-xs text-gray-400 mt-1">Ubah foto profil di halaman Edit Profil.</p>
                         <div class="flex gap-3 mt-4">
-                            <button class="text-[11px] font-bold text-primary hover:underline">Unggah Baru</button>
-                            <span class="text-gray-200">|</span>
-                            <button class="text-[11px] font-bold text-rose-500 hover:underline">Hapus Foto</button>
+                            <a href="{{ route('dashboard.profil.edit') }}" class="text-[11px] font-bold text-primary hover:underline">Edit Profil</a>
                         </div>
                     </div>
                 </div>
@@ -83,25 +85,24 @@
                 <div class="grid grid-cols-2 gap-6">
                     <div>
                         <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Nama Lengkap</label>
-                        <input type="text" value="Super Admin GKI" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                        <input type="text" value="{{ $user->name ?? '-' }}" disabled class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                     <div>
                         <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Username</label>
-                        <input type="text" value="superadmin" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                        <input type="text" value="{{ $user->username ?? '-' }}" disabled class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                     <div>
                         <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Email Address</label>
-                        <input type="email" value="admin@gkipakuwon.org" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                        <input type="email" value="{{ $user->email ?? '-' }}" disabled class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
                     </div>
                     <div>
                         <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Role</label>
-                        <input type="text" value="Administrator (Super)" disabled class="w-full bg-gray-100 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-400 cursor-not-allowed">
+                        <input type="text" value="{{ $user->role ?? '-' }}" disabled class="w-full bg-gray-100 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-400 cursor-not-allowed">
                     </div>
                 </div>
             </div>
             <div class="px-8 py-5 bg-gray-50/50 border-t border-gray-50 flex items-center gap-3">
-                <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-xl text-xs font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all">Simpan Perubahan</button>
-                <button type="reset" class="px-6 py-2.5 bg-white border border-gray-100 text-gray-500 rounded-xl text-xs font-bold hover:bg-gray-50 transition-all">Reset</button>
+                <a href="{{ route('dashboard.profil.edit') }}" class="px-6 py-2.5 bg-primary text-white rounded-xl text-xs font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all">Ubah Selengkapnya</a>
             </div>
         </div>
 
@@ -158,88 +159,46 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm">
+                        @foreach($admins as $admin)
                         <tr class="border-b border-gray-50">
                             <td class="px-8 py-5">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-[#001a57] text-white text-[10px] font-bold flex items-center justify-center">AG</div>
+                                    <div class="w-8 h-8 rounded-lg bg-[#001a57] text-white text-[10px] font-bold flex items-center justify-center overflow-hidden">
+                                        @if(!empty($admin->foto_profil))
+                                            <img src="{{ asset('storage/' . $admin->foto_profil) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                                        @else
+                                            {{ strtoupper(substr($admin->name ?? 'A', 0, 2)) }}
+                                        @endif
+                                    </div>
                                     <div>
-                                        <p class="font-bold text-gray-800">Super Admin</p>
-                                        <p class="text-[10px] text-gray-400">admin@gkipakuwon.or.id</p>
+                                        <p class="font-bold text-gray-800">{{ $admin->name }}</p>
+                                        <p class="text-[10px] text-gray-400">{{ $admin->email }}</p>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-8 py-5">
-                                <span class="px-2.5 py-1 bg-blue-50 text-primary text-[10px] font-extrabold rounded uppercase">Super Admin</span>
+                                <span class="px-2.5 py-1 {{ $admin->role == 'Super Admin' ? 'bg-blue-50 text-primary' : ($admin->role == 'Bendahara' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600') }} text-[10px] font-extrabold rounded uppercase">{{ $admin->role ?? 'Admin' }}</span>
                             </td>
                             <td class="px-8 py-5">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                                    <span class="text-xs font-bold text-gray-600">Online</span>
+                                    <div class="w-1.5 h-1.5 rounded-full {{ $admin->id == auth()->user()->id ? 'bg-emerald-500' : 'bg-gray-300' }}"></div>
+                                    <span class="text-xs font-bold {{ $admin->id == auth()->user()->id ? 'text-gray-600' : 'text-gray-400' }}">{{ $admin->id == auth()->user()->id ? 'Online (Anda)' : 'Offline' }}</span>
                                 </div>
                             </td>
                             <td class="px-8 py-5 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('dashboard.settings.admin.edit', 1) }}" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-blue-50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>
-                                    <form action="{{ route('dashboard.settings.admin.destroy', 1) }}" method="POST" onsubmit="return confirm('Hapus akun administrator ini?')">
+                                    <a href="{{ route('dashboard.settings.admin.edit', $admin->id) }}" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-blue-50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>
+                                    @if($admin->id != auth()->user()->id)
+                                    <form action="{{ route('dashboard.settings.admin.destroy', $admin->id) }}" method="POST" onsubmit="return confirm('Hapus akun administrator ini?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
-                        <tr class="border-b border-gray-50">
-                            <td class="px-8 py-5">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center">BS</div>
-                                    <div>
-                                        <p class="font-bold text-gray-800">Budi Santoso</p>
-                                        <p class="text-[10px] text-gray-400">budi.bendahara@gkipakuwon.or.id</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-8 py-5">
-                                <span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-extrabold rounded uppercase">Bendahara</span>
-                            </td>
-                            <td class="px-8 py-5">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
-                                    <span class="text-xs font-bold text-gray-400">Offline</span>
-                                </div>
-                            </td>
-                            <td class="px-8 py-5 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <a href="#" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-blue-50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>
-                                    <button class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-50">
-                            <td class="px-8 py-5">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center">RJ</div>
-                                    <div>
-                                        <p class="font-bold text-gray-800">Rudi Johannes</p>
-                                        <p class="text-[10px] text-gray-400">rudi.penatua@gkipakuwon.or.id</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-8 py-5">
-                                <span class="px-2.5 py-1 bg-amber-50 text-amber-600 text-[10px] font-extrabold rounded uppercase">Penatua</span>
-                            </td>
-                            <td class="px-8 py-5">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                                    <span class="text-xs font-bold text-gray-600">Online</span>
-                                </div>
-                            </td>
-                            <td class="px-8 py-5 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <a href="#" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-blue-50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a>
-                                    <button class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-rose-500 hover:bg-rose-50 transition-all"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                                </div>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

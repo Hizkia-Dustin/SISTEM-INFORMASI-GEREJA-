@@ -9,9 +9,11 @@
 />
 
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 max-w-2xl overflow-hidden relative">
-    <form action="#" method="POST">
+    <form action="{{ $type == 'Edit' ? route('dashboard.sektor.update', $sektor->id ?? 0) : route('dashboard.sektor.store') }}" method="POST">
+        @csrf
+        @if($type == 'Edit') @method('PUT') @endif
         <div class="flex flex-col gap-8">
-            <x-form.input label="Nama Sektor" name="nama" placeholder="Contoh: Sektor 1, Sektor Efesus, dll." />
+            <x-form.input label="Nama Sektor" name="nama" value="{{ old('nama', $sektor->nama ?? '') }}" placeholder="Contoh: Sektor 1, Sektor Efesus, dll." />
             
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Keterangan / Deskripsi Wilayah</label>
