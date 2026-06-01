@@ -33,9 +33,9 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
-                <a href="{{ route('dashboard.keluarga.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keluarga.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Keluarga Aktif</a>
-                <a href="#" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Data Keluarga Tidak Aktif</a>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.keluarga.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keluarga.index') && request('status') != 'tidak_aktif' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Keluarga Aktif</a>
+                <a href="{{ route('dashboard.keluarga.index', ['status' => 'tidak_aktif']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keluarga.index') && request('status') == 'tidak_aktif' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Keluarga Tidak Aktif</a>
             </div>
         </div>
 
@@ -48,9 +48,9 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
-                <a href="{{ route('dashboard.jemaat.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.jemaat.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Jemaat Aktif</a>
-                <a href="#" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Data Jemaat Tidak Aktif</a>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.jemaat.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.jemaat.index') && request('status') != 'tidak_aktif' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Jemaat Aktif</a>
+                <a href="{{ route('dashboard.jemaat.index', ['status' => 'tidak_aktif']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.jemaat.index') && request('status') == 'tidak_aktif' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Jemaat Tidak Aktif</a>
             </div>
         </div>
 
@@ -63,10 +63,10 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
-                <a href="{{ route('dashboard.sektor.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.sektor.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Anggota Sektor</a>
-                <a href="{{ route('dashboard.sektor.index') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Data Sektor</a>
-                <a href="{{ route('dashboard.sektor.create') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Tambah Sektor</a>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.sektor.index', ['tab' => 'anggota']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.sektor.index') && request('tab', 'anggota') == 'anggota' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Anggota Sektor</a>
+                <a href="{{ route('dashboard.sektor.index', ['tab' => 'master']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.sektor.index') && request('tab') == 'master' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Data Sektor</a>
+                <a href="{{ route('dashboard.sektor.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.sektor.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Sektor</a>
             </div>
         </div>
 
@@ -80,11 +80,11 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
-                <a href="{{ route('dashboard.keuangan.create') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Tambah Data Keuangan</a>
-                <a href="{{ route('dashboard.keuangan.index') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Persembahan Ibadah</a>
-                <a href="{{ route('dashboard.keuangan.index') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Diakoni Sosial</a>
-                <a href="{{ route('dashboard.keuangan.index') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Persembahan Khusus</a>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.keuangan.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Data Keuangan</a>
+                <a href="{{ route('dashboard.keuangan.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && !request('kategori') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Ibadah</a>
+                <a href="{{ route('dashboard.keuangan.index', ['kategori' => 'diakoni']) }}" class="text-xs font-medium py-2 {{ request('kategori') == 'diakoni' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Diakoni Sosial</a>
+                <a href="{{ route('dashboard.keuangan.index', ['kategori' => 'khusus']) }}" class="text-xs font-medium py-2 {{ request('kategori') == 'khusus' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Khusus</a>
             </div>
         </div>
 
@@ -97,24 +97,39 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
-                <a href="{{ route('dashboard.pelayan.index') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Lihat Pelayan</a>
-                <a href="{{ route('dashboard.pelayan.create') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Tambah Pelayan</a>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.pelayan.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.pelayan.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Pelayan</a>
+                <a href="{{ route('dashboard.pelayan.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.pelayan.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Pelayan</a>
             </div>
         </div>
 
-        <!-- 7. Renungan Ibadah -->
+        <!-- 7. Renungan Harian -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.renungan.*') ? 'true' : 'false' }} }">
             <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                    Renungan Ibadah
+                    Renungan Harian
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
                 <a href="{{ route('dashboard.renungan.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.renungan.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Renungan</a>
                 <a href="{{ route('dashboard.renungan.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.renungan.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Renungan</a>
+            </div>
+        </div>
+
+        <!-- 7b. Warta Jemaat -->
+        <div x-data="{ open: {{ request()->routeIs('dashboard.warta.*') ? 'true' : 'false' }} }">
+            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                    Warta Jemaat
+                </div>
+                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.warta.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.warta.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Warta</a>
+                <a href="{{ route('dashboard.warta.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.warta.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Warta</a>
             </div>
         </div>
 
@@ -127,10 +142,10 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
-                <a href="{{ route('dashboard.jadwal.index') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Lihat Jadwal Ibadah</a>
-                <a href="{{ route('dashboard.jadwal.create') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Tambah Jadwal Ibadah</a>
-                <a href="{{ route('dashboard.tugas.index') }}" class="text-xs font-medium py-2 text-gray-400 hover:text-primary">Lihat Jadwal Pelayan</a>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.jadwal.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.jadwal.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Jadwal Ibadah</a>
+                <a href="{{ route('dashboard.jadwal.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.jadwal.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Jadwal Ibadah</a>
+                <a href="{{ route('dashboard.tugas.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.tugas.*') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Jadwal Pelayan</a>
             </div>
         </div>
 
@@ -143,7 +158,7 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
                 <a href="{{ route('dashboard.program_kerja.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.program_kerja.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Program & RAPB</a>
                 <a href="{{ route('dashboard.program_kerja.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.program_kerja.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Program</a>
             </div>
@@ -158,13 +173,73 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
                 <a href="{{ route('dashboard.berita.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.berita.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Berita Gereja</a>
                 <a href="{{ route('dashboard.berita.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.berita.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Berita Gereja</a>
             </div>
         </div>
 
-        <!-- 12. Komisi & Bagian -->
+        <!-- 12. Artikel -->
+        <div x-data="{ open: {{ request()->routeIs('dashboard.artikel.*') ? 'true' : 'false' }} }">
+            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                    Artikel
+                </div>
+                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.artikel.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.artikel.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Artikel</a>
+                <a href="{{ route('dashboard.artikel.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.artikel.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Artikel</a>
+            </div>
+        </div>
+
+        <!-- 13. Racakitri -->
+        <div x-data="{ open: {{ request()->routeIs('dashboard.racakitri.*') ? 'true' : 'false' }} }">
+            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1.5 7.5L12 18l-6.5 3.5L7 14l-5-5 7-1z"/></svg>
+                    Racakitri
+                </div>
+                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.racakitri.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.racakitri.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Racakitri</a>
+                <a href="{{ route('dashboard.racakitri.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.racakitri.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Racakitri</a>
+            </div>
+        </div>
+
+        <!-- 14. Informasi -->
+        <div x-data="{ open: {{ request()->routeIs('dashboard.informasi.*') ? 'true' : 'false' }} }">
+            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Informasi
+                </div>
+                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.informasi.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.informasi.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Informasi</a>
+                <a href="{{ route('dashboard.informasi.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.informasi.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Informasi</a>
+            </div>
+        </div>
+
+        <!-- 15. Video -->
+        <div x-data="{ open: {{ request()->routeIs('dashboard.video.*') ? 'true' : 'false' }} }">
+            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Video
+                </div>
+                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.video.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.video.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Video</a>
+                <a href="{{ route('dashboard.video.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.video.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Video</a>
+            </div>
+        </div>
+
+        <!-- 16. Komisi & Bagian -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.komisi.*') ? 'true' : 'false' }} }">
             <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
@@ -173,7 +248,7 @@
                 </div>
                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div x-show="open" x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
                 <a href="{{ route('dashboard.komisi.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.komisi.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Daftar Komisi</a>
                 <a href="{{ route('dashboard.komisi.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.komisi.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Komisi</a>
             </div>

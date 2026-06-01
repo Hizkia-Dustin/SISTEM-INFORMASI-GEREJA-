@@ -9,7 +9,9 @@
 />
 
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 max-w-2xl overflow-hidden relative">
-    <form action="#" method="POST">
+    <form action="{{ $type == 'Edit' ? route('dashboard.komisi.update', $komisi->id ?? 0) : route('dashboard.komisi.store') }}" method="POST">
+        @csrf
+        @if($type == 'Edit') @method('PUT') @endif
         <div class="flex flex-col gap-8">
             <x-form.input label="Nama Komisi / Bagian" name="nama" placeholder="Contoh: Komisi Anak, Komisi Musik, dll." />
             

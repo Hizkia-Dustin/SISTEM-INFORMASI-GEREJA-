@@ -11,8 +11,8 @@
 
 <!-- Tabs -->
 <div class="flex items-center gap-8 mb-8 border-b border-gray-100">
-    <button class="pb-4 px-2 text-sm font-bold text-primary border-b-2 border-primary">Jemaat Aktif</button>
-    <button class="pb-4 px-2 text-sm font-bold text-gray-400 hover:text-gray-600 border-b-2 border-transparent transition-all">Jemaat Tidak Aktif</button>
+    <a href="{{ route('dashboard.jemaat.index') }}" class="pb-4 px-2 text-sm font-bold {{ request('status') != 'tidak_aktif' ? 'text-primary border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600 border-b-2 border-transparent transition-all' }}">Jemaat Aktif</a>
+    <a href="{{ route('dashboard.jemaat.index', ['status' => 'tidak_aktif']) }}" class="pb-4 px-2 text-sm font-bold {{ request('status') == 'tidak_aktif' ? 'text-primary border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600 border-b-2 border-transparent transition-all' }}">Jemaat Tidak Aktif</a>
 </div>
 
 <!-- Filters -->
@@ -46,21 +46,21 @@
             <tbody class="text-sm">
                 @forelse($jemaat as $j)
                 <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                    <td class="px-8 py-5 font-bold text-gray-400 tracking-wider">#{{ rand(3273010101010001, 3273010101019999) }}</td>
+                    <td class="px-8 py-5 font-bold text-gray-400 tracking-wider">#{{ $j->no_induk ?? '-' }}</td>
                     <td class="px-8 py-5">
                         <div class="flex items-center gap-4">
-                            <div class="w-9 h-9 bg-blue-50 text-primary rounded-lg flex items-center justify-center font-bold text-xs">
-                                {{ substr($j['nama'], 0, 1) }}
+                            <div class="w-9 h-9 bg-blue-50 text-primary rounded-lg flex items-center justify-center font-bold text-xs uppercase">
+                                {{ substr($j->nama_lengkap, 0, 1) }}
                             </div>
-                            <span class="font-bold text-gray-700">{{ $j['nama'] }}</span>
+                            <span class="font-bold text-gray-700">{{ $j->nama_lengkap }}</span>
                         </div>
                     </td>
-                    <td class="px-8 py-5 text-gray-500 font-medium max-w-xs truncate">Jl. Pakuwon Indah No. {{ rand(1, 100) }}, Bandung</td>
+                    <td class="px-8 py-5 text-gray-500 font-medium max-w-xs truncate">{{ $j->alamat ?? '-' }}</td>
                     <td class="px-8 py-5 text-right">
                         <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('dashboard.jemaat.show', 1) }}" class="px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-500 hover:text-primary transition-all">Detail</a>
-                            <a href="{{ route('dashboard.jemaat.edit', 1) }}" class="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all">Ubah</a>
-                            <form action="{{ route('dashboard.jemaat.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                            <a href="{{ route('dashboard.jemaat.show', $j->id) }}" class="px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-500 hover:text-primary transition-all">Detail</a>
+                            <a href="{{ route('dashboard.jemaat.edit', $j->id) }}" class="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all">Ubah</a>
+                            <form action="{{ route('dashboard.jemaat.destroy', $j->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-3 py-1.5 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">Hapus</button>

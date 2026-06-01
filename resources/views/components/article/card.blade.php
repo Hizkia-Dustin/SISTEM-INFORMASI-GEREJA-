@@ -1,6 +1,6 @@
 @props(['article', 'url', 'buttonText' => 'Baca Artikel'])
 
-<article class="bg-white rounded-2xl overflow-hidden border border-outline-variant/50 shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col h-full hover:-translate-y-1">
+<article class="relative bg-white rounded-2xl overflow-hidden border border-outline-variant/50 shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col h-full hover:-translate-y-1">
     <!-- Thumbnail -->
     <div class="aspect-[16/10] overflow-hidden relative">
         <img src="{{ $article->image }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">

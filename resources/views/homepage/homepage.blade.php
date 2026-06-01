@@ -60,8 +60,14 @@
                         <span class="material-symbols-outlined text-[#0058bf]">auto_stories</span>
                         <span class="text-[#0058bf] text-xs uppercase font-bold tracking-widest">Renungan Harian</span>
                     </div>
+                    @php $renunganUtama = $renungan->first(); @endphp
+                    @if($renunganUtama)
+                    <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">{{ $renunganUtama->judul }}</h2>
+                    <p class="text-slate-600 mb-6 italic leading-relaxed">"{{ strip_tags($renunganUtama->isi) }}"</p>
+                    @else
                     <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">Mazmur 23:1 - TUHAN adalah gembalaku, takkan kekurangan aku.</h2>
                     <p class="text-slate-600 mb-6 italic leading-relaxed">"Di tengah badai kehidupan yang tak menentu, ingatlah bahwa kita memiliki Gembala yang Agung. Dia tidak hanya menuntun, tetapi juga mencukupkan segala kebutuhan kita tepat pada waktu-Nya."</p>
+                    @endif
                     <div class="flex items-center gap-4">
                         <img class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB4N9ElRVNeg_OEQIsZeT4znLR5Y8NPf46jRHaW7qmb_eJ7X9bt1G49oFkjng6VhSPnxU4IHBLhTDFJnBxycSNbwpds8z7ttAszPCYUEYGgbylqWBzu2bUorTY4NhhL5ZwtqrZpBGzOO2Mr8J-YG86plmTdCfcRMlYEwkWE-il8-GOa28rkZgR3jPJBOdrneXJ22QA-wklRCRirl12DJW0KVx3YH7OV_umvT_T078xvUGnzG-t81pAAGa52ke6Ur5uY1d3RyZv2Ik" alt="Pastor"/>
                         <div>
@@ -225,56 +231,180 @@
         </div>
     </section>
 
-    {{-- Latest News Section --}}
-    <section class="py-24 bg-[#eff4ff]">
+    {{-- Warta Section --}}
+    <section class="py-16 bg-[#eff4ff]">
         <div class="container mx-auto px-8">
-            <div class="text-center mb-16">
-                <span class="text-[#0058bf] text-xs uppercase font-bold tracking-[0.2em] block mb-4">Warta Jemaat</span>
-                <h2 class="font-[Manrope] font-bold text-4xl text-[#001142]">Berita Terbaru Gereja</h2>
+            <div class="flex justify-between items-end mb-12 gap-4">
+                <div class="max-w-xl">
+                    <span class="text-[#0058bf] text-xs uppercase font-bold tracking-[0.2em] block mb-4">Warta</span>
+                    <h2 class="font-[Manrope] font-bold text-4xl text-[#001142]">Warta Jemaat</h2>
+                </div>
+                <a href="{{ route('warta.index') }}" class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
+                    Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="church-card p-0 overflow-hidden flex flex-col group border-none shadow-lg">
+                @forelse($warta as $item)
+                <div class="church-card p-0 overflow-hidden flex flex-col group border-none shadow-lg bg-white">
+                    @if($item->gambar)
                     <div class="h-48 overflow-hidden">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOQWxxxggWWRBWN8jU3HdwdFJ1IekzYjPpR_ihwDmO0uNoCVB5diFjbcB3F2cVg33JxSyuArQSmoXdhExfeOf4PqcCyQwHo3GkJz-n0204ET4tVvfT_C8xu9SU7e1RT6ofjdbid09V-zLDwf-oLYMMGLwM-YyoRoSiD1hVJBSEfj5QihskjZfQzHGhViF59G6YAePes2SPJ7QHPR2QNdPfYR9_vc39M48Hj9lFZsB2_f6As447jc7NVUo5krBnDbo9sus2PLEjKB4" alt="Aksi sosial"/>
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"/>
+                    </div>
+                    @endif
+                    <div class="p-6">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                        </div>
+                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
+                        <a href="{{ route('warta.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2 mt-auto">Detail Warta <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-3 text-center py-8 text-gray-500 italic">Belum ada warta jemaat.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    {{-- Artikel Section --}}
+    <section class="py-16 bg-[#eff4ff]">
+        <div class="container mx-auto px-8">
+            <div class="flex justify-between items-end mb-12 gap-4">
+                <div class="max-w-xl">
+                    <span class="text-[#0058bf] text-xs uppercase font-bold tracking-[0.2em] block mb-4">Artikel</span>
+                    <h2 class="font-[Manrope] font-bold text-4xl text-[#001142]">Artikel Gereja</h2>
+                </div>
+                <a href="{{ route('artikel.index') }}" class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
+                    Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                @forelse($artikel as $item)
+                <div class="church-card p-0 overflow-hidden flex flex-col group border-none shadow-lg bg-white">
+                    <div class="h-48 overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"/>
                     </div>
                     <div class="p-6">
                         <div class="flex gap-2 mb-4">
-                            <span class="bg-[#e5eeff] text-[#29428c] px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">Pelayanan</span>
-                            <span class="text-slate-400 text-[10px] font-medium">12 Okt 2023</span>
+                            <span class="bg-[#e5eeff] text-[#29428c] px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">{{ $item->kategori ?? 'Umum' }}</span>
+                            <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
                         </div>
-                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">Aksi Sosial Kasih di Bantaran Sungai</h3>
-                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Gereja GKI PAKUWON mengadakan aksi pembagian paket sembako dan layanan kesehatan gratis bagi warga...</p>
-                        <a class="text-[#0058bf] font-bold text-sm flex items-center gap-2" href="#">Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
+                        <a href="{{ route('artikel.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2">Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
                     </div>
                 </div>
-                <div class="church-card p-0 overflow-hidden flex flex-col group border-none shadow-lg">
+                @empty
+                <div class="col-span-3 text-center py-8 text-gray-500 italic">Belum ada artikel.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    {{-- Racakitri Section --}}
+    <section class="py-16">
+        <div class="container mx-auto px-8">
+            <div class="flex justify-between items-end mb-12 gap-4">
+                <div class="max-w-xl">
+                    <span class="text-[#0058bf] text-xs uppercase font-bold tracking-[0.2em] block mb-4">Racakitri</span>
+                    <h2 class="font-[Manrope] font-bold text-4xl text-[#001142]">Majalah Racakitri</h2>
+                </div>
+                <a href="{{ route('racakitri.index') }}" class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
+                    Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                @forelse($racakitri as $item)
+                <div class="church-card p-0 overflow-hidden flex flex-col group border border-gray-100 shadow-sm bg-white">
+                    @if($item->gambar)
                     <div class="h-48 overflow-hidden">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3qinsvU1fHIlEiaOsFd5RllXY22OK8XrucSArg-xNTu3dSms7lWmyMxs1aWCTI9ngMRgiDCd_g2c6JcCLqG7uzPp8aVzsBZ9mHyO6tkleLeWIo8jfkD_01r51cP98KsrCKlkZj8HeqG2Fy4yukVkwukN7ldn9HAPMcxdkNY36aDgIYjwp3sZc2dtgVZETSfgx9NFMVaD92OO1TNpOBH_1yVKBXa7Pc4aMGdHynD-ZehcwNsvGfWgNQDzTxbbswD_I_L6H8Z3Lb-0" alt="Youth camp"/>
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"/>
+                    </div>
+                    @endif
+                    <div class="p-6">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                        </div>
+                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
+                        <a href="{{ route('racakitri.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2 mt-auto">Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-3 text-center py-8 text-gray-500 italic">Belum ada data racakitri.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    {{-- Informasi Section --}}
+    <section class="py-16 bg-[#eff4ff]">
+        <div class="container mx-auto px-8">
+            <div class="flex justify-between items-end mb-12 gap-4">
+                <div class="max-w-xl">
+                    <span class="text-[#0058bf] text-xs uppercase font-bold tracking-[0.2em] block mb-4">Informasi</span>
+                    <h2 class="font-[Manrope] font-bold text-4xl text-[#001142]">Informasi Terkini</h2>
+                </div>
+                <a href="{{ route('informasi.index') }}" class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
+                    Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                @forelse($informasi as $item)
+                <div class="church-card p-0 overflow-hidden flex flex-col group border-none shadow-lg bg-white">
+                    @if($item->gambar)
+                    <div class="h-48 overflow-hidden">
+                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"/>
+                    </div>
+                    @endif
+                    <div class="p-6">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                        </div>
+                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
+                        <a href="{{ route('informasi.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2 mt-auto">Detail Informasi <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-3 text-center py-8 text-gray-500 italic">Belum ada informasi.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    {{-- Video Section --}}
+    <section class="py-16">
+        <div class="container mx-auto px-8">
+            <div class="flex justify-between items-end mb-12 gap-4">
+                <div class="max-w-xl">
+                    <span class="text-[#0058bf] text-xs uppercase font-bold tracking-[0.2em] block mb-4">Video</span>
+                    <h2 class="font-[Manrope] font-bold text-4xl text-[#001142]">Video & Dokumentasi</h2>
+                </div>
+                <a href="{{ route('video.index') }}" class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
+                    Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                @forelse($video as $item)
+                <div class="church-card p-0 overflow-hidden flex flex-col group border border-gray-100 shadow-sm bg-white">
+                    <div class="relative h-48 overflow-hidden bg-gray-900 flex items-center justify-center">
+                        @if($item->gambar)
+                        <img class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"/>
+                        @endif
+                        <span class="material-symbols-outlined text-white text-5xl relative z-10 opacity-90 drop-shadow-lg">play_circle</span>
                     </div>
                     <div class="p-6">
                         <div class="flex gap-2 mb-4">
-                            <span class="bg-[#e5eeff] text-[#29428c] px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">Pemuda</span>
-                            <span class="text-slate-400 text-[10px] font-medium">08 Okt 2023</span>
+                            <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
                         </div>
-                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">Youth Revival Camp: Ignite Your Passion</h3>
-                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Persiapan kamp pemuda tahunan sudah dimulai! Pastikan Anda mendaftar untuk akhir pekan yang transformatif...</p>
-                        <a class="text-[#0058bf] font-bold text-sm flex items-center gap-2" href="#">Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
+                        <a href="{{ route('video.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2 mt-auto">Tonton Video <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
                     </div>
                 </div>
-                <div class="church-card p-0 overflow-hidden flex flex-col group border-none shadow-lg">
-                    <div class="h-48 overflow-hidden">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa7gnPl9KzQzu7Z7RY6vnK3dP3E-yyi5ejYrURY2MrbkqtIbLO5jk7ggOZqXq_WSfBjM2aOl_kHcIuwGLftnOngihR4fGLJzgkwDQZRMf-4QZa28SHbArwHBv8vVFloUCGYXjR2PRbCu_h1Ljh51NsncNUo8hnblehioBZ2NYmLckwCluwVaVdPqPM4SJmTrwZnmwEyqRbn9b7Ek4mS2rktfdUpUS7scLPFrJ_iBRcnl2NOnlqJivt1GfaEPzI3yx-BvIReISBmH8" alt="Renovasi gedung"/>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex gap-2 mb-4">
-                            <span class="bg-[#e5eeff] text-[#29428c] px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">Pembangunan</span>
-                            <span class="text-slate-400 text-[10px] font-medium">05 Okt 2023</span>
-                        </div>
-                        <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">Progres Renovasi Gedung Serbaguna</h3>
-                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Laporan terbaru pembangunan sayap utara gereja. Kami bersyukur atas dukungan dan doa jemaat sekalian...</p>
-                        <a class="text-[#0058bf] font-bold text-sm flex items-center gap-2" href="#">Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
-                    </div>
-                </div>
+                @empty
+                <div class="col-span-3 text-center py-8 text-gray-500 italic">Belum ada video.</div>
+                @endforelse
             </div>
         </div>
     </section>

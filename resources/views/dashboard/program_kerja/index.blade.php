@@ -25,9 +25,34 @@
                     </tr>
                 </thead>
                 <tbody class="text-sm">
+                    @php $rancangan = $program->where('jenis', 'Rancangan Program Kerja'); @endphp
+                    @forelse($rancangan as $item)
+                    <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
+                        <td class="px-8 py-5 font-extrabold text-gray-700">{{ $item->tahun }}</td>
+                        <td class="px-8 py-5 text-center">
+                            @if($item->lampiran)
+                            <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank" class="text-primary font-bold text-xs hover:underline inline-flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                Lihat File
+                            </a>
+                            @else
+                            <span class="text-gray-400 italic text-xs">Tidak ada file</span>
+                            @endif
+                        </td>
+                        <td class="px-8 py-5 text-right flex items-center justify-end gap-3">
+                            <a href="{{ route('dashboard.program_kerja.edit', $item->id) }}" class="text-gray-400 hover:text-primary transition-colors">Ubah</a>
+                            <form action="{{ route('dashboard.program_kerja.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-gray-400 hover:text-rose-500 transition-colors">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
                     <tr>
                         <td colspan="3" class="px-8 py-12 text-center text-gray-400 italic">Belum ada data program kerja.</td>
                     </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -48,25 +73,34 @@
                     </tr>
                 </thead>
                 <tbody class="text-sm">
-                    @for($i=2026; $i>=2024; $i--)
+                    @php $rapb = $program->where('jenis', 'RAPB'); @endphp
+                    @forelse($rapb as $item)
                     <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                        <td class="px-8 py-5 font-extrabold text-gray-700">{{ $i }}</td>
+                        <td class="px-8 py-5 font-extrabold text-gray-700">{{ $item->tahun }}</td>
                         <td class="px-8 py-5 text-center">
-                            <button class="text-primary font-bold text-xs hover:underline inline-flex items-center gap-2">
+                            @if($item->lampiran)
+                            <a href="{{ asset('storage/' . $item->lampiran) }}" target="_blank" class="text-primary font-bold text-xs hover:underline inline-flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                                 Lihat File
-                            </button>
+                            </a>
+                            @else
+                            <span class="text-gray-400 italic text-xs">Tidak ada file</span>
+                            @endif
                         </td>
                         <td class="px-8 py-5 text-right flex items-center justify-end gap-3">
-                            <a href="{{ route('dashboard.program_kerja.edit', 1) }}" class="text-gray-400 hover:text-primary transition-colors">Ubah</a>
-                            <form action="{{ route('dashboard.program_kerja.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                            <a href="{{ route('dashboard.program_kerja.edit', $item->id) }}" class="text-gray-400 hover:text-primary transition-colors">Ubah</a>
+                            <form action="{{ route('dashboard.program_kerja.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-gray-400 hover:text-rose-500 transition-colors">Hapus</button>
                             </form>
                         </td>
                     </tr>
-                    @endfor
+                    @empty
+                    <tr>
+                        <td colspan="3" class="px-8 py-12 text-center text-gray-400 italic">Belum ada data RAPB.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

@@ -16,28 +16,32 @@
             <div class="px-8 pb-8">
                 <div class="-mt-12 mb-6 flex justify-center">
                     <div class="w-24 h-24 bg-white rounded-2xl p-1 shadow-lg shadow-primary/10">
-                        <div class="w-full h-full bg-blue-50 rounded-xl flex items-center justify-center text-primary font-bold text-2xl">
-                            {{ substr($jemaat['nama'] ?? 'B', 0, 1) }}
-                        </div>
+                        @if(!empty($jemaat->foto_profil))
+                            <img src="{{ asset('storage/' . $jemaat->foto_profil) }}" alt="{{ $jemaat->nama_lengkap }}" class="w-full h-full object-cover rounded-xl">
+                        @else
+                            <div class="w-full h-full bg-blue-50 rounded-xl flex items-center justify-center text-primary font-bold text-2xl uppercase">
+                                {{ substr($jemaat->nama_lengkap ?? 'A', 0, 1) }}
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="text-center mb-8">
-                    <h3 class="text-lg font-extrabold text-gray-800 tracking-tight">{{ $jemaat['nama'] ?? 'Budi Santoso' }}</h3>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">NIK: 3273010101010001</p>
+                    <h3 class="text-lg font-extrabold text-gray-800 tracking-tight">{{ $jemaat->nama_lengkap ?? '-' }}</h3>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">NIK: {{ $jemaat->no_induk ?? '-' }}</p>
                 </div>
                 <div class="flex flex-col gap-4">
                     <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between">
                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Status Anggota</span>
-                        <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] font-extrabold rounded uppercase">Aktif</span>
+                        <span class="px-2 py-0.5 {{ ($jemaat->status_keanggotaan == 'Aktif' || $jemaat->status_aktif == '1') ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500' }} text-[9px] font-extrabold rounded uppercase">{{ $jemaat->status_keanggotaan ?? 'Tidak Diketahui' }}</span>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sektor</span>
-                        <span class="text-xs font-bold text-gray-700">Sektor 1</span>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Keluarga (Sektor)</span>
+                        <span class="text-xs font-bold text-gray-700">{{ $jemaat->keluarga ? 'Sektor ' . $jemaat->keluarga->wilayah_pelayanan : '-' }}</span>
                     </div>
                 </div>
                 <div class="flex flex-col gap-3 mt-8">
-                    <a href="{{ route('dashboard.jemaat.edit', 1) }}" class="w-full py-3.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all text-center">Ubah Profil</a>
-                    <form action="{{ route('dashboard.jemaat.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data jemaat ini?')">
+                    <a href="{{ route('dashboard.jemaat.edit', $jemaat->id) }}" class="w-full py-3.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all text-center">Ubah Profil</a>
+                    <form action="{{ route('dashboard.jemaat.destroy', $jemaat->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data jemaat ini?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="w-full py-3.5 bg-rose-50 text-rose-500 rounded-xl text-sm font-bold hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center gap-2">Hapus Jemaat</button>
@@ -60,23 +64,23 @@
             <div class="grid grid-cols-2 gap-x-12 gap-y-8">
                 <div class="flex flex-col gap-1">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tempat, Tanggal Lahir</span>
-                    <span class="text-sm font-bold text-gray-700">Bandung, 12 Mei 1990</span>
+                    <span class="text-sm font-bold text-gray-700">{{ $jemaat->tempat_lahir ?? '-' }}, {{ $jemaat->tanggal_lahir ? date('d M Y', strtotime($jemaat->tanggal_lahir)) : '-' }}</span>
                 </div>
                 <div class="flex flex-col gap-1">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Jenis Kelamin</span>
-                    <span class="text-sm font-bold text-gray-700">Laki-laki</span>
+                    <span class="text-sm font-bold text-gray-700">{{ $jemaat->jenis_kelamin ?? '-' }}</span>
                 </div>
                 <div class="flex flex-col gap-1">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Nomor Telepon</span>
-                    <span class="text-sm font-bold text-gray-700">0812-3456-7890</span>
+                    <span class="text-sm font-bold text-gray-700">{{ $jemaat->no_telepon ?? '-' }}</span>
                 </div>
                 <div class="flex flex-col gap-1">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Status Pernikahan</span>
-                    <span class="text-sm font-bold text-gray-700">Menikah</span>
+                    <span class="text-sm font-bold text-gray-700">{{ $jemaat->status_nikah ?? '-' }}</span>
                 </div>
                 <div class="col-span-2 flex flex-col gap-1">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Alamat Lengkap</span>
-                    <span class="text-sm font-bold text-gray-700">Perumahan Pakuwon Regency Blok A1 No. 5, Kota Bandung</span>
+                    <span class="text-sm font-bold text-gray-700">{{ $jemaat->alamat ?? '-' }}</span>
                 </div>
             </div>
         </div>
@@ -89,29 +93,35 @@
             </h3>
             <div class="grid grid-cols-2 gap-10">
                 <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
-                    <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center justify-between mb-2">
                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Baptis</span>
-                        <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[9px] font-extrabold rounded uppercase tracking-tighter">Sudah</span>
+                        <span class="px-2 py-0.5 {{ ($jemaat->baptis == 'Ya') ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600' }} text-[9px] font-extrabold rounded uppercase tracking-tighter">{{ $jemaat->baptis == 'Ya' ? 'Sudah' : 'Belum' }}</span>
                     </div>
-                    <p class="text-sm font-bold text-gray-700 mb-1">12 Mei 1995</p>
-                    <p class="text-[10px] text-gray-400 font-medium italic">Oleh: Pdt. Markus Santoso</p>
-                    <button class="mt-4 flex items-center gap-2 text-primary text-[10px] font-extrabold uppercase hover:underline">
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                        Lihat Surat Baptis
-                    </button>
+                    @if(!empty($jemaat->lampiran_baptis))
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <a href="{{ asset('storage/' . $jemaat->lampiran_baptis) }}" target="_blank" class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                            Lihat Lampiran Baptis
+                        </a>
+                    </div>
+                    @endif
                 </div>
                 <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
-                    <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center justify-between mb-2">
                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sidi</span>
-                        <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[9px] font-extrabold rounded uppercase tracking-tighter">Sudah</span>
+                        <span class="px-2 py-0.5 {{ ($jemaat->sidi == 'Ya') ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600' }} text-[9px] font-extrabold rounded uppercase tracking-tighter">{{ $jemaat->sidi == 'Ya' ? 'Sudah' : 'Belum' }}</span>
                     </div>
-                    <p class="text-sm font-bold text-gray-700 mb-1">20 Jun 2010</p>
-                    <p class="text-[10px] text-gray-400 font-medium italic">Oleh: Pdt. Maria Ulfa</p>
-                    <button class="mt-4 flex items-center gap-2 text-primary text-[10px] font-extrabold uppercase hover:underline">
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                        Lihat Surat Sidi
-                    </button>
+                    @if(!empty($jemaat->lampiran_sidi))
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <a href="{{ asset('storage/' . $jemaat->lampiran_sidi) }}" target="_blank" class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                            Lihat Lampiran Sidi
+                        </a>
+                    </div>
+                    @endif
                 </div>
+            </div>
+        </div>
             </div>
         </div>
     </div>

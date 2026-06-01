@@ -11,8 +11,8 @@
 
 <!-- Tabs -->
 <div class="flex items-center gap-8 mb-8 border-b border-gray-100">
-    <button class="pb-4 px-2 text-sm font-bold text-primary border-b-2 border-primary">Keluarga Aktif</button>
-    <button class="pb-4 px-2 text-sm font-bold text-gray-400 hover:text-gray-600 border-b-2 border-transparent transition-all">Keluarga Tidak Aktif</button>
+    <a href="{{ route('dashboard.keluarga.index') }}" class="pb-4 px-2 text-sm font-bold {{ request('status') != 'tidak_aktif' ? 'text-primary border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600 border-b-2 border-transparent transition-all' }}">Keluarga Aktif</a>
+    <a href="{{ route('dashboard.keluarga.index', ['status' => 'tidak_aktif']) }}" class="pb-4 px-2 text-sm font-bold {{ request('status') == 'tidak_aktif' ? 'text-primary border-b-2 border-primary' : 'text-gray-400 hover:text-gray-600 border-b-2 border-transparent transition-all' }}">Keluarga Tidak Aktif</a>
 </div>
 
 <!-- Filters -->
@@ -48,22 +48,22 @@
             <tbody class="text-sm">
                 @forelse($keluarga as $k)
                 <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                    <td class="px-8 py-5 font-bold text-gray-700">#{{ $k['no_kk'] ?? '3273010101010001' }}</td>
+                    <td class="px-8 py-5 font-bold text-gray-700">#{{ $k->no_kk ?? '-' }}</td>
                     <td class="px-8 py-5">
-                        <span class="font-bold text-gray-700 block text-base">{{ $k['nama'] }}</span>
-                        <span class="text-[11px] text-gray-400 font-medium">5 Anggota Keluarga</span>
+                        <span class="font-bold text-gray-700 block text-base">{{ $k->nama_kepala_keluarga }}</span>
+                        <span class="text-[11px] text-gray-400 font-medium">{{ $k->jemaat ? $k->jemaat->count() : 0 }} Anggota Keluarga</span>
                     </td>
                     <td class="px-8 py-5">
-                        <span class="px-3 py-1 rounded-lg bg-gray-50 text-gray-600 text-[11px] font-bold">Sektor {{ rand(1, 5) }}</span>
+                        <span class="px-3 py-1 rounded-lg bg-gray-50 text-gray-600 text-[11px] font-bold">Sektor {{ $k->wilayah_pelayanan }}</span>
                     </td>
                     <td class="px-8 py-5">
-                        <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-[10px] font-extrabold uppercase">Aktif</span>
+                        <span class="px-2.5 py-1 rounded-lg {{ $k->status == 'Aktif' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500' }} text-[10px] font-extrabold uppercase">{{ $k->status ?? 'Tidak Diketahui' }}</span>
                     </td>
                     <td class="px-8 py-5 text-right">
                         <div class="flex items-center justify-end gap-3">
-                            <a href="{{ route('dashboard.keluarga.show', 1) }}" class="px-4 py-2 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 hover:text-primary transition-all shadow-sm">Detail</a>
-                            <a href="{{ route('dashboard.keluarga.edit', 1) }}" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-lg shadow-primary/10 hover:bg-blue-700 transition-all">Ubah</a>
-                            <form action="{{ route('dashboard.keluarga.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                            <a href="{{ route('dashboard.keluarga.show', $k->id) }}" class="px-4 py-2 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 hover:text-primary transition-all shadow-sm">Detail</a>
+                            <a href="{{ route('dashboard.keluarga.edit', $k->id) }}" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-lg shadow-primary/10 hover:bg-blue-700 transition-all">Ubah</a>
+                            <form action="{{ route('dashboard.keluarga.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">Hapus</button>

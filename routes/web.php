@@ -1,163 +1,288 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\DashboardController;
+// ==========================================
+// FRONTEND ROUTES
+// ==========================================
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
-
-// Homepage
 Route::get('/', function () {
-    return view('homepage.homepage');
+    $artikel = \App\Models\Artikel::latest()->take(3)->get();
+    $racakitri = \App\Models\Racakitri::latest()->take(3)->get();
+    $informasi = \App\Models\Informasi::latest()->take(3)->get();
+    $video = \App\Models\Video::latest()->take(3)->get();
+    $warta = \App\Models\Warta::latest()->take(3)->get();
+    $renungan = \App\Models\Renungan::latest()->take(3)->get();
+    
+    return view('homepage.homepage', compact('artikel', 'racakitri', 'informasi', 'video', 'warta', 'renungan'));
 })->name('home');
 
-// Authentication
-Route::get('/login', function () {
-    return view('pages.auth.login');
-})->name('login');
-
-// About Section
-Route::prefix('about')->name('about.')->group(function () {
-    Route::view('/sejarah', 'pages.about.sejarah')->name('sejarah');
-    Route::view('/visi-misi', 'pages.about.visi-misi')->name('visi-misi');
-    Route::view('/pendeta', 'pages.about.pendeta')->name('pendeta');
-    Route::view('/penatua', 'pages.about.penatua')->name('penatua');
+// Tentang Kami
+Route::prefix('tentang-kami')->group(function () {
+    Route::get('/sejarah', function () { return view('pages.about.sejarah'); })->name('about.sejarah');
+    Route::get('/visi-misi', function () { return view('pages.about.visi-misi'); })->name('about.visi-misi');
+    Route::get('/pendeta', function () { return view('pages.about.pendeta'); })->name('about.pendeta');
+    Route::get('/penatua', function () { return view('pages.about.penatua'); })->name('about.penatua');
 });
 
-// Pelayanan Section
-Route::prefix('pelayanan')->name('pelayanan.')->group(function () {
-
-    Route::view('/persekutuan', 'pages.pelayanan.persekutuan')->name('persekutuan');
-    Route::view('/pembinaan', 'pages.pelayanan.pembinaan')->name('pembinaan');
-    Route::view('/kesaksian', 'pages.pelayanan.kesaksian')->name('kesaksian');
-    Route::view('/komisi', 'pages.pelayanan.komisi')->name('komisi');
-    Route::view('/peribadatan', 'pages.pelayanan.peribadatan')->name('peribadatan');
-    Route::view('/seni-musik', 'pages.pelayanan.seni-musik')->name('seni-musik');
-    Route::view('/perlawatan', 'pages.pelayanan.perlawatan')->name('perlawatan');
-    Route::view('/kedukaan', 'pages.pelayanan.kedukaan')->name('kedukaan');
-    Route::view('/kebaktian', 'pages.pelayanan.kebaktian')->name('kebaktian');
-    Route::view('/konseling', 'pages.pelayanan.konseling')->name('konseling');
-    Route::view('/katekisasi', 'pages.pelayanan.katekisasi')->name('katekisasi');
-
-    // Detail kelas katekisasi (dummy view)
-    Route::view('/katekisasi/{slug}', 'pages.pelayanan.katekisasi')->name('katekisasi.show');
-
-
-    Route::view('/pernikahan', 'pages.pelayanan.pernikahan')->name('pernikahan');
-    Route::view('/atestasi', 'pages.pelayanan.atestasi')->name('atestasi');
+// Pelayanan
+Route::prefix('pelayanan')->group(function () {
+    Route::get('/kebaktian', function () { return view('pages.pelayanan.kebaktian'); })->name('pelayanan.kebaktian');
+    Route::get('/komisi', function () { return view('pages.pelayanan.komisi'); })->name('pelayanan.komisi');
+    Route::get('/katekisasi', function () { return view('pages.pelayanan.katekisasi'); })->name('pelayanan.katekisasi');
+    Route::get('/katekisasi/detail', function () { return view('pages.pelayanan.katekisasi-show'); })->name('pelayanan.katekisasi.show');
+    Route::get('/konseling', function () { return view('pages.pelayanan.konseling'); })->name('pelayanan.konseling');
+    Route::get('/atestasi', function () { return view('pages.pelayanan.atestasi'); })->name('pelayanan.atestasi');
+    Route::get('/kedukaan', function () { return view('pages.pelayanan.kedukaan'); })->name('pelayanan.kedukaan');
+    Route::get('/kesaksian', function () { return view('pages.pelayanan.kesaksian'); })->name('pelayanan.kesaksian');
+    Route::get('/pembinaan', function () { return view('pages.pelayanan.pembinaan'); })->name('pelayanan.pembinaan');
+    Route::get('/peribadatan', function () { return view('pages.pelayanan.peribadatan'); })->name('pelayanan.peribadatan');
+    Route::get('/perlawatan', function () { return view('pages.pelayanan.perlawatan'); })->name('pelayanan.perlawatan');
+    Route::get('/pernikahan', function () { return view('pages.pelayanan.pernikahan'); })->name('pelayanan.pernikahan');
+    Route::get('/persekutuan', function () { return view('pages.pelayanan.persekutuan'); })->name('pelayanan.persekutuan');
+    Route::get('/seni-musik', function () { return view('pages.pelayanan.seni-musik'); })->name('pelayanan.seni-musik');
 });
 
-// News & Articles
-Route::prefix('artikel')->name('artikel.')->group(function () {
-    Route::view('/', 'pages.artikel.index')->name('index');
-    Route::view('/{id}', 'pages.artikel.show')->name('show');
+// Publikasi & Informasi (Warta, Informasi, Artikel, Renungan, Racakitri)
+Route::prefix('warta')->group(function () {
+    Route::get('/', function () { 
+        $warta = \App\Models\Warta::latest()->paginate(9);
+        return view('pages.warta.index', compact('warta')); 
+    })->name('warta.index');
+    Route::get('/{id}', function ($id) { 
+        $item = \App\Models\Warta::findOrFail($id);
+        return view('pages.warta.show', compact('item')); 
+    })->name('warta.show');
 });
 
-Route::prefix('renungan')->name('renungan.')->group(function () {
-    Route::view('/', 'pages.renungan.index')->name('index');
-    Route::view('/{id}', 'pages.renungan.show')->name('show');
+Route::prefix('informasi')->group(function () {
+    Route::get('/', function () { 
+        $informasi = \App\Models\Informasi::latest()->paginate(9);
+        return view('pages.informasi.index', compact('informasi')); 
+    })->name('informasi.index');
+    Route::get('/{id}', function ($id) { 
+        $item = \App\Models\Informasi::findOrFail($id);
+        return view('pages.informasi.show', compact('item')); 
+    })->name('informasi.show');
 });
 
-Route::prefix('warta')->name('warta.')->group(function () {
-    Route::view('/', 'pages.warta.index')->name('index');
-    Route::view('/{id}', 'pages.warta.show')->name('show');
+Route::prefix('artikel')->group(function () {
+    Route::get('/', function () { 
+        $articles = \App\Models\Artikel::latest()->paginate(9);
+        return view('pages.artikel.index', compact('articles')); 
+    })->name('artikel.index');
+    Route::get('/{id}', function ($id) { 
+        $article = \App\Models\Artikel::findOrFail($id);
+        return view('pages.artikel.show', compact('article')); 
+    })->name('artikel.show');
 });
 
-// Others
-Route::view('/racakitri', 'pages.racakitri.index')->name('racakitri.index');
-Route::view('/racakitri/{slug}', 'pages.racakitri.show')->name('racakitri.show');
-Route::view('/informasi', 'pages.informasi.index')->name('informasi.index');
-
-Route::view('/video', 'pages.video.index')->name('video.index');
-Route::view('/kontak', 'pages.kontak.index')->name('kontak.index');
-
-// Download Section
-Route::prefix('download')->name('download.')->group(function () {
-    Route::view('/formulir', 'pages.download.formulir')->name('formulir');
-    Route::view('/lagu-rohani', 'pages.download.lagu-rohani')->name('lagu-rohani');
+Route::prefix('renungan')->group(function () {
+    Route::get('/', function () { 
+        $renungan = \App\Models\Renungan::latest()->paginate(9);
+        return view('pages.renungan.index', compact('renungan')); 
+    })->name('renungan.index');
+    Route::get('/{id}', function ($id) { 
+        $item = \App\Models\Renungan::findOrFail($id);
+        return view('pages.renungan.show', compact('item')); 
+    })->name('renungan.show');
 });
 
-// Dashboard Section
-Route::prefix('dashboard')->name('dashboard.')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('index');
+Route::prefix('racakitri')->group(function () {
+    Route::get('/', function () { 
+        $racakitri = \App\Models\Racakitri::latest()->paginate(9);
+        return view('pages.racakitri.index', compact('racakitri')); 
+    })->name('racakitri.index');
+    Route::get('/{id}', function ($id) { 
+        $item = \App\Models\Racakitri::findOrFail($id);
+        return view('pages.racakitri.show', compact('item')); 
+    })->name('racakitri.show');
+});
+
+// Download
+Route::prefix('download')->group(function () {
+    Route::get('/formulir', function () { return view('pages.download.formulir'); })->name('download.formulir');
+    Route::get('/lagu-rohani', function () { return view('pages.download.lagu-rohani'); })->name('download.lagu-rohani');
+});
+
+// Kontak & Video
+Route::get('/kontak', function () { return view('pages.kontak.index'); })->name('kontak.index');
+Route::prefix('video')->group(function () {
+    Route::get('/', function () { 
+        $videos = \App\Models\Video::latest()->paginate(9);
+        return view('pages.video.index', compact('videos')); 
+    })->name('video.index');
+    Route::get('/{id}', function ($id) { 
+        $item = \App\Models\Video::findOrFail($id);
+        return view('pages.video.show', compact('item')); 
+    })->name('video.show');
+});
+
+
+// ==========================================
+// DASHBOARD ROUTES (Admin)
+// ==========================================
+
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     
-    // 2. Modul Keluarga
-    Route::get('/keluarga', [DashboardController::class, 'keluarga'])->name('keluarga.index');
-    Route::get('/keluarga/tambah', [DashboardController::class, 'createKeluarga'])->name('keluarga.create');
-    Route::get('/keluarga/{id}', [DashboardController::class, 'showKeluarga'])->name('keluarga.show');
-    Route::get('/keluarga/{id}/edit', [DashboardController::class, 'editKeluarga'])->name('keluarga.edit');
-    Route::delete('/keluarga/{id}', [DashboardController::class, 'destroyKeluarga'])->name('keluarga.destroy');
+    // Keluarga
+    Route::get('/keluarga', [DashboardController::class, 'keluarga'])->name('dashboard.keluarga.index');
+    Route::get('/keluarga/create', [DashboardController::class, 'createKeluarga'])->name('dashboard.keluarga.create');
+    Route::post('/keluarga', [DashboardController::class, 'storeKeluarga'])->name('dashboard.keluarga.store');
+    Route::get('/keluarga/{id}', [DashboardController::class, 'showKeluarga'])->name('dashboard.keluarga.show');
+    Route::get('/keluarga/{id}/edit', [DashboardController::class, 'editKeluarga'])->name('dashboard.keluarga.edit');
+    Route::put('/keluarga/{id}', [DashboardController::class, 'updateKeluarga'])->name('dashboard.keluarga.update');
+    Route::delete('/keluarga/{id}', [DashboardController::class, 'destroyKeluarga'])->name('dashboard.keluarga.destroy');
 
-    // 3. Modul Jemaat
-    Route::get('/jemaat', [DashboardController::class, 'jemaat'])->name('jemaat.index');
-    Route::get('/jemaat/tambah', [DashboardController::class, 'createJemaat'])->name('jemaat.create');
-    Route::get('/jemaat/{id}', [DashboardController::class, 'showJemaat'])->name('jemaat.show');
-    Route::get('/jemaat/{id}/edit', [DashboardController::class, 'editJemaat'])->name('jemaat.edit');
-    Route::delete('/jemaat/{id}', [DashboardController::class, 'destroyJemaat'])->name('jemaat.destroy');
+    // Jemaat
+    Route::get('/jemaat', [DashboardController::class, 'jemaat'])->name('dashboard.jemaat.index');
+    Route::get('/jemaat/create', [DashboardController::class, 'createJemaat'])->name('dashboard.jemaat.create');
+    Route::post('/jemaat', [DashboardController::class, 'storeJemaat'])->name('dashboard.jemaat.store');
+    Route::get('/jemaat/{id}', [DashboardController::class, 'showJemaat'])->name('dashboard.jemaat.show');
+    Route::get('/jemaat/{id}/edit', [DashboardController::class, 'editJemaat'])->name('dashboard.jemaat.edit');
+    Route::put('/jemaat/{id}', [DashboardController::class, 'updateJemaat'])->name('dashboard.jemaat.update');
+    Route::delete('/jemaat/{id}', [DashboardController::class, 'destroyJemaat'])->name('dashboard.jemaat.destroy');
 
-    // 4. Modul Sektor
-    Route::get('/sektor', [DashboardController::class, 'sektor'])->name('sektor.index');
-    Route::get('/sektor/tambah', [DashboardController::class, 'createSektor'])->name('sektor.create');
-    Route::get('/sektor/{id}/edit', [DashboardController::class, 'editSektor'])->name('sektor.edit');
-    Route::delete('/sektor/{id}', [DashboardController::class, 'destroySektor'])->name('sektor.destroy');
+    // Sektor
+    Route::get('/sektor', [DashboardController::class, 'sektor'])->name('dashboard.sektor.index');
+    Route::get('/sektor/create', [DashboardController::class, 'createSektor'])->name('dashboard.sektor.create');
+    Route::post('/sektor', [DashboardController::class, 'storeSektor'])->name('dashboard.sektor.store');
+    Route::get('/sektor/{id}/edit', [DashboardController::class, 'editSektor'])->name('dashboard.sektor.edit');
+    Route::put('/sektor/{id}', [DashboardController::class, 'updateSektor'])->name('dashboard.sektor.update');
+    Route::delete('/sektor/{id}', [DashboardController::class, 'destroySektor'])->name('dashboard.sektor.destroy');
 
-    // 5. Modul Keuangan
-    Route::get('/keuangan', [DashboardController::class, 'keuangan'])->name('keuangan.index');
-    Route::get('/keuangan/tambah', [DashboardController::class, 'createKeuangan'])->name('keuangan.create');
-    Route::get('/keuangan/{id}/edit', [DashboardController::class, 'editKeuangan'])->name('keuangan.edit');
-    Route::get('/keuangan/laporan', [DashboardController::class, 'laporanKeuangan'])->name('keuangan.laporan');
-    Route::delete('/keuangan/{id}', [DashboardController::class, 'destroyKeuangan'])->name('keuangan.destroy');
+    // Keuangan
+    Route::get('/keuangan', [DashboardController::class, 'keuangan'])->name('dashboard.keuangan.index');
+    Route::get('/keuangan/create', [DashboardController::class, 'createKeuangan'])->name('dashboard.keuangan.create');
+    Route::post('/keuangan', [DashboardController::class, 'storeKeuangan'])->name('dashboard.keuangan.store');
+    Route::get('/keuangan/laporan', [DashboardController::class, 'laporanKeuangan'])->name('dashboard.keuangan.laporan');
+    Route::get('/keuangan/{id}/edit', [DashboardController::class, 'editKeuangan'])->name('dashboard.keuangan.edit');
+    Route::put('/keuangan/{id}', [DashboardController::class, 'updateKeuangan'])->name('dashboard.keuangan.update');
+    Route::delete('/keuangan/{id}', [DashboardController::class, 'destroyKeuangan'])->name('dashboard.keuangan.destroy');
 
-    // 6. Modul Pelayan Gereja
-    Route::get('/pelayan', [DashboardController::class, 'pelayan'])->name('pelayan.index');
-    Route::get('/pelayan/tambah', [DashboardController::class, 'createPelayan'])->name('pelayan.create');
-    Route::get('/pelayan/{id}/edit', [DashboardController::class, 'editPelayan'])->name('pelayan.edit');
-    Route::delete('/pelayan/{id}', [DashboardController::class, 'destroyPelayan'])->name('pelayan.destroy');
+    // Pelayan
+    Route::get('/pelayan', [DashboardController::class, 'pelayan'])->name('dashboard.pelayan.index');
+    Route::get('/pelayan/create', [DashboardController::class, 'createPelayan'])->name('dashboard.pelayan.create');
+    Route::post('/pelayan', [DashboardController::class, 'storePelayan'])->name('dashboard.pelayan.store');
+    Route::get('/pelayan/{id}/edit', [DashboardController::class, 'editPelayan'])->name('dashboard.pelayan.edit');
+    Route::put('/pelayan/{id}', [DashboardController::class, 'updatePelayan'])->name('dashboard.pelayan.update');
+    Route::delete('/pelayan/{id}', [DashboardController::class, 'destroyPelayan'])->name('dashboard.pelayan.destroy');
 
-    // 7. Modul Renungan Ibadah
-    Route::get('/renungan', [DashboardController::class, 'renungan'])->name('renungan.index');
-    Route::get('/renungan/tambah', [DashboardController::class, 'createRenungan'])->name('renungan.create');
-    Route::get('/renungan/{id}/edit', [DashboardController::class, 'editRenungan'])->name('renungan.edit');
-    Route::delete('/renungan/{id}', [DashboardController::class, 'destroyRenungan'])->name('renungan.destroy');
+    // Renungan
+    Route::get('/renungan', [DashboardController::class, 'renungan'])->name('dashboard.renungan.index');
+    Route::get('/renungan/create', [DashboardController::class, 'createRenungan'])->name('dashboard.renungan.create');
+    Route::post('/renungan', [DashboardController::class, 'storeRenungan'])->name('dashboard.renungan.store');
+    Route::get('/renungan/{id}/edit', [DashboardController::class, 'editRenungan'])->name('dashboard.renungan.edit');
+    Route::put('/renungan/{id}', [DashboardController::class, 'updateRenungan'])->name('dashboard.renungan.update');
+    Route::delete('/renungan/{id}', [DashboardController::class, 'destroyRenungan'])->name('dashboard.renungan.destroy');
 
-    // 8. Modul Jadwal Ibadah
-    Route::get('/jadwal-ibadah', [DashboardController::class, 'jadwal'])->name('jadwal.index');
-    Route::get('/jadwal-ibadah/tambah', [DashboardController::class, 'createJadwal'])->name('jadwal.create');
-    Route::get('/jadwal-ibadah/{id}/edit', [DashboardController::class, 'editJadwal'])->name('jadwal.edit');
-    Route::delete('/jadwal-ibadah/{id}', [DashboardController::class, 'destroyJadwal'])->name('jadwal.destroy');
+    // Jadwal
+    Route::get('/jadwal', [DashboardController::class, 'jadwal'])->name('dashboard.jadwal.index');
+    Route::get('/jadwal/create', [DashboardController::class, 'createJadwal'])->name('dashboard.jadwal.create');
+    Route::post('/jadwal', [DashboardController::class, 'storeJadwal'])->name('dashboard.jadwal.store');
+    Route::get('/jadwal/{id}/edit', [DashboardController::class, 'editJadwal'])->name('dashboard.jadwal.edit');
+    Route::put('/jadwal/{id}', [DashboardController::class, 'updateJadwal'])->name('dashboard.jadwal.update');
+    Route::delete('/jadwal/{id}', [DashboardController::class, 'destroyJadwal'])->name('dashboard.jadwal.destroy');
 
-    // 9. Modul Jadwal Pelayanan
-    Route::get('/jadwal-pelayanan', [DashboardController::class, 'tugas'])->name('tugas.index');
-    Route::get('/jadwal-pelayanan/tambah', [DashboardController::class, 'createTugas'])->name('tugas.create');
-    Route::get('/jadwal-pelayanan/{id}/edit', [DashboardController::class, 'editTugas'])->name('tugas.edit');
-    Route::delete('/jadwal-pelayanan/{id}', [DashboardController::class, 'destroyTugas'])->name('tugas.destroy');
+    // Tugas
+    Route::get('/tugas', [DashboardController::class, 'tugas'])->name('dashboard.tugas.index');
+    Route::get('/tugas/create', [DashboardController::class, 'createTugas'])->name('dashboard.tugas.create');
+    Route::post('/tugas', [DashboardController::class, 'storeTugas'])->name('dashboard.tugas.store');
+    Route::get('/tugas/{id}/edit', [DashboardController::class, 'editTugas'])->name('dashboard.tugas.edit');
+    Route::put('/tugas/{id}', [DashboardController::class, 'updateTugas'])->name('dashboard.tugas.update');
+    Route::delete('/tugas/{id}', [DashboardController::class, 'destroyTugas'])->name('dashboard.tugas.destroy');
 
-    // 10. Modul Program Kerja
-    Route::get('/program-kerja', [DashboardController::class, 'programKerja'])->name('program_kerja.index');
-    Route::get('/program-kerja/tambah', [DashboardController::class, 'createProgramKerja'])->name('program_kerja.create');
-    Route::get('/program-kerja/{id}/edit', [DashboardController::class, 'editProgramKerja'])->name('program_kerja.edit');
-    Route::delete('/program-kerja/{id}', [DashboardController::class, 'destroyProgramKerja'])->name('program_kerja.destroy');
+    // Program Kerja
+    Route::get('/program-kerja', [DashboardController::class, 'programKerja'])->name('dashboard.program_kerja.index');
+    Route::get('/program-kerja/create', [DashboardController::class, 'createProgramKerja'])->name('dashboard.program_kerja.create');
+    Route::post('/program-kerja', [DashboardController::class, 'storeProgramKerja'])->name('dashboard.program_kerja.store');
+    Route::get('/program-kerja/{id}/edit', [DashboardController::class, 'editProgramKerja'])->name('dashboard.program_kerja.edit');
+    Route::put('/program-kerja/{id}', [DashboardController::class, 'updateProgramKerja'])->name('dashboard.program_kerja.update');
+    Route::delete('/program-kerja/{id}', [DashboardController::class, 'destroyProgramKerja'])->name('dashboard.program_kerja.destroy');
 
-    // 11. Modul Berita Gereja
-    Route::get('/berita', [DashboardController::class, 'berita'])->name('berita.index');
-    Route::get('/berita/tambah', [DashboardController::class, 'createBerita'])->name('berita.create');
-    Route::get('/berita/{id}', [DashboardController::class, 'showBerita'])->name('berita.show');
-    Route::get('/berita/{id}/edit', [DashboardController::class, 'editBerita'])->name('berita.edit');
-    Route::delete('/berita/{id}', [DashboardController::class, 'destroyBerita'])->name('berita.destroy');
+    // Berita
+    Route::get('/berita', [DashboardController::class, 'berita'])->name('dashboard.berita.index');
+    Route::get('/berita/create', [DashboardController::class, 'createBerita'])->name('dashboard.berita.create');
+    Route::post('/berita', [DashboardController::class, 'storeBerita'])->name('dashboard.berita.store');
+    Route::get('/berita/{id}', [DashboardController::class, 'showBerita'])->name('dashboard.berita.show');
+    Route::get('/berita/{id}/edit', [DashboardController::class, 'editBerita'])->name('dashboard.berita.edit');
+    Route::put('/berita/{id}', [DashboardController::class, 'updateBerita'])->name('dashboard.berita.update');
+    Route::delete('/berita/{id}', [DashboardController::class, 'destroyBerita'])->name('dashboard.berita.destroy');
 
-    // Extra: Profil & Komisi
-    Route::get('/profil', [DashboardController::class, 'profil'])->name('profil');
-    Route::get('/pengaturan', [DashboardController::class, 'settings'])->name('settings');
-    Route::get('/pengaturan/admin/tambah', [DashboardController::class, 'createAdmin'])->name('settings.admin.create');
-    Route::get('/pengaturan/admin/{id}/edit', [DashboardController::class, 'editAdmin'])->name('settings.admin.edit');
-    Route::delete('/pengaturan/admin/{id}', [DashboardController::class, 'destroyAdmin'])->name('settings.admin.destroy');
+    // Warta
+    Route::get('/warta', [DashboardController::class, 'warta'])->name('dashboard.warta.index');
+    Route::get('/warta/create', [DashboardController::class, 'createWarta'])->name('dashboard.warta.create');
+    Route::post('/warta', [DashboardController::class, 'storeWarta'])->name('dashboard.warta.store');
+    Route::get('/warta/{id}', [DashboardController::class, 'showWarta'])->name('dashboard.warta.show');
+    Route::get('/warta/{id}/edit', [DashboardController::class, 'editWarta'])->name('dashboard.warta.edit');
+    Route::put('/warta/{id}', [DashboardController::class, 'updateWarta'])->name('dashboard.warta.update');
+    Route::delete('/warta/{id}', [DashboardController::class, 'destroyWarta'])->name('dashboard.warta.destroy');
 
-    Route::get('/komisi', [DashboardController::class, 'komisi'])->name('komisi.index');
-    Route::get('/komisi/tambah', [DashboardController::class, 'createKomisi'])->name('komisi.create');
-    Route::get('/komisi/{id}/edit', [DashboardController::class, 'editKomisi'])->name('komisi.edit');
-    Route::delete('/komisi/{id}', [DashboardController::class, 'destroyKomisi'])->name('komisi.destroy');
+    // Artikel
+    Route::get('/artikel', [DashboardController::class, 'artikel'])->name('dashboard.artikel.index');
+    Route::get('/artikel/create', [DashboardController::class, 'createArtikel'])->name('dashboard.artikel.create');
+    Route::post('/artikel', [DashboardController::class, 'storeArtikel'])->name('dashboard.artikel.store');
+    Route::get('/artikel/{id}', [DashboardController::class, 'showArtikel'])->name('dashboard.artikel.show');
+    Route::get('/artikel/{id}/edit', [DashboardController::class, 'editArtikel'])->name('dashboard.artikel.edit');
+    Route::put('/artikel/{id}', [DashboardController::class, 'updateArtikel'])->name('dashboard.artikel.update');
+    Route::delete('/artikel/{id}', [DashboardController::class, 'destroyArtikel'])->name('dashboard.artikel.destroy');
+
+    // Racakitri
+    Route::get('/racakitri', [DashboardController::class, 'racakitri'])->name('dashboard.racakitri.index');
+    Route::get('/racakitri/create', [DashboardController::class, 'createRacakitri'])->name('dashboard.racakitri.create');
+    Route::post('/racakitri', [DashboardController::class, 'storeRacakitri'])->name('dashboard.racakitri.store');
+    Route::get('/racakitri/{id}', [DashboardController::class, 'showRacakitri'])->name('dashboard.racakitri.show');
+    Route::get('/racakitri/{id}/edit', [DashboardController::class, 'editRacakitri'])->name('dashboard.racakitri.edit');
+    Route::put('/racakitri/{id}', [DashboardController::class, 'updateRacakitri'])->name('dashboard.racakitri.update');
+    Route::delete('/racakitri/{id}', [DashboardController::class, 'destroyRacakitri'])->name('dashboard.racakitri.destroy');
+
+    // Informasi
+    Route::get('/informasi', [DashboardController::class, 'informasi'])->name('dashboard.informasi.index');
+    Route::get('/informasi/create', [DashboardController::class, 'createInformasi'])->name('dashboard.informasi.create');
+    Route::post('/informasi', [DashboardController::class, 'storeInformasi'])->name('dashboard.informasi.store');
+    Route::get('/informasi/{id}', [DashboardController::class, 'showInformasi'])->name('dashboard.informasi.show');
+    Route::get('/informasi/{id}/edit', [DashboardController::class, 'editInformasi'])->name('dashboard.informasi.edit');
+    Route::put('/informasi/{id}', [DashboardController::class, 'updateInformasi'])->name('dashboard.informasi.update');
+    Route::delete('/informasi/{id}', [DashboardController::class, 'destroyInformasi'])->name('dashboard.informasi.destroy');
+
+    // Video
+    Route::get('/video', [DashboardController::class, 'video'])->name('dashboard.video.index');
+    Route::get('/video/create', [DashboardController::class, 'createVideo'])->name('dashboard.video.create');
+    Route::post('/video', [DashboardController::class, 'storeVideo'])->name('dashboard.video.store');
+    Route::get('/video/{id}', [DashboardController::class, 'showVideo'])->name('dashboard.video.show');
+    Route::get('/video/{id}/edit', [DashboardController::class, 'editVideo'])->name('dashboard.video.edit');
+    Route::put('/video/{id}', [DashboardController::class, 'updateVideo'])->name('dashboard.video.update');
+    Route::delete('/video/{id}', [DashboardController::class, 'destroyVideo'])->name('dashboard.video.destroy');
+
+    // Komisi
+    Route::get('/komisi', [DashboardController::class, 'komisi'])->name('dashboard.komisi.index');
+    Route::get('/komisi/create', [DashboardController::class, 'createKomisi'])->name('dashboard.komisi.create');
+    Route::post('/komisi', [DashboardController::class, 'storeKomisi'])->name('dashboard.komisi.store');
+    Route::get('/komisi/{id}/edit', [DashboardController::class, 'editKomisi'])->name('dashboard.komisi.edit');
+    Route::put('/komisi/{id}', [DashboardController::class, 'updateKomisi'])->name('dashboard.komisi.update');
+    Route::delete('/komisi/{id}', [DashboardController::class, 'destroyKomisi'])->name('dashboard.komisi.destroy');
+
+    // Profil (Dashboard Profil)
+    Route::get('/profil', [DashboardController::class, 'profil'])->name('dashboard.profil');
+    Route::get('/profil/edit', [DashboardController::class, 'editProfil'])->name('dashboard.profil.edit');
+    Route::put('/profil', [DashboardController::class, 'updateProfil'])->name('dashboard.profil.update');
+
+    // Settings
+    Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+    Route::get('/settings/admin/create', [DashboardController::class, 'createAdmin'])->name('dashboard.settings.admin.create');
+    Route::post('/settings/admin', [DashboardController::class, 'storeAdmin'])->name('dashboard.settings.admin.store');
+    Route::get('/settings/admin/{id}/edit', [DashboardController::class, 'editAdmin'])->name('dashboard.settings.admin.edit');
+    Route::put('/settings/admin/{id}', [DashboardController::class, 'updateAdmin'])->name('dashboard.settings.admin.update');
+    Route::delete('/settings/admin/{id}', [DashboardController::class, 'destroyAdmin'])->name('dashboard.settings.admin.destroy');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

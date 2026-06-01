@@ -93,11 +93,15 @@
                 class="flex items-center gap-4 group"
             >
                 <div class="text-right hidden sm:block">
-                    <p class="text-base font-extrabold text-gray-800 leading-none">Super Admin</p>
-                    <p class="text-[10px] font-bold text-blue-300/80 uppercase tracking-[0.1em] mt-1.5">Administrator</p>
+                    <p class="text-base font-extrabold text-gray-800 leading-none">{{ auth()->user()->name ?? 'Super Admin' }}</p>
+                    <p class="text-[10px] font-bold text-blue-300/80 uppercase tracking-[0.1em] mt-1.5">{{ auth()->user()->role ?? 'Administrator' }}</p>
                 </div>
-                <div class="w-12 h-12 rounded-2xl bg-[#001a57] text-white text-base font-bold flex items-center justify-center shadow-xl shadow-blue-900/10 group-hover:scale-105 transition-all border-2 border-white">
-                    AG
+                <div class="w-12 h-12 rounded-2xl bg-[#001a57] text-white text-base font-bold flex items-center justify-center shadow-xl shadow-blue-900/10 group-hover:scale-105 transition-all border-2 border-white overflow-hidden">
+                    @if(auth()->check() && !empty(auth()->user()->foto_profil))
+                        <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                    @else
+                        {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 2)) }}
+                    @endif
                 </div>
             </button>
             
@@ -116,9 +120,12 @@
                 <a href="{{ route('dashboard.profil') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-primary transition-colors">
                     Profil Saya
                 </a>
-                <a href="{{ route('login') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors">
-                    Keluar
-                </a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors">
+                        Keluar
+                    </button>
+                </form>
             </div>
         </div>
     </div>

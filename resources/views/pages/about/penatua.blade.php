@@ -7,23 +7,23 @@
 <div class="inline-flex items-center px-2 py-1 bg-secondary-container text-white rounded-lg mb-2">
 <span class="font-label-sm text-label-sm uppercase tracking-wider">Masa Bakti 2025 - 2026</span>
 </div>
-<h1 class="font-h1 text-h1 text-primary-container leading-tight">
+<h1 class="font-h1 text-h1 text-primary leading-tight">
                     Susunan Majelis Jemaat<br/>GKI Pakuwon
                 </h1>
 </div>
 <div class="flex items-center gap-2 pb-1">
 <div class="text-right">
-<p class="font-label-md text-label-md text-on-surface-variant">Update Terakhir</p>
+<p class="font-label-md text-label-md text-gray-600">Update Terakhir</p>
 <p class="font-body-md text-body-md font-bold">12 Mei 2024</p>
 </div>
 <div class="thin-rule w-12 hidden md:block"></div>
-<span class="material-symbols-outlined text-primary-container" style="font-size: 40px;">verified</span>
+<span class="material-symbols-outlined text-primary" style="font-size: 40px;">verified</span>
 </div>
 </header>
 <!-- Executive Board: Asymmetric Grid -->
 <section class="mb-8">
 <div class="flex items-center gap-4 mb-6">
-<h2 class="font-h2 text-h2 text-primary-container">Pengurus Harian</h2>
+<h2 class="font-h2 text-h2 text-primary">Pengurus Harian</h2>
 <div class="thin-rule flex-grow"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -38,19 +38,19 @@
 </div>
 <div class="flex gap-4 mt-6">
 <div class="flex-1 border-t border-slate-100 pt-2">
-<span class="font-caption text-caption text-on-surface-variant">Visi Strategis</span>
+<span class="font-caption text-caption text-gray-600">Visi Strategis</span>
 <p class="font-label-md text-label-md">Kepemimpinan &amp; Tata Kelola</p>
 </div>
 <div class="flex-1 border-t border-slate-100 pt-2">
-<span class="font-caption text-caption text-on-surface-variant">Fokus Utama</span>
+<span class="font-caption text-caption text-gray-600">Fokus Utama</span>
 <p class="font-label-md text-label-md">Pertumbuhan Jemaat</p>
 </div>
 </div>
 </div>
 <!-- Wakil Ketua -->
-<div class="md:col-span-4 bg-primary-container text-white p-6 rounded-xl shadow-sm flex flex-col justify-between">
+<div class="md:col-span-4 bg-primary text-white p-6 rounded-xl shadow-sm flex flex-col justify-between">
 <div>
-<span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-widest block mb-1">Wakil Ketua</span>
+<span class="font-label-sm text-label-sm text-blue-100 uppercase tracking-widest block mb-1">Wakil Ketua</span>
 <h3 class="font-h3 text-h3">Pnt. Dodi Wijaja</h3>
 </div>
 <div class="mt-6">
@@ -84,15 +84,15 @@
 <!-- Divisions Section -->
 <section class="mb-8">
 <div class="flex items-center gap-4 mb-6">
-<h2 class="font-h2 text-h2 text-primary-container">Bidang Kerja</h2>
+<h2 class="font-h2 text-h2 text-primary">Bidang Kerja</h2>
 <div class="thin-rule flex-grow"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 <!-- Bidang Sarana & Penunjang -->
 <div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
 <div class="bg-surface-container-low p-4 border-b border-outline-variant flex items-center justify-between">
-<h4 class="font-label-md text-label-md text-primary-container uppercase tracking-tight">Bid. Sarpen</h4>
-<span class="material-symbols-outlined text-on-surface-variant">construction</span>
+<h4 class="font-label-md text-label-md text-primary uppercase tracking-tight">Bid. Sarpen</h4>
+<span class="material-symbols-outlined text-gray-600">construction</span>
 </div>
 <div class="p-4 space-y-sm">
 <p class="font-body-md text-body-md border-b border-slate-50 pb-1">Pnt. Budi Santoso</p>
@@ -103,8 +103,8 @@
 <!-- Bidang Pembinaan -->
 <div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
 <div class="bg-surface-container-low p-4 border-b border-outline-variant flex items-center justify-between">
-<h4 class="font-label-md text-label-md text-primary-container uppercase tracking-tight">Bid. Pembinaan</h4>
-<span class="material-symbols-outlined text-on-surface-variant">school</span>
+<h4 class="font-label-md text-label-md text-primary uppercase tracking-tight">Bid. Pembinaan</h4>
+<span class="material-symbols-outlined text-gray-600">school</span>
 </div>
 <div class="p-4 space-y-sm">
 <p class="font-body-md text-body-md border-b border-slate-50 pb-1">Pnt. Heru Wijaya</p>
@@ -115,8 +115,8 @@
 <!-- Bidang Kesaksian & Pelayanan -->
 <div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
 <div class="bg-surface-container-low p-4 border-b border-outline-variant flex items-center justify-between">
-<h4 class="font-label-md text-label-md text-primary-container uppercase tracking-tight">Bid. Kespel</h4>
-<span class="material-symbols-outlined text-on-surface-variant">volunteer_activism</span>
+<h4 class="font-label-md text-label-md text-primary uppercase tracking-tight">Bid. Kespel</h4>
+<span class="material-symbols-outlined text-gray-600">volunteer_activism</span>
 </div>
 <div class="p-4 space-y-sm">
 <p class="font-body-md text-body-md border-b border-slate-50 pb-1">Pnt. David K.</p>
@@ -127,8 +127,8 @@
 <!-- Bidang Persekutuan -->
 <div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
 <div class="bg-surface-container-low p-4 border-b border-outline-variant flex items-center justify-between">
-<h4 class="font-label-md text-label-md text-primary-container uppercase tracking-tight">Bid. Persekutuan</h4>
-<span class="material-symbols-outlined text-on-surface-variant">groups</span>
+<h4 class="font-label-md text-label-md text-primary uppercase tracking-tight">Bid. Persekutuan</h4>
+<span class="material-symbols-outlined text-gray-600">groups</span>
 </div>
 <div class="p-4 space-y-sm">
 <p class="font-body-md text-body-md border-b border-slate-50 pb-1">Pnt. Samuel L.</p>
@@ -141,7 +141,7 @@
 <!-- Liaisons Section -->
 <section class="mb-8">
 <div class="flex items-center gap-4 mb-6">
-<h2 class="font-h2 text-h2 text-primary-container">Pendamping Komisi</h2>
+<h2 class="font-h2 text-h2 text-primary">Pendamping Komisi</h2>
 <div class="thin-rule flex-grow"></div>
 </div>
 <div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
@@ -211,12 +211,12 @@
 <!-- Footer / Signature Block (Editorial Mix) -->
 <footer class="mt-8 pt-6 border-t border-outline-variant flex flex-col md:flex-row justify-between items-start gap-6 opacity-80">
 <div class="max-w-md">
-<p class="font-caption text-caption text-on-surface-variant italic leading-relaxed">
+<p class="font-caption text-caption text-gray-600 italic leading-relaxed">
                     "Maka Allah, Sumber damai sejahtera, yang oleh darah perjanjian yang kekal telah membangkitkan dari antara orang mati Gembala Agung segala domba, yaitu Yesus, Tuhan kita, kiranya memperlengkapi kamu dengan segala yang baik untuk melakukan kehendak-Nya." (Ibrani 13:20-21)
                 </p>
 </div>
 <div class="text-right">
-<p class="font-label-md text-label-md text-primary-container">GKI Pakuwon Administrative Portal</p>
+<p class="font-label-md text-label-md text-primary">GKI Pakuwon Administrative Portal</p>
 <p class="font-caption text-caption">Digital Governance &amp; Stewardship System v2.4</p>
 </div>
 </footer>

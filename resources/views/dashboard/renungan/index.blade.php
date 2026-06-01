@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.app')
-@section('title', 'Renungan Ibadah')
+@section('title', 'Renungan Harian')
 
 @section('content')
 <x-dashboard.page-header title="Daftar Renungan Harian" subtitle="Kelola renungan harian dan kutipan ayat untuk jemaat.">

@@ -134,9 +134,21 @@
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
             <input class="pl-10 pr-4 py-2 bg-[#e5eeff] rounded-full border-none text-sm focus:ring-2 focus:ring-[#0058bf] w-64 outline-none" placeholder="Cari di ..." type="text"/>
         </div>
-        <a href="{{ route('login') }}" class="bg-[#00236f] text-white px-8 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center gap-2">
-            <span class="material-symbols-outlined text-[18px]">login</span>
-            Login
-        </a>
+        @auth
+            <a href="{{ route('dashboard.index') }}" class="flex items-center gap-3 px-4 py-1.5 hover:bg-[#e5eeff] rounded-lg transition-colors cursor-pointer group border border-transparent hover:border-[#cce0ff]">
+                <div class="flex flex-col items-end">
+                    <span class="text-sm font-semibold text-[#00236f] group-hover:text-[#0058bf]">{{ Auth::user()->name ?? 'Administrator' }}</span>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-wider">Telah Login</span>
+                </div>
+                <div class="w-9 h-9 rounded-full bg-[#00236f] flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                    {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
+                </div>
+            </a>
+        @else
+            <a href="{{ route('login') }}" class="bg-[#00236f] text-white px-8 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">login</span>
+                Login
+            </a>
+        @endauth
     </div>
 </nav>

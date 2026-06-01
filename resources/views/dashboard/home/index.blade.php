@@ -21,7 +21,7 @@
     <!-- Jumlah Keluarga -->
     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary transition-all">
         <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Jumlah Keluarga</p>
-        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">0</h3>
+        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">{{ $stats['keluarga'] }}</h3>
         <div class="mt-4 w-8 h-8 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         </div>
@@ -30,7 +30,7 @@
     <!-- Jumlah Pemuda/Pemudi -->
     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary transition-all">
         <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Pemuda/Pemudi</p>
-        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">0</h3>
+        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">{{ $stats['pemuda'] }}</h3>
         <div class="mt-4 w-8 h-8 bg-purple-50 text-purple-500 rounded-lg flex items-center justify-center">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         </div>
@@ -39,7 +39,7 @@
     <!-- Jumlah Laki-laki (AMA) -->
     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary transition-all">
         <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Laki-laki (AMA)</p>
-        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">0</h3>
+        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">{{ $stats['ama'] }}</h3>
         <div class="mt-4 w-8 h-8 bg-indigo-50 text-indigo-500 rounded-lg flex items-center justify-center">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </div>
@@ -48,7 +48,7 @@
     <!-- Jumlah Perempuan (INA) -->
     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary transition-all">
         <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Perempuan (INA)</p>
-        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">0</h3>
+        <h3 class="text-2xl font-extrabold text-gray-800 tracking-tight">{{ $stats['ina'] }}</h3>
         <div class="mt-4 w-8 h-8 bg-pink-50 text-pink-500 rounded-lg flex items-center justify-center">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
         </div>
@@ -57,7 +57,7 @@
     <!-- Jumlah Jemaat Aktif -->
     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary transition-all">
         <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Jemaat Aktif</p>
-        <h3 class="text-2xl font-extrabold text-emerald-600 tracking-tight">0</h3>
+        <h3 class="text-2xl font-extrabold text-emerald-600 tracking-tight">{{ $stats['aktif'] }}</h3>
         <div class="mt-4 w-8 h-8 bg-emerald-50 text-emerald-500 rounded-lg flex items-center justify-center">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
