@@ -14,15 +14,15 @@
         @if($type == 'Edit') @method('PUT') @endif
         <div class="flex flex-col gap-10">
             <div class="grid grid-cols-2 gap-8">
-                <x-form.input label="Tanggal Renungan" name="tanggal" type="date" />
-                <x-form.input label="Ayat Renungan" name="ayat" placeholder="Contoh: Yohanes 3:16 atau Mazmur 23:1" />
+                <x-form.input label="Tanggal Renungan" name="tanggal" type="date" value="{{ old('tanggal', $renungan->tanggal ?? '') }}" />
+                <x-form.input label="Ayat Renungan" name="ayat" value="{{ old('ayat', $renungan->penulis ?? '') }}" placeholder="Contoh: Yohanes 3:16 atau Mazmur 23:1" />
             </div>
 
-            <x-form.input label="Judul Renungan" name="judul" placeholder="Masukkan judul yang menginspirasi..." />
+            <x-form.input label="Judul Renungan" name="judul" value="{{ old('judul', $renungan->judul ?? '') }}" placeholder="Masukkan judul yang menginspirasi..." />
 
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Isi Renungan</label>
-                <textarea name="isi" rows="15" placeholder="Tuliskan detail renungan di sini..." class="w-full px-6 py-5 rounded-2xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium leading-relaxed shadow-inner"></textarea>
+                <textarea name="isi" rows="15" placeholder="Tuliskan detail renungan di sini..." class="w-full px-6 py-5 rounded-2xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium leading-relaxed shadow-inner">{{ old('isi', $renungan->isi ?? '') }}</textarea>
             </div>
 
             <!-- Submit -->

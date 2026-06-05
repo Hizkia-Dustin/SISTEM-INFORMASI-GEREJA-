@@ -508,26 +508,179 @@ class DashboardController extends Controller
     }
 
     // 7. Renungan
-    public function renungan() { return view('dashboard.renungan.index'); }
-    public function createRenungan() { return view('dashboard.renungan.form', ['type' => 'Tambah']); }
-    public function editRenungan($id) { return view('dashboard.renungan.form', ['type' => 'Edit']); }
-    public function destroyRenungan($id) { return redirect()->back()->with('success', 'Renungan berhasil dihapus.'); }
+    public function renungan()
+    {
+        $renungan = \App\Models\Renungan::latest()->get();
+        return view('dashboard.renungan.index', compact('renungan'));
+    }
+
+    public function createRenungan()
+    {
+        return view('dashboard.renungan.form', ['type' => 'Tambah', 'renungan' => new \App\Models\Renungan()]);
+    }
+
+    public function storeRenungan(Request $request)
+    {
+        $data = $request->validate([
+            'tanggal' => 'required|date',
+            'ayat' => 'nullable|string|max:255',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+        ]);
+
+        $data['penulis'] = $data['ayat'] ?? null;
+        $data['status'] = 'published';
+        unset($data['ayat']);
+
+        \App\Models\Renungan::create($data);
+        return redirect()->route('dashboard.renungan.index')->with('success', 'Renungan berhasil ditambahkan.');
+    }
+
+    public function editRenungan($id)
+    {
+        $renungan = \App\Models\Renungan::findOrFail($id);
+        return view('dashboard.renungan.form', ['type' => 'Edit', 'renungan' => $renungan]);
+    }
+
+    public function updateRenungan(Request $request, $id)
+    {
+        $renungan = \App\Models\Renungan::findOrFail($id);
+        $data = $request->validate([
+            'tanggal' => 'required|date',
+            'ayat' => 'nullable|string|max:255',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+        ]);
+
+        $data['penulis'] = $data['ayat'] ?? null;
+        unset($data['ayat']);
+
+        $renungan->update($data);
+        return redirect()->route('dashboard.renungan.index')->with('success', 'Renungan berhasil diperbarui.');
+    }
+
+    public function destroyRenungan($id)
+    {
+        \App\Models\Renungan::destroy($id);
+        return redirect()->back()->with('success', 'Renungan berhasil dihapus.');
+    }
 
     // 8. Jadwal Ibadah
-    public function jadwal() 
-    { 
-        $jadwal = [];
-        return view('dashboard.jadwal.index', compact('jadwal')); 
+    public function jadwal()
+    {
+        $jadwal = \App\Models\Jadwal::latest()->get();
+        return view('dashboard.jadwal.index', compact('jadwal'));
     }
-    public function createJadwal() { return view('dashboard.jadwal.form', ['type' => 'Tambah']); }
-    public function editJadwal($id) { return view('dashboard.jadwal.form', ['type' => 'Edit']); }
-    public function destroyJadwal($id) { return redirect()->back()->with('success', 'Jadwal ibadah berhasil dihapus.'); }
+
+    public function createJadwal()
+    {
+        return view('dashboard.jadwal.form', ['type' => 'Tambah', 'jadwal' => new \App\Models\Jadwal()]);
+    }
+
+    public function storeJadwal(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'waktu' => 'required',
+            'jenis' => 'nullable|string|max:255',
+            'jumlah_hadir' => 'nullable|integer|min:0',
+            'lampiran' => 'nullable|file|mimes:pdf|max:5120',
+        ]);
+
+        $payload = [
+            'nama_acara' => $data['nama'],
+            'tanggal' => $data['tanggal'],
+            'waktu_mulai' => $data['waktu'],
+            'lokasi' => $data['jenis'] ?? 'GKI Pakuwon',
+            'deskripsi' => 'Jumlah hadir: ' . ($data['jumlah_hadir'] ?? 0),
+        ];
+
+        if ($request->hasFile('lampiran')) {
+            $payload['deskripsi'] .= "\nLampiran: " . $request->file('lampiran')->store('uploads/jadwal', 'public');
+        }
+
+        \App\Models\Jadwal::create($payload);
+        return redirect()->route('dashboard.jadwal.index')->with('success', 'Jadwal ibadah berhasil ditambahkan.');
+    }
+
+    public function editJadwal($id)
+    {
+        $jadwal = \App\Models\Jadwal::findOrFail($id);
+        return view('dashboard.jadwal.form', ['type' => 'Edit', 'jadwal' => $jadwal]);
+    }
+
+    public function updateJadwal(Request $request, $id)
+    {
+        $jadwal = \App\Models\Jadwal::findOrFail($id);
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+            'waktu' => 'required',
+            'jenis' => 'nullable|string|max:255',
+            'jumlah_hadir' => 'nullable|integer|min:0',
+            'lampiran' => 'nullable|file|mimes:pdf|max:5120',
+        ]);
+
+        $payload = [
+            'nama_acara' => $data['nama'],
+            'tanggal' => $data['tanggal'],
+            'waktu_mulai' => $data['waktu'],
+            'lokasi' => $data['jenis'] ?? $jadwal->lokasi,
+            'deskripsi' => 'Jumlah hadir: ' . ($data['jumlah_hadir'] ?? 0),
+        ];
+
+        if ($request->hasFile('lampiran')) {
+            $payload['deskripsi'] .= "\nLampiran: " . $request->file('lampiran')->store('uploads/jadwal', 'public');
+        }
+
+        $jadwal->update($payload);
+        return redirect()->route('dashboard.jadwal.index')->with('success', 'Jadwal ibadah berhasil diperbarui.');
+    }
+
+    public function destroyJadwal($id)
+    {
+        \App\Models\Jadwal::destroy($id);
+        return redirect()->back()->with('success', 'Jadwal ibadah berhasil dihapus.');
+    }
 
     // 9. Jadwal Pelayanan (Tugas)
-    public function tugas() { return view('dashboard.tugas.index'); }
-    public function createTugas() { return view('dashboard.tugas.form', ['type' => 'Tambah']); }
-    public function editTugas($id) { return view('dashboard.tugas.form', ['type' => 'Edit']); }
-    public function destroyTugas($id) { return redirect()->back()->with('success', 'Jadwal pelayanan berhasil dihapus.'); }
+    public function tugas()
+    {
+        $tugas = \App\Models\Tugas::latest()->get();
+        return view('dashboard.tugas.index', compact('tugas'));
+    }
+
+    public function createTugas()
+    {
+        return view('dashboard.tugas.form', ['type' => 'Tambah', 'tugas' => new \App\Models\Tugas()]);
+    }
+
+    public function storeTugas(Request $request)
+    {
+        $data = $this->mapTugasRequest($request);
+        \App\Models\Tugas::create($data);
+        return redirect()->route('dashboard.tugas.index')->with('success', 'Jadwal pelayanan berhasil ditambahkan.');
+    }
+
+    public function editTugas($id)
+    {
+        $tugas = \App\Models\Tugas::findOrFail($id);
+        return view('dashboard.tugas.form', ['type' => 'Edit', 'tugas' => $tugas]);
+    }
+
+    public function updateTugas(Request $request, $id)
+    {
+        $tugas = \App\Models\Tugas::findOrFail($id);
+        $tugas->update($this->mapTugasRequest($request));
+        return redirect()->route('dashboard.tugas.index')->with('success', 'Jadwal pelayanan berhasil diperbarui.');
+    }
+
+    public function destroyTugas($id)
+    {
+        \App\Models\Tugas::destroy($id);
+        return redirect()->back()->with('success', 'Jadwal pelayanan berhasil dihapus.');
+    }
 
     // 10. Program Kerja
     public function programKerja() 
@@ -844,12 +997,53 @@ class DashboardController extends Controller
     }
     public function komisi() 
     { 
-        $komisi = [];
+        $komisi = \App\Models\Komisi::latest()->get();
         return view('dashboard.komisi.index', compact('komisi')); 
     }
-    public function createKomisi() { return view('dashboard.komisi.form', ['type' => 'Tambah']); }
-    public function editKomisi($id) { return view('dashboard.komisi.form', ['type' => 'Edit']); }
-    public function destroyKomisi($id) { return redirect()->back()->with('success', 'Komisi berhasil dihapus.'); }
+    public function createKomisi() { return view('dashboard.komisi.form', ['type' => 'Tambah', 'komisi' => new \App\Models\Komisi()]); }
+    public function storeKomisi(Request $request)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:255',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        \App\Models\Komisi::create([
+            'nama' => $validated['nama'],
+            'deskripsi' => $validated['keterangan'] ?? null,
+            'status' => $validated['kategori'] ?? 'aktif',
+        ]);
+
+        return redirect()->route('dashboard.komisi.index')->with('success', 'Komisi berhasil ditambahkan.');
+    }
+    public function editKomisi($id)
+    {
+        $komisi = \App\Models\Komisi::findOrFail($id);
+        return view('dashboard.komisi.form', ['type' => 'Edit', 'komisi' => $komisi]);
+    }
+    public function updateKomisi(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:255',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        $komisi = \App\Models\Komisi::findOrFail($id);
+        $komisi->update([
+            'nama' => $validated['nama'],
+            'deskripsi' => $validated['keterangan'] ?? null,
+            'status' => $validated['kategori'] ?? $komisi->status,
+        ]);
+
+        return redirect()->route('dashboard.komisi.index')->with('success', 'Komisi berhasil diperbarui.');
+    }
+    public function destroyKomisi($id)
+    {
+        \App\Models\Komisi::destroy($id);
+        return redirect()->back()->with('success', 'Komisi berhasil dihapus.');
+    }
 
     // Racakitri
     public function racakitri() { 
@@ -969,5 +1163,35 @@ class DashboardController extends Controller
     {
         \App\Models\Video::destroy($id);
         return redirect()->route('dashboard.video.index')->with('success', 'Data berhasil dihapus.');
+    }
+
+    private function mapTugasRequest(Request $request): array
+    {
+        $data = $request->validate([
+            'judul' => 'nullable|string|max:255',
+            'tanggal' => 'nullable|date',
+            'pengkhotbah' => 'nullable|string|max:255',
+            'liturgis' => 'nullable|string|max:255',
+            'doa_syafaat' => 'nullable|string|max:255',
+            'warta' => 'nullable|string|max:255',
+            'pemusik' => 'nullable|string|max:255',
+            'song_leader' => 'nullable|string|max:255',
+            'liturgis_sm' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+        ]);
+
+        $roles = collect($data)
+            ->except(['judul', 'tanggal', 'status'])
+            ->filter()
+            ->map(fn ($value, $key) => str_replace('_', ' ', ucwords($key, '_')) . ': ' . $value)
+            ->implode("\n");
+
+        return [
+            'judul' => $data['judul'] ?? 'Jadwal Pelayanan',
+            'deskripsi' => $roles ?: 'Belum ada detail pelayan.',
+            'penerima' => $data['pengkhotbah'] ?? $data['liturgis'] ?? 'Majelis',
+            'deadline' => $data['tanggal'] ?? now()->toDateString(),
+            'status' => $data['status'] ?? 'pending',
+        ];
     }
 }

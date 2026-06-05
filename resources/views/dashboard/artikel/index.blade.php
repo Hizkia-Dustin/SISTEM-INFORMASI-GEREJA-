@@ -24,10 +24,10 @@
             <tbody class="text-sm">
                 @forelse($artikel as $b)
                 <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                    <td class="px-8 py-5 text-gray-400 font-bold tracking-widest">{{ $b['tanggal'] ?? '27 Apr 2026' }}</td>
+                    <td class="px-8 py-5 text-gray-400 font-bold tracking-widest">{{ optional($b->created_at)->format('d M Y') ?? '-' }}</td>
                     <td class="px-8 py-5">
-                        <a href="{{ route('dashboard.artikel.show', 1) }}" class="font-bold text-gray-700 block text-base hover:text-primary transition-colors">{{ $b['judul'] }}</a>
-                        <span class="text-[11px] text-gray-400 font-medium uppercase tracking-widest">{{ $b['kategori'] }}</span>
+                        <a href="{{ route('dashboard.artikel.show', $b->id) }}" class="font-bold text-gray-700 block text-base hover:text-primary transition-colors">{{ $b->judul }}</a>
+                        <span class="text-[11px] text-gray-400 font-medium uppercase tracking-widest">{{ $b->kategori ?? 'Artikel' }}</span>
                     </td>
                     <td class="px-8 py-5">
                         <div class="w-16 h-10 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center overflow-hidden">
@@ -36,9 +36,9 @@
                     </td>
                     <td class="px-8 py-5 text-right">
                         <div class="flex items-center gap-3">
-                            <a href="{{ route('dashboard.artikel.show', 1) }}" class="px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-500 hover:text-primary transition-all">Detail</a>
-                            <a href="{{ route('dashboard.artikel.edit', 1) }}" class="text-primary font-bold text-xs hover:underline">Ubah</a>
-                            <form action="{{ route('dashboard.artikel.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus artikel ini?')">
+                            <a href="{{ route('dashboard.artikel.show', $b->id) }}" class="px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-500 hover:text-primary transition-all">Detail</a>
+                            <a href="{{ route('dashboard.artikel.edit', $b->id) }}" class="text-primary font-bold text-xs hover:underline">Ubah</a>
+                            <form action="{{ route('dashboard.artikel.destroy', $b->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus artikel ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-rose-500 font-bold text-xs hover:underline">Hapus</button>

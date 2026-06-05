@@ -24,15 +24,15 @@
             <tbody class="text-sm">
                 @forelse($komisi as $k)
                 <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                    <td class="px-8 py-5 font-bold text-gray-700">{{ $k['nama'] }}</td>
+                    <td class="px-8 py-5 font-bold text-gray-700">{{ $k->nama }}</td>
                     <td class="px-8 py-5">
-                        <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-primary text-[10px] font-extrabold uppercase">{{ $k['kategori'] }}</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-primary text-[10px] font-extrabold uppercase">{{ $k->status ?? 'aktif' }}</span>
                     </td>
-                    <td class="px-8 py-5 text-gray-500 font-medium italic">Tugas dan fungsi komisi {{ strtolower($k['nama']) }}...</td>
+                    <td class="px-8 py-5 text-gray-500 font-medium italic">{{ $k->deskripsi ?: 'Tugas dan fungsi komisi ' . strtolower($k->nama) . '...' }}</td>
                     <td class="px-8 py-5">
                         <div class="flex items-center justify-end gap-3">
-                            <a href="{{ route('dashboard.komisi.edit', 1) }}" class="text-primary font-bold text-xs hover:underline">Ubah</a>
-                            <form action="{{ route('dashboard.komisi.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus komisi ini?')">
+                            <a href="{{ route('dashboard.komisi.edit', $k->id) }}" class="text-primary font-bold text-xs hover:underline">Ubah</a>
+                            <form action="{{ route('dashboard.komisi.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus komisi ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-rose-500 font-bold text-xs hover:underline">Hapus</button>

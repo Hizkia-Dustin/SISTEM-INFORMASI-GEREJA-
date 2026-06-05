@@ -12,6 +12,8 @@
     <form action="{{ $type == 'Edit' ? route('dashboard.tugas.update', $tugas->id ?? 0) : route('dashboard.tugas.store') }}" method="POST">
         @csrf
         @if($type == 'Edit') @method('PUT') @endif
+        <input type="hidden" name="judul" value="{{ old('judul', $tugas->judul ?? 'Jadwal Pelayanan') }}">
+        <input type="hidden" name="tanggal" value="{{ old('tanggal', $tugas->deadline ?? now()->toDateString()) }}">
         <div class="grid grid-cols-3 gap-12">
             <!-- Core Roles -->
             <div class="flex flex-col gap-8">
@@ -20,7 +22,7 @@
                     Pelayan Utama
                 </h3>
                 <x-form.select label="Pengkhotbah" name="pengkhotbah">
-                    <option value="">Pilih Nama Pelayan...</option>
+                    <option value="{{ old('pengkhotbah', $tugas->penerima ?? '') }}">{{ old('pengkhotbah', $tugas->penerima ?? 'Pilih Nama Pelayan...') }}</option>
                 </x-form.select>
                 <x-form.select label="Liturgis" name="liturgis">
                     <option value="">Pilih Nama Pelayan...</option>

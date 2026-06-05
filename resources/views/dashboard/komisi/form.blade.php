@@ -13,16 +13,16 @@
         @csrf
         @if($type == 'Edit') @method('PUT') @endif
         <div class="flex flex-col gap-8">
-            <x-form.input label="Nama Komisi / Bagian" name="nama" placeholder="Contoh: Komisi Anak, Komisi Musik, dll." />
+            <x-form.input label="Nama Komisi / Bagian" name="nama" value="{{ old('nama', $komisi->nama ?? '') }}" placeholder="Contoh: Komisi Anak, Komisi Musik, dll." />
             
             <x-form.select label="Kategori Komisi" name="kategori">
-                <option value="Kategorial">Kategorial (Berdasarkan Usia)</option>
-                <option value="Fungsional">Fungsional (Berdasarkan Pelayanan)</option>
+                <option value="Kategorial" {{ old('kategori', $komisi->status ?? '') == 'Kategorial' ? 'selected' : '' }}>Kategorial (Berdasarkan Usia)</option>
+                <option value="Fungsional" {{ old('kategori', $komisi->status ?? '') == 'Fungsional' ? 'selected' : '' }}>Fungsional (Berdasarkan Pelayanan)</option>
             </x-form.select>
 
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Keterangan / Tugas</label>
-                <textarea name="keterangan" rows="6" placeholder="Deskripsi tugas dan fungsi komisi..." class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium leading-relaxed shadow-inner"></textarea>
+                <textarea name="keterangan" rows="6" placeholder="Deskripsi tugas dan fungsi komisi..." class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium leading-relaxed shadow-inner">{{ old('keterangan', $komisi->deskripsi ?? '') }}</textarea>
             </div>
 
             <!-- Submit -->

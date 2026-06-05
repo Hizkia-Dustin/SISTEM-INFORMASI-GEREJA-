@@ -26,7 +26,24 @@
             </thead>
             <tbody class="text-sm">
                 @forelse($jadwal ?? [] as $j)
-                {{-- Handle actual data here if needed --}}
+                <tr class="border-t border-gray-50">
+                    <td class="px-8 py-5 font-bold text-gray-800">{{ $j->nama_acara }}</td>
+                    <td class="px-8 py-5 text-gray-500">{{ $j->tanggal ? \Carbon\Carbon::parse($j->tanggal)->format('d/m/Y') : '-' }}</td>
+                    <td class="px-8 py-5 text-gray-500">{{ $j->waktu_mulai }}</td>
+                    <td class="px-8 py-5 text-gray-500">{{ $j->lokasi }}</td>
+                    <td class="px-8 py-5 text-gray-500">{{ preg_match('/Jumlah hadir: ([0-9]+)/', $j->deskripsi ?? '', $match) ? $match[1] : '-' }}</td>
+                    <td class="px-8 py-5 text-gray-500">-</td>
+                    <td class="px-8 py-5">
+                        <div class="flex justify-end gap-2">
+                            <a href="{{ route('dashboard.jadwal.edit', $j->id) }}" class="px-3 py-2 rounded-lg bg-blue-50 text-primary text-xs font-bold">Edit</a>
+                            <form action="{{ route('dashboard.jadwal.destroy', $j->id) }}" method="POST" onsubmit="return confirm('Hapus jadwal ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="px-3 py-2 rounded-lg bg-red-50 text-red-600 text-xs font-bold">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @empty
                 <tr>
                     <td colspan="7" class="px-8 py-12 text-center text-gray-400 italic">Belum ada jadwal ibadah terdaftar.</td>

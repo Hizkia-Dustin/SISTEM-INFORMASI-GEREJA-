@@ -24,21 +24,25 @@
             <tbody class="text-sm">
                 @forelse($berita as $b)
                 <tr class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors">
-                    <td class="px-8 py-5 text-gray-400 font-bold tracking-widest">{{ $b['tanggal'] ?? '27 Apr 2026' }}</td>
+                    <td class="px-8 py-5 text-gray-400 font-bold tracking-widest">{{ optional($b->created_at)->format('d M Y') ?? '-' }}</td>
                     <td class="px-8 py-5">
-                        <a href="{{ route('dashboard.berita.show', 1) }}" class="font-bold text-gray-700 block text-base hover:text-primary transition-colors">{{ $b['judul'] }}</a>
-                        <span class="text-[11px] text-gray-400 font-medium uppercase tracking-widest">{{ $b['kategori'] }}</span>
+                        <a href="{{ route('dashboard.berita.show', $b->id) }}" class="font-bold text-gray-700 block text-base hover:text-primary transition-colors">{{ $b->judul }}</a>
+                        <span class="text-[11px] text-gray-400 font-medium uppercase tracking-widest">{{ $b->kategori ?? 'Berita' }}</span>
                     </td>
                     <td class="px-8 py-5">
                         <div class="w-16 h-10 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center overflow-hidden">
-                            <svg class="w-4 h-4 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            @if(!empty($b->gambar))
+                                <img src="{{ asset('storage/' . $b->gambar) }}" alt="{{ $b->judul }}" class="w-full h-full object-cover">
+                            @else
+                                <svg class="w-4 h-4 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            @endif
                         </div>
                     </td>
                     <td class="px-8 py-5 text-right">
                         <div class="flex items-center gap-3">
-                            <a href="{{ route('dashboard.berita.show', 1) }}" class="px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-500 hover:text-primary transition-all">Detail</a>
-                            <a href="{{ route('dashboard.berita.edit', 1) }}" class="text-primary font-bold text-xs hover:underline">Ubah</a>
-                            <form action="{{ route('dashboard.berita.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
+                            <a href="{{ route('dashboard.berita.show', $b->id) }}" class="px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-500 hover:text-primary transition-all">Detail</a>
+                            <a href="{{ route('dashboard.berita.edit', $b->id) }}" class="text-primary font-bold text-xs hover:underline">Ubah</a>
+                            <form action="{{ route('dashboard.berita.destroy', $b->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-rose-500 font-bold text-xs hover:underline">Hapus</button>

@@ -14,17 +14,17 @@
         @if($type == 'Edit') @method('PUT') @endif
         <div class="grid grid-cols-2 gap-10">
             <div class="col-span-2">
-                <x-form.input label="Nama Ibadah / Kebaktian" name="nama" value="{{ old('nama', $jadwal->nama ?? '') }}" placeholder="Contoh: Ibadah Minggu Pagi, Kebaktian Penyamaran, dll." />
+                <x-form.input label="Nama Ibadah / Kebaktian" name="nama" value="{{ old('nama', $jadwal->nama_acara ?? '') }}" placeholder="Contoh: Ibadah Minggu Pagi, Kebaktian Penyamaran, dll." />
             </div>
 
             <x-form.input label="Tanggal" name="tanggal" value="{{ old('tanggal', $jadwal->tanggal ?? '') }}" type="date" />
-            <x-form.input label="Waktu / Pukul" name="waktu" value="{{ old('waktu', $jadwal->waktu ?? '') }}" type="time" />
+            <x-form.input label="Waktu / Pukul" name="waktu" value="{{ old('waktu', $jadwal->waktu_mulai ?? '') }}" type="time" />
             
             <x-form.select label="Jenis Ibadah" name="jenis">
-                <option value="Umum" {{ old('jenis', $jadwal->jenis ?? '') == 'Umum' ? 'selected' : '' }}>Ibadah Umum</option>
-                <option value="Pemuda" {{ old('jenis', $jadwal->jenis ?? '') == 'Pemuda' ? 'selected' : '' }}>Ibadah Pemuda</option>
-                <option value="Anak" {{ old('jenis', $jadwal->jenis ?? '') == 'Anak' ? 'selected' : '' }}>Ibadah Anak (Sekolah Minggu)</option>
-                <option value="Khusus" {{ old('jenis', $jadwal->jenis ?? '') == 'Khusus' ? 'selected' : '' }}>Ibadah Khusus (Natal/Paskah)</option>
+                <option value="Umum" {{ old('jenis', $jadwal->lokasi ?? '') == 'Umum' ? 'selected' : '' }}>Ibadah Umum</option>
+                <option value="Pemuda" {{ old('jenis', $jadwal->lokasi ?? '') == 'Pemuda' ? 'selected' : '' }}>Ibadah Pemuda</option>
+                <option value="Anak" {{ old('jenis', $jadwal->lokasi ?? '') == 'Anak' ? 'selected' : '' }}>Ibadah Anak (Sekolah Minggu)</option>
+                <option value="Khusus" {{ old('jenis', $jadwal->lokasi ?? '') == 'Khusus' ? 'selected' : '' }}>Ibadah Khusus (Natal/Paskah)</option>
             </x-form.select>
 
             <x-form.input label="Estimasi / Jumlah Kehadiran" name="jumlah_hadir" value="{{ old('jumlah_hadir', $jadwal->jumlah_hadir ?? '') }}" type="number" placeholder="Jumlah jemaat..." />
