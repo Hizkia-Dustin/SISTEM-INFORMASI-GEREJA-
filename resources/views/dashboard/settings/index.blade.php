@@ -5,7 +5,7 @@
 <x-dashboard.page-header title="Pengaturan Sistem" subtitle="Kelola konfigurasi akun, preferensi sistem, dan keamanan panel administrasi.">
 </x-dashboard.page-header>
 
-<div class="grid grid-cols-12 gap-8" x-data="{ activeTab: 'profil' }">
+<div class="grid grid-cols-12 gap-8" x-data="{ activeTab: window.location.hash === '#notifikasi' ? 'notifikasi' : 'profil' }">
     <!-- Sidebar Settings -->
     <div class="col-span-3">
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden sticky top-24">
@@ -205,12 +205,57 @@
         </div>
 
         <!-- Notification Section -->
-        <div x-show="activeTab === 'notifikasi'" x-transition class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8 p-12 text-center">
-            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-primary mx-auto mb-6">
-                <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <div x-show="activeTab === 'notifikasi'" x-transition class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+            <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-extrabold text-gray-800">Pengaturan Notifikasi</h2>
+                    <p class="text-xs text-gray-400 font-medium mt-1">Pantau aktivitas terbaru dan kelola pemberitahuan dashboard.</p>
+                </div>
+                <form method="POST" action="{{ route('dashboard.notifications.read-all') }}">
+                    @csrf
+                    <button type="submit" class="px-5 py-2.5 bg-blue-50 text-primary rounded-xl text-xs font-bold hover:bg-primary hover:text-white transition-all">Tandai Semua Dibaca</button>
+                </form>
             </div>
-            <h3 class="text-xl font-bold text-gray-800">Pengaturan Notifikasi</h3>
-            <p class="text-gray-400 mt-2 max-w-sm mx-auto">Fitur ini akan segera tersedia untuk membantu Anda mengelola pemberitahuan sistem.</p>
+            <div class="divide-y divide-gray-50">
+                @forelse($allNotifications as $notification)
+                    <div class="px-8 py-5 flex items-start gap-4 {{ $notification->read_at ? 'bg-white' : 'bg-blue-50/30' }}">
+                        <div class="w-11 h-11 {{ $notification->type === 'success' ? 'bg-emerald-50 text-emerald-500' : ($notification->type === 'warning' ? 'bg-amber-50 text-amber-500' : 'bg-blue-50 text-primary') }} rounded-2xl shrink-0 flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-sm font-extrabold text-gray-800">{{ $notification->title }}</h3>
+                                @if(!$notification->read_at)
+                                    <span class="px-2 py-0.5 bg-rose-50 text-rose-500 rounded-lg text-[10px] font-extrabold uppercase">Baru</span>
+                                @endif
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">{{ $notification->message }}</p>
+                            <p class="text-[10px] text-gray-300 mt-2 font-bold uppercase tracking-widest">{{ $notification->created_at->diffForHumans() }}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('dashboard.notifications.read', $notification) }}" class="px-4 py-2 bg-white border border-gray-100 text-primary rounded-xl text-[11px] font-bold hover:bg-blue-50 transition-all">Buka</a>
+                            <form method="POST" action="{{ route('dashboard.notifications.destroy', $notification) }}" onsubmit="return confirm('Hapus notifikasi ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="px-4 py-2 bg-white border border-gray-100 text-rose-500 rounded-xl text-[11px] font-bold hover:bg-rose-50 transition-all">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-12 text-center">
+                        <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-primary mx-auto mb-6">
+                            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Belum Ada Notifikasi</h3>
+                        <p class="text-gray-400 mt-2 max-w-sm mx-auto">Aktivitas baru dari dashboard akan muncul di sini.</p>
+                    </div>
+                @endforelse
+            </div>
+            @if($allNotifications->hasPages())
+                <div class="px-8 py-5 bg-gray-50/50 border-t border-gray-50">
+                    {{ $allNotifications->fragment('notifikasi')->links() }}
+                </div>
+            @endif
         </div>
 
         <!-- System Section -->

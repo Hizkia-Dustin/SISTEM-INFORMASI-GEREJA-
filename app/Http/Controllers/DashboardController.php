@@ -6,6 +6,21 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    private function notifyAdmins(string $title, string $message, ?string $url = null, string $type = 'info'): void
+    {
+        \App\Models\User::query()->select('id')->chunkById(100, function ($admins) use ($title, $message, $url, $type) {
+            foreach ($admins as $admin) {
+                \App\Models\Notification::create([
+                    'user_id' => $admin->id,
+                    'type' => $type,
+                    'title' => $title,
+                    'message' => $message,
+                    'url' => $url,
+                ]);
+            }
+        });
+    }
+
     public function index()
     {
         $stats = [
@@ -81,7 +96,8 @@ class DashboardController extends Controller
             $data['lampiran_kk'] = $request->file('lampiran_kk')->store('uploads/keluarga', 'public');
         }
 
-        \App\Models\Keluarga::create($data);
+        $keluarga = \App\Models\Keluarga::create($data);
+        $this->notifyAdmins('Keluarga baru ditambahkan', $keluarga->nama_kepala_keluarga . ' masuk ke data keluarga.', route('dashboard.keluarga.index'), 'success');
         return redirect()->route('dashboard.keluarga.index')->with('success', 'Data keluarga berhasil ditambahkan.');
     }
 
@@ -196,7 +212,8 @@ class DashboardController extends Controller
             $data['lampiran_sidi'] = $request->file('lampiran_sidi')->store('uploads/jemaat/sidi', 'public');
         }
 
-        \App\Models\Jemaat::create($data);
+        $jemaat = \App\Models\Jemaat::create($data);
+        $this->notifyAdmins('Jemaat baru terdaftar', ($jemaat->nama_lengkap ?? 'Data jemaat baru') . ' telah ditambahkan.', route('dashboard.jemaat.index'), 'success');
         return redirect()->route('dashboard.jemaat.index')->with('success', 'Data jemaat berhasil ditambahkan.');
     }
 
@@ -278,7 +295,8 @@ class DashboardController extends Controller
     public function storeSektor(Request $request)
     {
         $data = $request->except(['_token', '_method']);
-        \App\Models\Sektor::create($data);
+        $sektor = \App\Models\Sektor::create($data);
+        $this->notifyAdmins('Sektor baru dibuat', ($sektor->nama ?? 'Sektor baru') . ' telah ditambahkan.', route('dashboard.sektor.index'));
         return redirect()->route('dashboard.sektor.index')->with('success', 'Sektor berhasil ditambahkan.');
     }
     public function editSektor($id) 
@@ -313,6 +331,7 @@ class DashboardController extends Controller
     {
         $data = $request->except(['_token', '_method']);
         \App\Models\Keuangan::create($data);
+        $this->notifyAdmins('Data keuangan ditambahkan', 'Catatan keuangan baru telah masuk ke sistem.', route('dashboard.keuangan.index'), 'success');
         return redirect()->route('dashboard.keuangan.index')->with('success', 'Data keuangan berhasil ditambahkan.');
     }
     public function editKeuangan($id) 
@@ -348,6 +367,7 @@ class DashboardController extends Controller
     {
         $data = $request->except(['_token', '_method']);
         \App\Models\Pelayan::create($data);
+        $this->notifyAdmins('Data pelayan ditambahkan', 'Pelayan baru telah masuk ke data pelayanan.', route('dashboard.pelayan.index'));
         return redirect()->route('dashboard.pelayan.index')->with('success', 'Data pelayan berhasil ditambahkan.');
     }
     public function editPelayan($id) 
@@ -410,6 +430,7 @@ class DashboardController extends Controller
         }
         
         \App\Models\ProgramKerja::create($data);
+        $this->notifyAdmins('Program kerja baru', 'Program kerja baru telah dibuat.', route('dashboard.program_kerja.index'));
         return redirect()->route('dashboard.program_kerja.index')->with('success', 'Program kerja berhasil ditambahkan.');
     }
     
@@ -457,7 +478,8 @@ class DashboardController extends Controller
             $data['gambar'] = $request->file('gambar')->store('uploads/berita', 'public');
         }
         
-        \App\Models\Berita::create($data);
+        $berita = \App\Models\Berita::create($data);
+        $this->notifyAdmins('Berita baru dipublikasikan', ($berita->judul ?? 'Berita baru') . ' telah ditambahkan.', route('dashboard.berita.index'), 'success');
         return redirect()->route('dashboard.berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
     
@@ -511,7 +533,8 @@ class DashboardController extends Controller
             $data['gambar'] = $request->file('gambar')->store('uploads/warta', 'public');
         }
         
-        \App\Models\Warta::create($data);
+        $warta = \App\Models\Warta::create($data);
+        $this->notifyAdmins('Warta baru ditambahkan', ($warta->judul ?? 'Warta baru') . ' telah masuk.', route('dashboard.warta.index'), 'success');
         return redirect()->route('dashboard.warta.index')->with('success', 'Warta berhasil ditambahkan.');
     }
     
@@ -565,7 +588,8 @@ class DashboardController extends Controller
             $data['gambar'] = $request->file('gambar')->store('uploads/artikel', 'public');
         }
         
-        \App\Models\Artikel::create($data);
+        $artikel = \App\Models\Artikel::create($data);
+        $this->notifyAdmins('Artikel baru ditambahkan', ($artikel->judul ?? 'Artikel baru') . ' telah masuk.', route('dashboard.artikel.index'), 'success');
         return redirect()->route('dashboard.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
     
@@ -647,7 +671,8 @@ class DashboardController extends Controller
     public function settings() { 
         $user = auth()->user();
         $admins = \App\Models\User::all();
-        return view('dashboard.settings.index', compact('user', 'admins')); 
+        $allNotifications = \App\Models\Notification::where('user_id', auth()->id())->latest()->paginate(10);
+        return view('dashboard.settings.index', compact('user', 'admins', 'allNotifications')); 
     }
     public function createAdmin() { return view('dashboard.settings.admin_form', ['type' => 'Tambah']); }
     public function storeAdmin(Request $request) 
@@ -661,7 +686,8 @@ class DashboardController extends Controller
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
-        \App\Models\User::create($validated);
+        $admin = \App\Models\User::create($validated);
+        $this->notifyAdmins('Admin baru ditambahkan', $admin->name . ' telah diberi akses ke dashboard.', route('dashboard.settings'), 'success');
         
         return redirect()->route('dashboard.settings')->with('success', 'Admin baru berhasil ditambahkan.');
     }
@@ -719,6 +745,7 @@ class DashboardController extends Controller
             $data['gambar'] = $request->file('gambar')->store('uploads/racakitri', 'public');
         }
         \App\Models\Racakitri::create($data);
+        $this->notifyAdmins('Racakitri baru ditambahkan', 'Konten Racakitri baru telah masuk.', route('dashboard.racakitri.index'), 'success');
         return redirect()->route('dashboard.racakitri.index')->with('success', 'Data berhasil ditambahkan.');
     }
     public function showRacakitri($id) { 
@@ -758,6 +785,7 @@ class DashboardController extends Controller
             $data['gambar'] = $request->file('gambar')->store('uploads/informasi', 'public');
         }
         \App\Models\Informasi::create($data);
+        $this->notifyAdmins('Informasi baru ditambahkan', 'Informasi jemaat baru telah masuk.', route('dashboard.informasi.index'), 'success');
         return redirect()->route('dashboard.informasi.index')->with('success', 'Data berhasil ditambahkan.');
     }
     public function showInformasi($id) { 
@@ -797,6 +825,7 @@ class DashboardController extends Controller
             $data['gambar'] = $request->file('gambar')->store('uploads/video', 'public');
         }
         \App\Models\Video::create($data);
+        $this->notifyAdmins('Video baru ditambahkan', 'Konten video baru telah masuk.', route('dashboard.video.index'), 'success');
         return redirect()->route('dashboard.video.index')->with('success', 'Data berhasil ditambahkan.');
     }
     public function showVideo($id) { 

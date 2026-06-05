@@ -21,7 +21,9 @@
             <div x-data="{ open: false }" @click.away="open = false" class="relative">
                 <button @click="open = !open" class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-white rounded-xl transition-all relative">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-500 rounded-full border-2 border-surface animate-pulse"></span>
+                    @if(($unreadNotificationCount ?? 0) > 0)
+                        <span class="absolute top-2 right-2 min-w-[1rem] h-4 px-1 bg-rose-500 text-white rounded-full border-2 border-surface text-[9px] leading-3 font-extrabold flex items-center justify-center">{{ $unreadNotificationCount > 9 ? '9+' : $unreadNotificationCount }}</span>
+                    @endif
                 </button>
 
                 <div 
@@ -35,44 +37,34 @@
                 >
                     <div class="px-5 py-3 border-b border-gray-50 flex items-center justify-between">
                         <span class="text-xs font-extrabold text-gray-800 uppercase tracking-widest">Notifikasi</span>
-                        <span class="text-[10px] font-bold text-primary bg-blue-50 px-2 py-0.5 rounded-lg">3 Baru</span>
+                        <span class="text-[10px] font-bold text-primary bg-blue-50 px-2 py-0.5 rounded-lg">{{ $unreadNotificationCount ?? 0 }} Baru</span>
                     </div>
                     <div class="max-h-96 overflow-y-auto no-scrollbar">
-                        <!-- Notification Item -->
-                        <a href="#" class="flex gap-4 px-5 py-4 hover:bg-gray-50 transition-colors border-b border-gray-50/50">
-                            <div class="w-10 h-10 bg-blue-50 text-primary rounded-xl shrink-0 flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                        @forelse(($notifications ?? collect()) as $notification)
+                            <a href="{{ route('dashboard.notifications.read', $notification) }}" class="flex gap-4 px-5 py-4 hover:bg-gray-50 transition-colors border-b border-gray-50/50 {{ $notification->read_at ? '' : 'bg-blue-50/30' }}">
+                                <div class="w-10 h-10 {{ $notification->type === 'success' ? 'bg-emerald-50 text-emerald-500' : ($notification->type === 'warning' ? 'bg-amber-50 text-amber-500' : 'bg-blue-50 text-primary') }} rounded-xl shrink-0 flex items-center justify-center">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-[13px] font-bold text-gray-700 leading-tight">{{ $notification->title }}</p>
+                                    <p class="text-[11px] text-gray-400 mt-1 font-medium line-clamp-1">{{ $notification->message }}</p>
+                                    <p class="text-[10px] text-gray-300 mt-2 font-bold uppercase tracking-wider">{{ $notification->created_at->diffForHumans() }}</p>
+                                </div>
+                            </a>
+                        @empty
+                            <div class="px-5 py-8 text-center">
+                                <p class="text-sm font-bold text-gray-500">Belum ada notifikasi</p>
+                                <p class="text-xs text-gray-400 mt-1">Aktivitas baru akan muncul di sini.</p>
                             </div>
-                            <div>
-                                <p class="text-[13px] font-bold text-gray-700 leading-tight">Jemaat Baru Terdaftar</p>
-                                <p class="text-[11px] text-gray-400 mt-1 font-medium line-clamp-1">Hizkia Dustin telah bergabung dengan jemaat.</p>
-                                <p class="text-[10px] text-gray-300 mt-2 font-bold uppercase tracking-wider">2 Menit yang lalu</p>
-                            </div>
-                        </a>
-                        <!-- Notification Item -->
-                        <a href="#" class="flex gap-4 px-5 py-4 hover:bg-gray-50 transition-colors border-b border-gray-50/50">
-                            <div class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl shrink-0 flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-[13px] font-bold text-gray-700 leading-tight">Laporan Keuangan Selesai</p>
-                                <p class="text-[11px] text-gray-400 mt-1 font-medium line-clamp-1">Laporan persembahan Minggu telah divalidasi.</p>
-                                <p class="text-[10px] text-gray-300 mt-2 font-bold uppercase tracking-wider">1 Jam yang lalu</p>
-                            </div>
-                        </a>
-                        <!-- Notification Item -->
-                        <a href="#" class="flex gap-4 px-5 py-4 hover:bg-gray-50 transition-colors">
-                            <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl shrink-0 flex items-center justify-center">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-[13px] font-bold text-gray-700 leading-tight">Jadwal Pelayanan Besok</p>
-                                <p class="text-[11px] text-gray-400 mt-1 font-medium line-clamp-1">Ingatkan pelayan untuk ibadah pagi.</p>
-                                <p class="text-[10px] text-gray-300 mt-2 font-bold uppercase tracking-wider">4 Jam yang lalu</p>
-                            </div>
-                        </a>
+                        @endforelse
                     </div>
-                    <a href="#" class="block text-center py-3 text-[11px] font-extrabold text-primary hover:bg-blue-50 transition-colors uppercase tracking-widest bg-gray-50/50 border-t border-gray-100">Lihat Semua Notifikasi</a>
+                    <div class="grid grid-cols-2 bg-gray-50/50 border-t border-gray-100">
+                        <form method="POST" action="{{ route('dashboard.notifications.read-all') }}">
+                            @csrf
+                            <button type="submit" class="w-full py-3 text-[11px] font-extrabold text-gray-500 hover:bg-white transition-colors uppercase tracking-widest">Tandai Dibaca</button>
+                        </form>
+                        <a href="{{ route('dashboard.settings') }}#notifikasi" class="block text-center py-3 text-[11px] font-extrabold text-primary hover:bg-blue-50 transition-colors uppercase tracking-widest">Lihat Semua</a>
+                    </div>
                 </div>
             </div>
 

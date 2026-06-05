@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 // ==========================================
@@ -277,6 +278,10 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::get('/settings/admin/{id}/edit', [DashboardController::class, 'editAdmin'])->name('dashboard.settings.admin.edit');
     Route::put('/settings/admin/{id}', [DashboardController::class, 'updateAdmin'])->name('dashboard.settings.admin.update');
     Route::delete('/settings/admin/{id}', [DashboardController::class, 'destroyAdmin'])->name('dashboard.settings.admin.destroy');
+
+    Route::get('/notifications/{notification}/read', [NotificationController::class, 'read'])->name('dashboard.notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('dashboard.notifications.read-all');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('dashboard.notifications.destroy');
 });
 
 Route::middleware('auth')->group(function () {
