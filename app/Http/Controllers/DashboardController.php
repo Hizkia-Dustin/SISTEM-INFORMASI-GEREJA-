@@ -375,6 +375,28 @@ class DashboardController extends Controller
 
     public function downloadLaporanKeuangan(Request $request)
     {
+        [$laporan, $periodeAwal, $periodeAkhir, $kategori] = $this->getLaporanKeuanganData($request);
+        $filename = 'laporan-keuangan-' . $periodeAwal . '-sd-' . $periodeAkhir . '.xls';
+
+        return response()
+            ->view('dashboard.keuangan.exports.excel', compact('laporan', 'periodeAwal', 'periodeAkhir', 'kategori'))
+            ->header('Content-Type', 'application/vnd.ms-excel; charset=UTF-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    public function downloadLaporanKeuanganPdf(Request $request)
+    {
+        [$laporan, $periodeAwal, $periodeAkhir, $kategori] = $this->getLaporanKeuanganData($request);
+        $filename = 'laporan-keuangan-' . $periodeAwal . '-sd-' . $periodeAkhir . '.pdf';
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dashboard.keuangan.exports.pdf', compact('laporan', 'periodeAwal', 'periodeAkhir', 'kategori'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download($filename);
+    }
+
+    private function getLaporanKeuanganData(Request $request): array
+    {
         $periodeAwal = $request->query('periode_awal', now()->startOfMonth()->toDateString());
         $periodeAkhir = $request->query('periode_akhir', now()->endOfMonth()->toDateString());
         $kategori = $request->query('kategori');
@@ -388,40 +410,7 @@ class DashboardController extends Controller
             $query->where('kategori', $kategori);
         }
 
-        $laporan = $this->buildLaporanKeuangan($query->get());
-        $filename = 'laporan-keuangan-' . $periodeAwal . '-sd-' . $periodeAkhir . '.csv';
-
-        return response()->streamDownload(function () use ($laporan, $periodeAwal, $periodeAkhir, $kategori) {
-            $handle = fopen('php://output', 'w');
-            fwrite($handle, "\xEF\xBB\xBF");
-            fputcsv($handle, ['Laporan Keuangan GKI Pakuwon']);
-            fputcsv($handle, ['Periode', $periodeAwal . ' s/d ' . $periodeAkhir]);
-            fputcsv($handle, ['Kategori', $kategori ?: 'Semua Kategori']);
-            fputcsv($handle, []);
-            fputcsv($handle, ['Tanggal', 'No. Bukti', 'Uraian', 'Kategori', 'Akun Debit', 'Akun Kredit', 'Debit', 'Kredit', 'Saldo']);
-
-            foreach ($laporan['rows'] as $row) {
-                fputcsv($handle, [
-                    $row['tanggal'],
-                    $row['nomor_bukti'],
-                    $row['uraian'],
-                    $row['kategori'],
-                    $row['akun_debit'],
-                    $row['akun_kredit'],
-                    $row['debit'],
-                    $row['kredit'],
-                    $row['saldo'],
-                ]);
-            }
-
-            fputcsv($handle, []);
-            fputcsv($handle, ['Total Debit', $laporan['total_debit']]);
-            fputcsv($handle, ['Total Kredit', $laporan['total_kredit']]);
-            fputcsv($handle, ['Saldo Akhir', $laporan['saldo_akhir']]);
-            fclose($handle);
-        }, $filename, [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-        ]);
+        return [$this->buildLaporanKeuangan($query->get()), $periodeAwal, $periodeAkhir, $kategori];
     }
 
     private function buildLaporanKeuangan($keuangan): array

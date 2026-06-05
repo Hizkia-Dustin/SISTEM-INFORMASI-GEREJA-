@@ -85,6 +85,7 @@
                 <a href="{{ route('dashboard.keuangan.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && !request('kategori') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Ibadah</a>
                 <a href="{{ route('dashboard.keuangan.index', ['kategori' => 'diakoni']) }}" class="text-xs font-medium py-2 {{ request('kategori') == 'diakoni' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Diakoni Sosial</a>
                 <a href="{{ route('dashboard.keuangan.index', ['kategori' => 'khusus']) }}" class="text-xs font-medium py-2 {{ request('kategori') == 'khusus' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Khusus</a>
+                <a href="{{ route('dashboard.keuangan.laporan') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.laporan*') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Laporan Keuangan</a>
             </div>
         </div>
 

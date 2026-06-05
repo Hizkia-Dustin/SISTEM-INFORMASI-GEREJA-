@@ -29,7 +29,8 @@
         </div>
         <div class="flex gap-3">
             <button type="submit" class="flex-1 px-5 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all">Terapkan</button>
-            <a href="{{ route('dashboard.keuangan.laporan.download', request()->query()) }}" class="flex-1 px-5 py-3 bg-emerald-500 text-white rounded-xl text-sm font-bold text-center shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all">Download Excel</a>
+            <a href="{{ route('dashboard.keuangan.laporan.download', request()->query()) }}" class="flex-1 px-5 py-3 bg-emerald-500 text-white rounded-xl text-sm font-bold text-center shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all">Excel</a>
+            <a href="{{ route('dashboard.keuangan.laporan.pdf', request()->query()) }}" class="flex-1 px-5 py-3 bg-rose-500 text-white rounded-xl text-sm font-bold text-center shadow-lg shadow-rose-500/20 hover:bg-rose-600 transition-all">PDF</a>
         </div>
     </div>
 </form>
