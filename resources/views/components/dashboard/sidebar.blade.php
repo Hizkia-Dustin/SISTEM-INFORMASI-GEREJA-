@@ -70,6 +70,21 @@
             </div>
         </div>
 
+        <!-- 4b. Majelis Jemaat -->
+        <div x-data="{ open: {{ request()->routeIs('dashboard.pendeta.*') || request()->routeIs('dashboard.penatua.*') ? 'true' : 'false' }} }">
+            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 14.053v-0.053zM12 14a11.95 11.95 0 00-6.825 2.052A12.08 12.08 0 015.84 9.578L12 14z"/></svg>
+                    Majelis Jemaat
+                </div>
+                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
+                <a href="{{ route('dashboard.pendeta.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.pendeta.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Profil Pendeta</a>
+                <a href="{{ route('dashboard.penatua.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.penatua.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Susunan Penatua</a>
+            </div>
+        </div>
+
         <!-- 5. Keuangan -->
         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 pt-6 pb-2">Administrasi</div>
         <div x-data="{ open: {{ request()->routeIs('dashboard.keuangan.*') ? 'true' : 'false' }} }">

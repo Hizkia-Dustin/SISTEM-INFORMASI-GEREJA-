@@ -41,8 +41,14 @@ Route::get('/', function () {
 Route::prefix('tentang-kami')->group(function () {
     Route::get('/sejarah', function () { return view('pages.about.sejarah'); })->name('about.sejarah');
     Route::get('/visi-misi', function () { return view('pages.about.visi-misi'); })->name('about.visi-misi');
-    Route::get('/pendeta', function () { return view('pages.about.pendeta'); })->name('about.pendeta');
-    Route::get('/penatua', function () { return view('pages.about.penatua'); })->name('about.penatua');
+    Route::get('/pendeta', function () {
+        $pendeta = \App\Models\Pendeta::where('status', 'Aktif Melayani')->orWhere('status', 'Aktif')->first() ?? \App\Models\Pendeta::first();
+        return view('pages.about.pendeta', compact('pendeta'));
+    })->name('about.pendeta');
+    Route::get('/penatua', function () {
+        $penatuas = \App\Models\Penatua::where('status', 'Aktif')->orderBy('urutan')->get();
+        return view('pages.about.penatua', compact('penatuas'));
+    })->name('about.penatua');
 });
 
 // Pelayanan
@@ -229,6 +235,22 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::get('/renungan/{id}/edit', [DashboardController::class, 'editRenungan'])->name('dashboard.renungan.edit');
     Route::put('/renungan/{id}', [DashboardController::class, 'updateRenungan'])->name('dashboard.renungan.update');
     Route::delete('/renungan/{id}', [DashboardController::class, 'destroyRenungan'])->name('dashboard.renungan.destroy');
+
+    // Pendeta
+    Route::get('/pendeta', [DashboardController::class, 'pendeta'])->name('dashboard.pendeta.index');
+    Route::get('/pendeta/create', [DashboardController::class, 'createPendeta'])->name('dashboard.pendeta.create');
+    Route::post('/pendeta', [DashboardController::class, 'storePendeta'])->name('dashboard.pendeta.store');
+    Route::get('/pendeta/{id}/edit', [DashboardController::class, 'editPendeta'])->name('dashboard.pendeta.edit');
+    Route::put('/pendeta/{id}', [DashboardController::class, 'updatePendeta'])->name('dashboard.pendeta.update');
+    Route::delete('/pendeta/{id}', [DashboardController::class, 'destroyPendeta'])->name('dashboard.pendeta.destroy');
+
+    // Penatua
+    Route::get('/penatua', [DashboardController::class, 'penatua'])->name('dashboard.penatua.index');
+    Route::get('/penatua/create', [DashboardController::class, 'createPenatua'])->name('dashboard.penatua.create');
+    Route::post('/penatua', [DashboardController::class, 'storePenatua'])->name('dashboard.penatua.store');
+    Route::get('/penatua/{id}/edit', [DashboardController::class, 'editPenatua'])->name('dashboard.penatua.edit');
+    Route::put('/penatua/{id}', [DashboardController::class, 'updatePenatua'])->name('dashboard.penatua.update');
+    Route::delete('/penatua/{id}', [DashboardController::class, 'destroyPenatua'])->name('dashboard.penatua.destroy');
 
     // Jadwal
     Route::get('/jadwal', [DashboardController::class, 'jadwal'])->name('dashboard.jadwal.index');

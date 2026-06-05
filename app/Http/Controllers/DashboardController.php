@@ -1218,4 +1218,146 @@ class DashboardController extends Controller
             'status' => $data['status'] ?? 'pending',
         ];
     }
+
+    // ==========================================
+    // PENDETA CRUD
+    // ==========================================
+    public function pendeta()
+    {
+        $pendetas = \App\Models\Pendeta::latest()->get();
+        return view('dashboard.pendeta.index', compact('pendetas'));
+    }
+
+    public function createPendeta()
+    {
+        return view('dashboard.pendeta.form', ['type' => 'Tambah', 'pendeta' => new \App\Models\Pendeta()]);
+    }
+
+    public function storePendeta(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'foto' => 'nullable|string|max:2048',
+            'pasangan' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'visi_pelayanan' => 'nullable|string',
+            'jadwal_konseling' => 'nullable|string|max:255',
+            'riwayat_pelayanan' => 'nullable|array',
+            'pendidikan' => 'nullable|array',
+            'status' => 'required|string',
+        ]);
+
+        if ($request->hasFile('foto_file')) {
+            $data['foto'] = asset('storage/' . $request->file('foto_file')->store('uploads/pendeta', 'public'));
+        }
+
+        // Clean arrays
+        $data['riwayat_pelayanan'] = array_values(array_filter($data['riwayat_pelayanan'] ?? []));
+        $data['pendidikan'] = array_values(array_filter($data['pendidikan'] ?? []));
+
+        \App\Models\Pendeta::create($data);
+
+        return redirect()->route('dashboard.pendeta.index')->with('success', 'Profil pendeta berhasil ditambahkan.');
+    }
+
+    public function editPendeta($id)
+    {
+        $pendeta = \App\Models\Pendeta::findOrFail($id);
+        return view('dashboard.pendeta.form', ['type' => 'Edit', 'pendeta' => $pendeta]);
+    }
+
+    public function updatePendeta(Request $request, $id)
+    {
+        $pendeta = \App\Models\Pendeta::findOrFail($id);
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'foto' => 'nullable|string|max:2048',
+            'pasangan' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'visi_pelayanan' => 'nullable|string',
+            'jadwal_konseling' => 'nullable|string|max:255',
+            'riwayat_pelayanan' => 'nullable|array',
+            'pendidikan' => 'nullable|array',
+            'status' => 'required|string',
+        ]);
+
+        if ($request->hasFile('foto_file')) {
+            $data['foto'] = asset('storage/' . $request->file('foto_file')->store('uploads/pendeta', 'public'));
+        }
+
+        // Clean arrays
+        $data['riwayat_pelayanan'] = array_values(array_filter($data['riwayat_pelayanan'] ?? []));
+        $data['pendidikan'] = array_values(array_filter($data['pendidikan'] ?? []));
+
+        $pendeta->update($data);
+
+        return redirect()->route('dashboard.pendeta.index')->with('success', 'Profil pendeta berhasil diperbarui.');
+    }
+
+    public function destroyPendeta($id)
+    {
+        \App\Models\Pendeta::destroy($id);
+        return redirect()->route('dashboard.pendeta.index')->with('success', 'Profil pendeta berhasil dihapus.');
+    }
+
+    // ==========================================
+    // PENATUA CRUD
+    // ==========================================
+    public function penatua()
+    {
+        $penatuas = \App\Models\Penatua::orderBy('urutan')->get();
+        return view('dashboard.penatua.index', compact('penatuas'));
+    }
+
+    public function createPenatua()
+    {
+        return view('dashboard.penatua.form', ['type' => 'Tambah', 'penatua' => new \App\Models\Penatua()]);
+    }
+
+    public function storePenatua(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
+            'sub_kategori' => 'nullable|string|max:255',
+            'status' => 'required|string|max:255',
+            'urutan' => 'nullable|integer',
+        ]);
+
+        \App\Models\Penatua::create($data);
+
+        return redirect()->route('dashboard.penatua.index')->with('success', 'Data penatua berhasil ditambahkan.');
+    }
+
+    public function editPenatua($id)
+    {
+        $penatua = \App\Models\Penatua::findOrFail($id);
+        return view('dashboard.penatua.form', ['type' => 'Edit', 'penatua' => $penatua]);
+    }
+
+    public function updatePenatua(Request $request, $id)
+    {
+        $penatua = \App\Models\Penatua::findOrFail($id);
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
+            'sub_kategori' => 'nullable|string|max:255',
+            'status' => 'required|string|max:255',
+            'urutan' => 'nullable|integer',
+        ]);
+
+        $penatua->update($data);
+
+        return redirect()->route('dashboard.penatua.index')->with('success', 'Data penatua berhasil diperbarui.');
+    }
+
+    public function destroyPenatua($id)
+    {
+        \App\Models\Penatua::destroy($id);
+        return redirect()->route('dashboard.penatua.index')->with('success', 'Data penatua berhasil dihapus.');
+    }
 }

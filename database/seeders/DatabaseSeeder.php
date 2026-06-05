@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SektorSeeder::class,
             UserSeeder::class,
+            PendetaPenatuaSeeder::class,
         ]);
     }
 }
