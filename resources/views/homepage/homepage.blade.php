@@ -62,7 +62,12 @@
                     </div>
                     @php $renunganUtama = $renungan->first(); @endphp
                     @if($renunganUtama)
-                    <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">{{ $renunganUtama->judul }}</h2>
+                    <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">
+                        @if($renunganUtama->penulis)
+                            {{ $renunganUtama->penulis }} - 
+                        @endif
+                        {{ $renunganUtama->judul }}
+                    </h2>
                     <p class="text-slate-600 mb-6 italic leading-relaxed">"{{ strip_tags($renunganUtama->isi) }}"</p>
                     @else
                     <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">Mazmur 23:1 - TUHAN adalah gembalaku, takkan kekurangan aku.</h2>
@@ -162,51 +167,40 @@
             </button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($jadwalSakramen as $sakramen)
             <div class="church-card group hover:border-[#0058bf] transition-all">
+                @php
+                    $icon = 'calendar_today';
+                    $lowerName = strtolower($sakramen->nama_acara);
+                    if (str_contains($lowerName, 'baptis')) {
+                        $icon = 'water_drop';
+                    } elseif (str_contains($lowerName, 'perjamuan') || str_contains($lowerName, 'komuni')) {
+                        $icon = 'wine_bar';
+                    } elseif (str_contains($lowerName, 'sidi')) {
+                        $icon = 'workspace_premium';
+                    }
+                @endphp
                 <div class="flex justify-between items-start mb-6">
                     <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">{{ $icon }}</span>
                     </div>
-                    <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">Minggu</span>
+                    <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">{{ \Carbon\Carbon::parse($sakramen->tanggal)->translatedFormat('l') }}</span>
                 </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Ekaristi Kudus</h4>
-                <p class="text-slate-500 text-sm mb-6">Ibadah Raya Mingguan</p>
+                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">{{ $sakramen->nama_acara }}</h4>
+                <p class="text-slate-500 text-sm mb-6">{{ $sakramen->lokasi }}</p>
                 <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">Sesi 1: 07:00 WIB</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">Sesi 2: 10:00 WIB</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Pemimpin: Pdt. Andreas Wijaya</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->tanggal)->translatedFormat('d F Y') }}</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->waktu_mulai)->format('H:i') }} WIB</span></div>
+                    @if($sakramen->deskripsi)
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ $sakramen->deskripsi }}</span></div>
+                    @endif
                 </div>
             </div>
-            <div class="church-card group hover:border-[#0058bf] transition-all">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
-                    </div>
-                    <span class="bg-[#d3e4fe] text-[#00236f] px-3 py-1 rounded-full text-xs font-bold uppercase">Rabu</span>
-                </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Pendalaman Alkitab</h4>
-                <p class="text-slate-500 text-sm mb-6">Studi Firman Tematik</p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">19:00 WIB (Hybrid)</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">location_on</span><span class="text-sm">Ruang Konsistori / Zoom</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Pemimpin: Ev. Maria Susanti</span></div>
-                </div>
+            @empty
+            <div class="church-card lg:col-span-3 text-center text-slate-500 py-12">
+                Belum ada jadwal sakramen terdekat dari dashboard.
             </div>
-            <div class="church-card group hover:border-[#0058bf] transition-all">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">music_note</span>
-                    </div>
-                    <span class="bg-[#d3e4fe] text-[#00236f] px-3 py-1 rounded-full text-xs font-bold uppercase">Jumat</span>
-                </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Latihan Paduan Suara</h4>
-                <p class="text-slate-500 text-sm mb-6">Pelayanan Musik &amp; Pujian</p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">18:00 WIB</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">location_on</span><span class="text-sm">Balkon Utama Gereja</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Dirigen: Bpk. Samuel Hartono</span></div>
-                </div>
-            </div>
+            @endforelse
         </div>
     </section>
 

@@ -25,6 +25,7 @@
                 <option value="Pemuda" {{ old('jenis', $jadwal->lokasi ?? '') == 'Pemuda' ? 'selected' : '' }}>Ibadah Pemuda</option>
                 <option value="Anak" {{ old('jenis', $jadwal->lokasi ?? '') == 'Anak' ? 'selected' : '' }}>Ibadah Anak (Sekolah Minggu)</option>
                 <option value="Khusus" {{ old('jenis', $jadwal->lokasi ?? '') == 'Khusus' ? 'selected' : '' }}>Ibadah Khusus (Natal/Paskah)</option>
+                <option value="Sakramen" {{ old('jenis', $jadwal->lokasi ?? '') == 'Sakramen' ? 'selected' : '' }}>Sakramen (Baptis/Sidi/Perjamuan Kudus)</option>
             </x-form.select>
 
             <x-form.input label="Estimasi / Jumlah Kehadiran" name="jumlah_hadir" value="{{ old('jumlah_hadir', $jadwal->jumlah_hadir ?? '') }}" type="number" placeholder="Jumlah jemaat..." />

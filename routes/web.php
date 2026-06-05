@@ -15,8 +15,15 @@ Route::get('/', function () {
     $informasi = \App\Models\Informasi::latest()->take(3)->get();
     $video = \App\Models\Video::latest()->take(3)->get();
     $warta = \App\Models\Warta::latest()->take(3)->get();
-    $renungan = \App\Models\Renungan::latest()->take(3)->get();
-    $jadwalTerdekat = \App\Models\Jadwal::whereDate('tanggal', '>=', now()->toDateString())
+    $renungan = \App\Models\Renungan::orderBy('updated_at', 'desc')->take(3)->get();
+    $jadwalTerdekat = \App\Models\Jadwal::where('lokasi', '!=', 'Sakramen')
+        ->whereDate('tanggal', '>=', now()->toDateString())
+        ->orderBy('tanggal')
+        ->orderBy('waktu_mulai')
+        ->take(3)
+        ->get();
+    $jadwalSakramen = \App\Models\Jadwal::where('lokasi', 'Sakramen')
+        ->whereDate('tanggal', '>=', now()->toDateString())
         ->orderBy('tanggal')
         ->orderBy('waktu_mulai')
         ->take(3)
@@ -27,7 +34,7 @@ Route::get('/', function () {
         'pelayan' => \App\Models\Pelayan::where('status', 'aktif')->count(),
     ];
     
-    return view('homepage.homepage', compact('artikel', 'racakitri', 'informasi', 'video', 'warta', 'renungan', 'jadwalTerdekat', 'statsHomepage'));
+    return view('homepage.homepage', compact('artikel', 'racakitri', 'informasi', 'video', 'warta', 'renungan', 'jadwalTerdekat', 'jadwalSakramen', 'statsHomepage'));
 })->name('home');
 
 // Tentang Kami
