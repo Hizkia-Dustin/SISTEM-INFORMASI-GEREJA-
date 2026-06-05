@@ -346,7 +346,137 @@ class DashboardController extends Controller
         $keuangan->update($data);
         return redirect()->route('dashboard.keuangan.index')->with('success', 'Data keuangan berhasil diperbarui.');
     }
-    public function laporanKeuangan() { return view('dashboard.keuangan.laporan'); }
+    public function laporanKeuangan(Request $request)
+    {
+        $periodeAwal = $request->query('periode_awal', now()->startOfMonth()->toDateString());
+        $periodeAkhir = $request->query('periode_akhir', now()->endOfMonth()->toDateString());
+        $kategori = $request->query('kategori');
+
+        $query = \App\Models\Keuangan::query()
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir])
+            ->orderBy('tanggal')
+            ->orderBy('id');
+
+        if (!empty($kategori)) {
+            $query->where('kategori', $kategori);
+        }
+
+        $keuangan = $query->get();
+        $laporan = $this->buildLaporanKeuangan($keuangan);
+        $kategoriList = \App\Models\Keuangan::query()
+            ->select('kategori')
+            ->whereNotNull('kategori')
+            ->distinct()
+            ->orderBy('kategori')
+            ->pluck('kategori');
+
+        return view('dashboard.keuangan.laporan', compact('laporan', 'keuangan', 'periodeAwal', 'periodeAkhir', 'kategori', 'kategoriList'));
+    }
+
+    public function downloadLaporanKeuangan(Request $request)
+    {
+        $periodeAwal = $request->query('periode_awal', now()->startOfMonth()->toDateString());
+        $periodeAkhir = $request->query('periode_akhir', now()->endOfMonth()->toDateString());
+        $kategori = $request->query('kategori');
+
+        $query = \App\Models\Keuangan::query()
+            ->whereBetween('tanggal', [$periodeAwal, $periodeAkhir])
+            ->orderBy('tanggal')
+            ->orderBy('id');
+
+        if (!empty($kategori)) {
+            $query->where('kategori', $kategori);
+        }
+
+        $laporan = $this->buildLaporanKeuangan($query->get());
+        $filename = 'laporan-keuangan-' . $periodeAwal . '-sd-' . $periodeAkhir . '.csv';
+
+        return response()->streamDownload(function () use ($laporan, $periodeAwal, $periodeAkhir, $kategori) {
+            $handle = fopen('php://output', 'w');
+            fwrite($handle, "\xEF\xBB\xBF");
+            fputcsv($handle, ['Laporan Keuangan GKI Pakuwon']);
+            fputcsv($handle, ['Periode', $periodeAwal . ' s/d ' . $periodeAkhir]);
+            fputcsv($handle, ['Kategori', $kategori ?: 'Semua Kategori']);
+            fputcsv($handle, []);
+            fputcsv($handle, ['Tanggal', 'No. Bukti', 'Uraian', 'Kategori', 'Akun Debit', 'Akun Kredit', 'Debit', 'Kredit', 'Saldo']);
+
+            foreach ($laporan['rows'] as $row) {
+                fputcsv($handle, [
+                    $row['tanggal'],
+                    $row['nomor_bukti'],
+                    $row['uraian'],
+                    $row['kategori'],
+                    $row['akun_debit'],
+                    $row['akun_kredit'],
+                    $row['debit'],
+                    $row['kredit'],
+                    $row['saldo'],
+                ]);
+            }
+
+            fputcsv($handle, []);
+            fputcsv($handle, ['Total Debit', $laporan['total_debit']]);
+            fputcsv($handle, ['Total Kredit', $laporan['total_kredit']]);
+            fputcsv($handle, ['Saldo Akhir', $laporan['saldo_akhir']]);
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
+    private function buildLaporanKeuangan($keuangan): array
+    {
+        $saldo = 0;
+        $totalDebit = 0;
+        $totalKredit = 0;
+        $rows = [];
+
+        foreach ($keuangan as $item) {
+            $isPemasukan = $item->jenis_transaksi === 'Pemasukan';
+            $jumlah = (float) $item->jumlah;
+            $debit = $isPemasukan ? $jumlah : 0;
+            $kredit = $isPemasukan ? 0 : $jumlah;
+            $saldo += $debit - $kredit;
+            $totalDebit += $debit;
+            $totalKredit += $kredit;
+
+            $rows[] = [
+                'tanggal' => \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d'),
+                'nomor_bukti' => 'KAS-' . str_pad((string) $item->id, 5, '0', STR_PAD_LEFT),
+                'uraian' => $item->keterangan,
+                'kategori' => $item->kategori,
+                'akun_debit' => $isPemasukan ? 'Kas' : $item->kategori,
+                'akun_kredit' => $isPemasukan ? $item->kategori : 'Kas',
+                'debit' => $debit,
+                'kredit' => $kredit,
+                'saldo' => $saldo,
+                'jenis_transaksi' => $item->jenis_transaksi,
+            ];
+        }
+
+        $rekapKategori = $keuangan
+            ->groupBy('kategori')
+            ->map(function ($items, $namaKategori) {
+                $pemasukan = $items->where('jenis_transaksi', 'Pemasukan')->sum('jumlah');
+                $pengeluaran = $items->where('jenis_transaksi', 'Pengeluaran')->sum('jumlah');
+
+                return [
+                    'kategori' => $namaKategori,
+                    'pemasukan' => $pemasukan,
+                    'pengeluaran' => $pengeluaran,
+                    'saldo' => $pemasukan - $pengeluaran,
+                ];
+            })
+            ->values();
+
+        return [
+            'rows' => $rows,
+            'rekap_kategori' => $rekapKategori,
+            'total_debit' => $totalDebit,
+            'total_kredit' => $totalKredit,
+            'saldo_akhir' => $saldo,
+        ];
+    }
     public function destroyKeuangan($id) 
     { 
         \App\Models\Keuangan::destroy($id);
