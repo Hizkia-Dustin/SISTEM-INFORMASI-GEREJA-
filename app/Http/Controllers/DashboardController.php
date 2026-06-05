@@ -501,6 +501,30 @@ class DashboardController extends Controller
         $pelayan->update($data);
         return redirect()->route('dashboard.pelayan.index')->with('success', 'Data pelayan berhasil diperbarui.');
     }
+
+    public function approvePelayan($id)
+    {
+        $pelayan = \App\Models\Pelayan::findOrFail($id);
+        $pelayan->update([
+            'status' => 'aktif',
+            'tanggal_approve' => now(),
+            'catatan_admin' => null,
+        ]);
+
+        return redirect()->route('dashboard.pelayan.index')->with('success', 'Pendaftaran pelayanan disetujui.');
+    }
+
+    public function rejectPelayan(Request $request, $id)
+    {
+        $pelayan = \App\Models\Pelayan::findOrFail($id);
+        $pelayan->update([
+            'status' => 'ditolak',
+            'catatan_admin' => $request->input('catatan_admin'),
+        ]);
+
+        return redirect()->route('dashboard.pelayan.index')->with('success', 'Pendaftaran pelayanan ditolak.');
+    }
+
     public function destroyPelayan($id) 
     { 
         \App\Models\Pelayan::destroy($id);

@@ -137,14 +137,14 @@
                             </div>
                             
                             <div class="mt-8 pt-6 border-t border-outline-variant/50 flex flex-wrap gap-4">
-                                <button class="px-6 py-2 bg-secondary text-white rounded-full font-label-md hover:bg-primary transition-colors flex items-center gap-2">
+                                <a href="{{ route('pelayanan.daftar', ['komisi' => $komisi['title']]) }}" class="px-6 py-2 bg-secondary text-white rounded-full font-label-md hover:bg-primary transition-colors flex items-center gap-2">
                                     <span class="material-symbols-outlined text-[18px]">group_add</span>
                                     Daftar Pelayanan
-                                </button>
-                                <button class="px-6 py-2 bg-white border border-outline-variant text-primary rounded-full font-label-md hover:bg-surface-container transition-colors flex items-center gap-2">
+                                </a>
+                                <a href="{{ route('kontak.index') }}" class="px-6 py-2 bg-white border border-outline-variant text-primary rounded-full font-label-md hover:bg-surface-container transition-colors flex items-center gap-2">
                                     <span class="material-symbols-outlined text-[18px]">forum</span>
                                     Hubungi Pengurus
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

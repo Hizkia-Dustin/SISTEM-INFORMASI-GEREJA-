@@ -82,6 +82,32 @@ class DashboardRouteSmokeTest extends TestCase
         }
     }
 
+    public function test_pelayanan_registration_can_be_submitted_and_approved(): void
+    {
+        $admin = $this->testUser();
+
+        $this->get('/pelayanan/daftar?komisi=Komisi%20Pemuda')
+            ->assertStatus(200);
+
+        $this->post('/pelayanan/daftar', [
+            'nama' => 'Calon Pelayan',
+            'email' => 'calon.pelayan@example.test',
+            'no_telepon' => '081234567890',
+            'komisi_tujuan' => 'Komisi Pemuda',
+            'posisi' => 'Tim Musik',
+            'alasan' => 'Bersedia melayani di musik.',
+        ])->assertRedirect('/pelayanan/daftar');
+
+        $pelayan = \App\Models\Pelayan::where('email', 'calon.pelayan@example.test')->firstOrFail();
+        $this->assertSame('pending', $pelayan->status);
+
+        $this->actingAs($admin)
+            ->put("/dashboard/pelayan/{$pelayan->id}/approve")
+            ->assertRedirect('/dashboard/pelayan');
+
+        $this->assertSame('aktif', $pelayan->fresh()->status);
+    }
+
     private function testUser(): User
     {
         return User::firstOrCreate(

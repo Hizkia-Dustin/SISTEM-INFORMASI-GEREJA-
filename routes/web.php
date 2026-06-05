@@ -32,6 +32,30 @@ Route::prefix('tentang-kami')->group(function () {
 Route::prefix('pelayanan')->group(function () {
     Route::get('/kebaktian', function () { return view('pages.pelayanan.kebaktian'); })->name('pelayanan.kebaktian');
     Route::get('/komisi', function () { return view('pages.pelayanan.komisi'); })->name('pelayanan.komisi');
+    Route::get('/daftar', function () { return view('pages.pelayanan.daftar'); })->name('pelayanan.daftar');
+    Route::post('/daftar', function (\Illuminate\Http\Request $request) {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'no_telepon' => 'required|string|max:30',
+            'komisi_tujuan' => 'required|string|max:255',
+            'posisi' => 'required|string|max:255',
+            'alasan' => 'nullable|string|max:2000',
+        ]);
+
+        \App\Models\Pelayan::create([
+            'nama' => $data['nama'],
+            'email' => $data['email'] ?? null,
+            'no_telepon' => $data['no_telepon'],
+            'posisi' => $data['posisi'],
+            'komisi_tujuan' => $data['komisi_tujuan'],
+            'alasan' => $data['alasan'] ?? null,
+            'tanggal_mulai' => now()->toDateString(),
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('pelayanan.daftar')->with('success', 'Pendaftaran pelayanan berhasil dikirim. Admin akan meninjau data Anda.');
+    })->name('pelayanan.daftar.store');
     Route::get('/katekisasi', function () { return view('pages.pelayanan.katekisasi'); })->name('pelayanan.katekisasi');
     Route::get('/katekisasi/detail', function () { return view('pages.pelayanan.katekisasi-show'); })->name('pelayanan.katekisasi.show');
     Route::get('/konseling', function () { return view('pages.pelayanan.konseling'); })->name('pelayanan.konseling');
@@ -171,6 +195,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::get('/pelayan/create', [DashboardController::class, 'createPelayan'])->name('dashboard.pelayan.create');
     Route::post('/pelayan', [DashboardController::class, 'storePelayan'])->name('dashboard.pelayan.store');
     Route::get('/pelayan/{id}/edit', [DashboardController::class, 'editPelayan'])->name('dashboard.pelayan.edit');
+    Route::put('/pelayan/{id}/approve', [DashboardController::class, 'approvePelayan'])->name('dashboard.pelayan.approve');
+    Route::put('/pelayan/{id}/reject', [DashboardController::class, 'rejectPelayan'])->name('dashboard.pelayan.reject');
     Route::put('/pelayan/{id}', [DashboardController::class, 'updatePelayan'])->name('dashboard.pelayan.update');
     Route::delete('/pelayan/{id}', [DashboardController::class, 'destroyPelayan'])->name('dashboard.pelayan.destroy');
 
