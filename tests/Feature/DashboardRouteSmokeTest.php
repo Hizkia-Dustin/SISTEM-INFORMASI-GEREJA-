@@ -85,20 +85,21 @@ class DashboardRouteSmokeTest extends TestCase
     public function test_pelayanan_registration_can_be_submitted_and_approved(): void
     {
         $admin = $this->testUser();
+        $email = 'calon.pelayan.' . uniqid() . '@example.test';
 
         $this->get('/pelayanan/daftar?komisi=Komisi%20Pemuda')
             ->assertStatus(200);
 
         $this->post('/pelayanan/daftar', [
             'nama' => 'Calon Pelayan',
-            'email' => 'calon.pelayan@example.test',
+            'email' => $email,
             'no_telepon' => '081234567890',
             'komisi_tujuan' => 'Komisi Pemuda',
             'posisi' => 'Tim Musik',
             'alasan' => 'Bersedia melayani di musik.',
         ])->assertRedirect('/pelayanan/daftar');
 
-        $pelayan = \App\Models\Pelayan::where('email', 'calon.pelayan@example.test')->firstOrFail();
+        $pelayan = \App\Models\Pelayan::where('email', $email)->firstOrFail();
         $this->assertSame('pending', $pelayan->status);
 
         $this->actingAs($admin)

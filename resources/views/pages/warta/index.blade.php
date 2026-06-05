@@ -17,14 +17,7 @@
             </div>
         </header>
 
-        <!-- Kategori Filter (Frontend Mockup) -->
-        <div class="flex flex-nowrap overflow-x-auto gap-3 mb-10 pb-2 no-scrollbar">
-            <a href="#" class="px-5 py-2 rounded-full bg-secondary text-white font-label-md whitespace-nowrap shadow-sm">Semua</a>
-            <a href="#" class="px-5 py-2 rounded-full bg-white border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary font-label-md whitespace-nowrap transition-colors shadow-sm">Bahan Khotbah</a>
-            <a href="#" class="px-5 py-2 rounded-full bg-white border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary font-label-md whitespace-nowrap transition-colors shadow-sm">Renungan Harian</a>
-            <a href="#" class="px-5 py-2 rounded-full bg-white border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary font-label-md whitespace-nowrap transition-colors shadow-sm">Kajian Teologi</a>
-            <a href="#" class="px-5 py-2 rounded-full bg-white border border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary font-label-md whitespace-nowrap transition-colors shadow-sm">Kesaksian</a>
-        </div>
+        <x-article.category-chips routeName="warta.index" :active="$kategori ?? null" />
 
         @php
             $hasArticles = isset($warta) && $warta->count() > 0;

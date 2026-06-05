@@ -73,8 +73,9 @@ Route::prefix('pelayanan')->group(function () {
 // Publikasi & Informasi (Warta, Informasi, Artikel, Renungan, Racakitri)
 Route::prefix('warta')->group(function () {
     Route::get('/', function () { 
-        $warta = \App\Models\Warta::latest()->paginate(9);
-        return view('pages.warta.index', compact('warta')); 
+        $kategori = request('kategori');
+        $warta = \App\Models\Warta::when($kategori, fn ($query) => $query->where('kategori', $kategori))->latest()->paginate(9)->withQueryString();
+        return view('pages.warta.index', compact('warta', 'kategori')); 
     })->name('warta.index');
     Route::get('/{id}', function ($id) { 
         $item = \App\Models\Warta::findOrFail($id);
@@ -84,8 +85,9 @@ Route::prefix('warta')->group(function () {
 
 Route::prefix('informasi')->group(function () {
     Route::get('/', function () { 
-        $informasi = \App\Models\Informasi::latest()->paginate(9);
-        return view('pages.informasi.index', compact('informasi')); 
+        $kategori = request('kategori');
+        $informasi = \App\Models\Informasi::when($kategori, fn ($query) => $query->where('kategori', $kategori))->latest()->paginate(9)->withQueryString();
+        return view('pages.informasi.index', compact('informasi', 'kategori')); 
     })->name('informasi.index');
     Route::get('/{id}', function ($id) { 
         $item = \App\Models\Informasi::findOrFail($id);
@@ -95,8 +97,9 @@ Route::prefix('informasi')->group(function () {
 
 Route::prefix('artikel')->group(function () {
     Route::get('/', function () { 
-        $articles = \App\Models\Artikel::latest()->paginate(9);
-        return view('pages.artikel.index', compact('articles')); 
+        $kategori = request('kategori');
+        $articles = \App\Models\Artikel::when($kategori, fn ($query) => $query->where('kategori', $kategori))->latest()->paginate(9)->withQueryString();
+        return view('pages.artikel.index', compact('articles', 'kategori')); 
     })->name('artikel.index');
     Route::get('/{id}', function ($id) { 
         $article = \App\Models\Artikel::findOrFail($id);
@@ -106,8 +109,9 @@ Route::prefix('artikel')->group(function () {
 
 Route::prefix('renungan')->group(function () {
     Route::get('/', function () { 
-        $renungan = \App\Models\Renungan::latest()->paginate(9);
-        return view('pages.renungan.index', compact('renungan')); 
+        $kategori = request('kategori');
+        $renungan = \App\Models\Renungan::latest()->paginate(9)->withQueryString();
+        return view('pages.renungan.index', compact('renungan', 'kategori')); 
     })->name('renungan.index');
     Route::get('/{id}', function ($id) { 
         $item = \App\Models\Renungan::findOrFail($id);
@@ -117,8 +121,9 @@ Route::prefix('renungan')->group(function () {
 
 Route::prefix('racakitri')->group(function () {
     Route::get('/', function () { 
-        $racakitri = \App\Models\Racakitri::latest()->paginate(9);
-        return view('pages.racakitri.index', compact('racakitri')); 
+        $kategori = request('kategori');
+        $racakitri = \App\Models\Racakitri::when($kategori, fn ($query) => $query->where('kategori', $kategori))->latest()->paginate(9)->withQueryString();
+        return view('pages.racakitri.index', compact('racakitri', 'kategori')); 
     })->name('racakitri.index');
     Route::get('/{id}', function ($id) { 
         $item = \App\Models\Racakitri::findOrFail($id);
