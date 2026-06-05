@@ -54,4 +54,22 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('textarea[name="isi"]'), {
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+<style>
+    .ck-editor__editable_inline {
+        min-height: 300px;
+    }
+</style>
+@endpush
 @endsection

@@ -1,0 +1,127 @@
+<mxGraphModel dx="2198" dy="3422" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3200" pageHeight="2200" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <mxCell id="u1" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;User&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- user_id: String (PK)&lt;br/&gt;- username: String&lt;br/&gt;- password: String (hashed)&lt;br/&gt;- role: Enum&lt;br/&gt;- sdm_id: String (FK)&lt;br/&gt;- last_login: DateTime&lt;br/&gt;- is_active: Boolean&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ login(): Boolean&lt;br/&gt;+ logout(): void&lt;br/&gt;+ changePassword(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="230" width="170" x="390" y="20" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u2" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Keluarga&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- keluarga_id: String (PK)&lt;br/&gt;- nama_kepala_keluarga: String&lt;br/&gt;- alamat_keluarga: String&lt;br/&gt;- wilayah_pelayanan: String&lt;br/&gt;- jumlah_anggota: integer&lt;br/&gt;- tanggal_registrasi: Date&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ tambahAnggota(jemaat: Jemaat): void&lt;br/&gt;+ getAnggota(): List&lt;Jemaat&gt;&lt;br/&gt;+ updateWilayah(wilayah: String): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="210" width="190" x="80" y="260" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u3" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Jemaat&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- jemaat_id: String (PK)&lt;br/&gt;- no_induk: String&lt;br/&gt;- nama_lengkap: String&lt;br/&gt;- tanggal_lahir: Date&lt;br/&gt;- jenis_kelamin: Enum (L,P)&lt;br/&gt;- alamat: String&lt;br/&gt;- no_telepon: String&lt;br/&gt;- status_keanggotaan: Enum&lt;br/&gt;- tanggal_bergabung: Date&lt;br/&gt;- keluarga_id: String (FK)&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ daftar(): void&lt;br/&gt;+ updateStatus(status: Enum): void&lt;br/&gt;+ ajukanMutasi(jenis: String): void&lt;br/&gt;+ detailKeluarga(): Keluarga&lt;/div&gt;" vertex="1">
+      <mxGeometry height="250" width="190" x="320" y="300" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u4" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Sektor&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- sektor_id: String (PK)&lt;br/&gt;- nama: String&lt;br/&gt;- keterangan: Text&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ simpan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="170" width="140" x="80" y="540" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u5" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Keuangan&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- keuangan_id: String (PK)&lt;br/&gt;- kategori: String&lt;br/&gt;- jenis: Enum&lt;br/&gt;- keterangan: String&lt;br/&gt;- tanggal: Date&lt;br/&gt;- nominal: Decimal&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ catat(): void&lt;br/&gt;+ validasi(): Boolean&lt;br/&gt;+ getLaporan(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="180" width="150" x="760" y="300" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u6" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Pelayan&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- pelayan_id: String (PK)&lt;br/&gt;- nik: String&lt;br/&gt;- peran: String&lt;br/&gt;- tanggal_terima: Date&lt;br/&gt;- tanggal_akhir: Date&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ tambah(): void&lt;br/&gt;+ nonaktifkan(): void&lt;br/&gt;+ getPenugasan(): List&lt;/div&gt;" vertex="1">
+      <mxGeometry height="180" width="150" x="620" y="540" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u7" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Renungan&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- renungan_id: String (PK)&lt;br/&gt;- tanggal: Date&lt;br/&gt;- ayat: String&lt;br/&gt;- judul: String&lt;br/&gt;- isi: Text&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ simpan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="180" width="170" x="700" y="15" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u8" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Jadwal&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- jadwal_id: String (PK)&lt;br/&gt;- nama: String&lt;br/&gt;- tanggal: Date&lt;br/&gt;- waktu: Time&lt;br/&gt;- jenis: String&lt;br/&gt;- jumlah_hadir: Integer&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ jadwalkan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ batal(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="190" width="145" x="1947.5" y="740" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u9" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Tugas&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- tugas_id: String (PK)&lt;br/&gt;- pengkhotbah: String&lt;br/&gt;- liturgis: String&lt;br/&gt;- doa_syafaat: String&lt;br/&gt;- warta: String&lt;br/&gt;- pemusik: String&lt;br/&gt;- song_leader: String&lt;br/&gt;- liturgis_sm: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ simpan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="210" width="170" x="900" y="610" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u10" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;ProgramKerja&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- program_kerja_id: String (PK)&lt;br/&gt;- jenis: String&lt;br/&gt;- tahun: Integer&lt;br/&gt;- file: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ simpan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="170" width="190" x="1080" y="310" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u11" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Komisi&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- komisi_id: String (PK)&lt;br/&gt;- nama: String&lt;br/&gt;- kategori: String&lt;br/&gt;- keterangan: Text&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ simpan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="180" width="160" x="1340" y="260" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u12" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Berita&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- berita_id: String (PK)&lt;br/&gt;- judul: String&lt;br/&gt;- kategori: String&lt;br/&gt;- status: String&lt;br/&gt;- isi: Text&lt;br/&gt;- gambar: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ publish(): void&lt;br/&gt;+ draft(): void&lt;br/&gt;+ arsipkan(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="200" width="160" x="1480" y="480" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u13" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Artikel&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- artikel_id: String (PK)&lt;br/&gt;- judul: String&lt;br/&gt;- isi: Text&lt;br/&gt;- gambar: String&lt;br/&gt;- status: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ publish(): void&lt;br/&gt;+ updateKonten(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="180" width="165" x="1340" y="760" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u14" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Informasi&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- informasi_id: String (PK)&lt;br/&gt;- judul: String&lt;br/&gt;- isi: Text&lt;br/&gt;- status: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ simpan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="170" width="240" x="1850" y="90" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u15" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Racakitri&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- racakitri_id: String (PK)&lt;br/&gt;- judul: String&lt;br/&gt;- isi: Text&lt;br/&gt;- status: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ simpan(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="170" width="120" x="1690" y="260" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u16" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Video&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- video_id: String (PK)&lt;br/&gt;- judul: String&lt;br/&gt;- url: String&lt;br/&gt;- status: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ publish(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="170" width="220" x="1910" y="470" as="geometry" />
+    </mxCell>
+
+    <mxCell id="u17" parent="1" style="shape=umlClass;whiteSpace=wrap;html=1;strokeColor=#555555;fillColor=#ffffff;fontSize=12;" value="&lt;b&gt;Warta&lt;/b&gt;&lt;hr/&gt;&lt;div align='left'&gt;- warta_id: String (PK)&lt;br/&gt;- judul: String&lt;br/&gt;- isi_konten: Text&lt;br/&gt;- tanggal_publish: Date&lt;br/&gt;- status: String&lt;/div&gt;&lt;hr/&gt;&lt;div align='left'&gt;+ publish(): void&lt;br/&gt;+ ubah(): void&lt;br/&gt;+ hapus(): void&lt;/div&gt;" vertex="1">
+      <mxGeometry height="180" width="150" x="1670" y="740" as="geometry" />
+    </mxCell>
+
+    <!-- Association lines -->
+    <mxCell id="e1" edge="1" parent="1" source="u2" target="u3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e2" edge="1" parent="1" source="u3" target="u1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e5" edge="1" parent="1" source="u5" target="u10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e5a" edge="1" parent="1" source="u11" target="u9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e6" edge="1" parent="1" source="u11" target="u9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7a" edge="1" parent="1" source="u7" target="u17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7b" edge="1" parent="1" source="u12" target="u17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7c" edge="1" parent="1" source="u13" target="u17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7d" edge="1" parent="1" source="u14" target="u17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7e" edge="1" parent="1" source="u15" target="u17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7f" edge="1" parent="1" source="u16" target="u17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e8" edge="1" parent="1" source="u2" target="u4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e9" edge="1" parent="1" source="u6" target="u9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e10" edge="1" parent="1" source="u11" target="u9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e11" edge="1" parent="1" source="u10" target="u5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e12" edge="1" parent="1" source="u1" target="u3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e13" edge="1" parent="1" source="u3" target="u6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;jumpStyle=arc;jumpSize=6;endArrow=classic;html=1;strokeColor=#555555;">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

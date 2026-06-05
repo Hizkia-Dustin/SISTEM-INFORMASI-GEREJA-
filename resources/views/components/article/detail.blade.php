@@ -54,7 +54,18 @@
 
     <!-- Content Area -->
     <div class="p-8 md:p-12">
-        <div class="prose prose-lg prose-slate max-w-none 
+        <style>
+            .article-content-body p {
+                text-indent: 2.5rem;
+                text-align: justify;
+                margin-bottom: 1.25rem;
+            }
+            .article-content-body blockquote p,
+            .article-content-body li p {
+                text-indent: 0;
+            }
+        </style>
+        <div class="prose prose-lg prose-slate max-w-none article-content-body
                     prose-headings:font-h2 prose-headings:text-primary-container
                     prose-p:font-body-lg prose-p:text-on-surface prose-p:leading-relaxed
                     prose-blockquote:border-l-4 prose-blockquote:border-secondary prose-blockquote:bg-surface-container prose-blockquote:p-6 prose-blockquote:rounded-r-xl prose-blockquote:font-serif prose-blockquote:text-primary prose-blockquote:italic

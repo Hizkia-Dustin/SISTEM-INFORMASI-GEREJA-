@@ -33,7 +33,7 @@
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="history_edu">history_edu</span>
 <h2 class="font-h2 text-h2 text-primary">Riwayat Pelayanan</h2>
 </div>
-<div class="relative pl-2">
+<div class="relative">
 <div class="absolute left-4 top-2 bottom-2 w-0.5 bg-surface-container-high"></div>
 <div class="flex flex-col gap-8">
 @if(!empty($pendeta->riwayat_pelayanan) && is_array($pendeta->riwayat_pelayanan))
