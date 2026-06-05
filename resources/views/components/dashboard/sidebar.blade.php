@@ -258,7 +258,7 @@
 
     <!-- Bottom Actions -->
     <div class="p-6 border-t border-gray-50 flex flex-col gap-2">
-        <a href="{{ route('login') }}" class="flex items-center gap-3 px-4 py-2 text-rose-500 font-bold text-sm hover:bg-rose-50 rounded-xl transition-all">
+        <a href="{{ route('home') }}" class="flex items-center gap-3 px-4 py-2 text-rose-500 font-bold text-sm hover:bg-rose-50 rounded-xl transition-all">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             Keluar Panel
         </a>
