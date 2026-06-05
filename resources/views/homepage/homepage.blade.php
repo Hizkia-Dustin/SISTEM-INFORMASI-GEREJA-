@@ -84,21 +84,22 @@
                         <div class="flex justify-between items-end border-b border-white/10 pb-4">
                             <div>
                                
-                                <p class="text-4xl font-bold font-[Manrope]">1,240</p>
+                                <p class="text-slate-300 text-sm">Keluarga Aktif</p>
+                                <p class="text-4xl font-bold font-[Manrope]">{{ number_format($statsHomepage['keluarga'] ?? 0, 0, ',', '.') }}</p>
                             </div>
                             <span class="material-symbols-outlined text-[#d8e2ff]">family_restroom</span>
                         </div>
                         <div class="flex justify-between items-end border-b border-white/10 pb-4">
                             <div>
                                 <p class="text-slate-300 text-sm">Jemaat Aktif</p>
-                                <p class="text-4xl font-bold font-[Manrope]">4,850</p>
+                                <p class="text-4xl font-bold font-[Manrope]">{{ number_format($statsHomepage['jemaat'] ?? 0, 0, ',', '.') }}</p>
                             </div>
                             <span class="material-symbols-outlined text-[#d8e2ff]">groups</span>
                         </div>
                         <div class="flex justify-between items-end">
                             <div>
                                 <p class="text-slate-300 text-sm">Pelayan Tuhan</p>
-                                <p class="text-4xl font-bold font-[Manrope]">312</p>
+                                <p class="text-4xl font-bold font-[Manrope]">{{ number_format($statsHomepage['pelayan'] ?? 0, 0, ',', '.') }}</p>
                             </div>
                             <span class="material-symbols-outlined text-[#d8e2ff]">volunteer_activism</span>
                         </div>
@@ -117,56 +118,34 @@
                 <p class="text-slate-600">Mari bersekutu dan melayani bersama. Berikut adalah jadwal rutin pertemuan jemaat di GKI PAKUWON .</p>
             </div>
             <button class="flex items-center gap-2 text-[#0058bf] font-bold text-sm hover:underline">
-                Unduh Kalender Liturgi
-                <span class="material-symbols-outlined">download</span>
+                Data realtime dari dashboard
+                <span class="material-symbols-outlined">sync</span>
             </button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($jadwalTerdekat as $jadwal)
             <div class="church-card group hover:border-[#0058bf] transition-all">
                 <div class="flex justify-between items-start mb-6">
                     <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
                     </div>
-                    <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">Minggu</span>
+                    <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('D') }}</span>
                 </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Ekaristi Kudus</h4>
-                <p class="text-slate-500 text-sm mb-6">Ibadah Raya Mingguan</p>
+                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">{{ $jadwal->nama_acara }}</h4>
+                <p class="text-slate-500 text-sm mb-6">{{ $jadwal->lokasi }}</p>
                 <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">Sesi 1: 07:00 WIB</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">Sesi 2: 10:00 WIB</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Pemimpin: Pdt. Andreas Wijaya</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('d F Y') }}</span></div>
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->waktu_mulai)->format('H:i') }} WIB</span></div>
+                    @if($jadwal->deskripsi)
+                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ \Illuminate\Support\Str::limit($jadwal->deskripsi, 55) }}</span></div>
+                    @endif
                 </div>
             </div>
-            <div class="church-card group hover:border-[#0058bf] transition-all">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
-                    </div>
-                    <span class="bg-[#d3e4fe] text-[#00236f] px-3 py-1 rounded-full text-xs font-bold uppercase">Rabu</span>
-                </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Pendalaman Alkitab</h4>
-                <p class="text-slate-500 text-sm mb-6">Studi Firman Tematik</p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">19:00 WIB (Hybrid)</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">location_on</span><span class="text-sm">Ruang Konsistori / Zoom</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Pemimpin: Ev. Maria Susanti</span></div>
-                </div>
+            @empty
+            <div class="church-card lg:col-span-3 text-center text-slate-500">
+                Belum ada jadwal ibadah atau kegiatan terdekat dari dashboard.
             </div>
-            <div class="church-card group hover:border-[#0058bf] transition-all">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">music_note</span>
-                    </div>
-                    <span class="bg-[#d3e4fe] text-[#00236f] px-3 py-1 rounded-full text-xs font-bold uppercase">Jumat</span>
-                </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">Latihan Paduan Suara</h4>
-                <p class="text-slate-500 text-sm mb-6">Pelayanan Musik &amp; Pujian</p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">18:00 WIB</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">location_on</span><span class="text-sm">Balkon Utama Gereja</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">person</span><span class="text-sm">Dirigen: Bpk. Samuel Hartono</span></div>
-                </div>
-            </div>
+            @endforelse
         </div>
     </section>
 

@@ -109,6 +109,22 @@ class DashboardRouteSmokeTest extends TestCase
         $this->assertSame('aktif', $pelayan->fresh()->status);
     }
 
+    public function test_homepage_renders_realtime_dashboard_data_sections(): void
+    {
+        \App\Models\Jadwal::create([
+            'nama_acara' => 'Ibadah Minggu Test',
+            'tanggal' => now()->addDay()->toDateString(),
+            'waktu_mulai' => '08:00:00',
+            'lokasi' => 'Ruang Ibadah Utama',
+            'deskripsi' => 'Jadwal dari dashboard',
+        ]);
+
+        $this->get('/')
+            ->assertStatus(200)
+            ->assertSee('Pertumbuhan Jemaat')
+            ->assertSee('Ibadah Minggu Test');
+    }
+
     private function testUser(): User
     {
         return User::firstOrCreate(

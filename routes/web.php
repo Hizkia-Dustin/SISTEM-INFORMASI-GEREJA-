@@ -16,8 +16,18 @@ Route::get('/', function () {
     $video = \App\Models\Video::latest()->take(3)->get();
     $warta = \App\Models\Warta::latest()->take(3)->get();
     $renungan = \App\Models\Renungan::latest()->take(3)->get();
+    $jadwalTerdekat = \App\Models\Jadwal::whereDate('tanggal', '>=', now()->toDateString())
+        ->orderBy('tanggal')
+        ->orderBy('waktu_mulai')
+        ->take(3)
+        ->get();
+    $statsHomepage = [
+        'keluarga' => \App\Models\Keluarga::where('status', 'aktif')->orWhere('status', 'Aktif')->count(),
+        'jemaat' => \App\Models\Jemaat::where('status_keanggotaan', 'Aktif')->orWhere('status_aktif', 'aktif')->count(),
+        'pelayan' => \App\Models\Pelayan::where('status', 'aktif')->count(),
+    ];
     
-    return view('homepage.homepage', compact('artikel', 'racakitri', 'informasi', 'video', 'warta', 'renungan'));
+    return view('homepage.homepage', compact('artikel', 'racakitri', 'informasi', 'video', 'warta', 'renungan', 'jadwalTerdekat', 'statsHomepage'));
 })->name('home');
 
 // Tentang Kami
