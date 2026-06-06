@@ -35,7 +35,7 @@
                             'category' => $dbRacakitri->kategori ?? 'Racakitri',
                             'author' => 'Admin GKI',
                             'date' => $dbRacakitri->created_at->format('d M Y'),
-                            'excerpt' => Str::limit(strip_tags($dbRacakitri->isi), 100),
+                            'excerpt' => Str::cleanExcerpt($dbRacakitri->isi, 100),
                             'image' => $dbRacakitri->gambar ? asset('storage/' . $dbRacakitri->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop',
                         ];
                     @endphp

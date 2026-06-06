@@ -23,30 +23,62 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $jemaatList = \App\Models\Jemaat::all();
+        
         $stats = [
             'keluarga' => \App\Models\Keluarga::count(),
-            'pemuda' => \App\Models\Jemaat::where('status_keanggotaan', 'Pemuda')->count(),
-            'ama' => \App\Models\Jemaat::whereIn('jenis_kelamin', ['Laki-laki', 'L', 'Laki-Laki'])->count(),
-            'ina' => \App\Models\Jemaat::whereIn('jenis_kelamin', ['Perempuan', 'P'])->count(),
-            'aktif' => \App\Models\Jemaat::where('status_aktif', true)->orWhere('status_aktif', '1')->count(),
+            'jemaat' => $jemaatList->count(),
+            'pemuda' => $jemaatList->where('status_keanggotaan', 'Pemuda')->count(),
+            'ama' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Laki-laki', 'L', 'Laki-Laki']))->count(),
+            'ina' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Perempuan', 'P']))->count(),
+            'aktif' => $jemaatList->filter(fn($j) => $j->status_aktif == true || $j->status_aktif == '1' || $j->status_aktif == 'Aktif')->count(),
+            'baptis' => $jemaatList->where('baptis', 'Ya')->count(),
+            'sidi' => $jemaatList->where('sidi', 'Ya')->count(),
         ];
 
-        $sektors = \App\Models\Keluarga::whereNotNull('wilayah_pelayanan')->get()->groupBy('wilayah_pelayanan');
+        // Sektor Calculations (Families count vs Jemaat count)
+        $sektors = \App\Models\Keluarga::with('jemaat')->whereNotNull('wilayah_pelayanan')->get()->groupBy('wilayah_pelayanan');
         $sektorLabels = [];
         $sektorData = [];
+        $sektorJemaatData = [];
         foreach($sektors as $sektor => $keluargas) {
             $sektorLabels[] = $sektor;
             $sektorData[] = $keluargas->count();
+            
+            $jCount = 0;
+            foreach ($keluargas as $k) {
+                $jCount += $k->jemaat ? $k->jemaat->count() : 0;
+            }
+            $sektorJemaatData[] = $jCount;
         }
 
-        $jemaatTerbaru = [];
+        // Age Demographics
+        $ageStats = [
+            'Anak' => 0,
+            'Remaja' => 0,
+            'Pemuda' => 0,
+            'Dewasa' => 0,
+            'Lansia' => 0,
+        ];
+        foreach ($jemaatList as $j) {
+            if ($j->tanggal_lahir) {
+                $age = \Carbon\Carbon::parse($j->tanggal_lahir)->age;
+                if ($age < 12) $ageStats['Anak']++;
+                elseif ($age < 18) $ageStats['Remaja']++;
+                elseif ($age < 36) $ageStats['Pemuda']++;
+                elseif ($age < 60) $ageStats['Dewasa']++;
+                else $ageStats['Lansia']++;
+            }
+        }
 
-        $kategorialLabels = [];
-        $kategorialData = [];
+        $jemaatTerbaru = \App\Models\Jemaat::latest()->take(5)->get();
 
-        $recentActivities = [];
+        $recentActivities = [
+            ['action' => 'Penambahan data jemaat baru', 'time' => 'Baru Saja'],
+            ['action' => 'Pembaruan data keuangan warta', 'time' => '1 Jam Yang Lalu'],
+        ];
 
-        return view('dashboard.home.index', compact('stats', 'sektorLabels', 'sektorData', 'kategorialLabels', 'kategorialData', 'recentActivities', 'jemaatTerbaru'));
+        return view('dashboard.home.index', compact('stats', 'sektorLabels', 'sektorData', 'sektorJemaatData', 'ageStats', 'recentActivities', 'jemaatTerbaru'));
     }
 
     // 2. Keluarga
@@ -1365,5 +1397,81 @@ class DashboardController extends Controller
     {
         \App\Models\Penatua::destroy($id);
         return redirect()->route('dashboard.penatua.index')->with('success', 'Data penatua berhasil dihapus.');
+    }
+
+    public function exportJemaatPdf()
+    {
+        $jemaatList = \App\Models\Jemaat::with('keluarga')->get();
+        $stats = [
+            'keluarga' => \App\Models\Keluarga::count(),
+            'jemaat' => $jemaatList->count(),
+            'pemuda' => $jemaatList->where('status_keanggotaan', 'Pemuda')->count(),
+            'ama' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Laki-laki', 'L', 'Laki-Laki']))->count(),
+            'ina' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Perempuan', 'P']))->count(),
+            'aktif' => $jemaatList->filter(fn($j) => $j->status_aktif == true || $j->status_aktif == '1' || $j->status_aktif == 'Aktif')->count(),
+            'baptis' => $jemaatList->where('baptis', 'Ya')->count(),
+            'sidi' => $jemaatList->where('sidi', 'Ya')->count(),
+        ];
+
+        // Sektor stats
+        $sektors = \App\Models\Keluarga::with('jemaat')->whereNotNull('wilayah_pelayanan')->get()->groupBy('wilayah_pelayanan');
+        $sektorStats = [];
+        foreach($sektors as $sektor => $keluargas) {
+            $jCount = 0;
+            foreach ($keluargas as $k) {
+                $jCount += $k->jemaat ? $k->jemaat->count() : 0;
+            }
+            $sektorStats[] = [
+                'nama' => $sektor,
+                'keluarga_count' => $keluargas->count(),
+                'jemaat_count' => $jCount,
+            ];
+        }
+
+        // Age Demographics
+        $ageStats = [
+            'Anak (< 12 tahun)' => 0,
+            'Remaja (12 - 17 tahun)' => 0,
+            'Pemuda (18 - 35 tahun)' => 0,
+            'Dewasa (36 - 59 tahun)' => 0,
+            'Lansia (>= 60 tahun)' => 0,
+        ];
+        foreach ($jemaatList as $j) {
+            if ($j->tanggal_lahir) {
+                $age = \Carbon\Carbon::parse($j->tanggal_lahir)->age;
+                if ($age < 12) $ageStats['Anak (< 12 tahun)']++;
+                elseif ($age < 18) $ageStats['Remaja (12 - 17 tahun)']++;
+                elseif ($age < 36) $ageStats['Pemuda (18 - 35 tahun)']++;
+                elseif ($age < 60) $ageStats['Dewasa (36 - 59 tahun)']++;
+                else $ageStats['Lansia (>= 60 tahun)']++;
+            }
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('dashboard.home.exports.jemaat_pdf', compact('stats', 'sektorStats', 'ageStats', 'jemaatList'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('laporan-statistik-jemaat-' . now()->format('Y-m-d') . '.pdf');
+    }
+
+    public function exportJemaatExcel()
+    {
+        $jemaatList = \App\Models\Jemaat::with('keluarga')->get();
+        $filename = 'data-jemaat-lengkap-' . now()->format('Y-m-d') . '.xls';
+
+        return response()
+            ->view('dashboard.home.exports.jemaat_excel', compact('jemaatList'))
+            ->header('Content-Type', 'application/vnd.ms-excel; charset=UTF-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    public function exportKeluargaExcel()
+    {
+        $keluargaList = \App\Models\Keluarga::with('jemaat')->get();
+        $filename = 'data-keluarga-lengkap-' . now()->format('Y-m-d') . '.xls';
+
+        return response()
+            ->view('dashboard.home.exports.keluarga_excel', compact('keluargaList'))
+            ->header('Content-Type', 'application/vnd.ms-excel; charset=UTF-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 }

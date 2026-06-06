@@ -62,6 +62,15 @@
         .create(document.querySelector('textarea[name="isi"]'), {
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
         })
+        .then(editor => {
+            editor.keystrokes.set('Tab', (data, cancel) => {
+                editor.model.change(writer => {
+                    const text = writer.createText('\u00a0\u00a0\u00a0\u00a0');
+                    editor.model.insertContent(text);
+                });
+                cancel();
+            });
+        })
         .catch(error => {
             console.error(error);
         });

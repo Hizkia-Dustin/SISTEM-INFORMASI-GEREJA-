@@ -34,7 +34,7 @@
                             'category' => $dbArticle->kategori ?? 'Renungan',
                             'author' => 'Admin GKI',
                             'date' => $dbArticle->created_at->format('d M Y'),
-                            'excerpt' => Str::limit(strip_tags($dbArticle->isi), 100),
+                            'excerpt' => Str::cleanExcerpt($dbArticle->isi, 100),
                             'image' => 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop', // Renungan tidak ada gambar di database
                         ];
                     @endphp

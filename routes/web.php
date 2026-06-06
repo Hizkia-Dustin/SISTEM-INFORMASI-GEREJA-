@@ -214,6 +214,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::get('/keuangan/laporan', [DashboardController::class, 'laporanKeuangan'])->name('dashboard.keuangan.laporan');
     Route::get('/keuangan/laporan/download', [DashboardController::class, 'downloadLaporanKeuangan'])->name('dashboard.keuangan.laporan.download');
     Route::get('/keuangan/laporan/pdf', [DashboardController::class, 'downloadLaporanKeuanganPdf'])->name('dashboard.keuangan.laporan.pdf');
+    Route::get('/export/jemaat/pdf', [DashboardController::class, 'exportJemaatPdf'])->name('dashboard.export.jemaat.pdf');
+    Route::get('/export/jemaat/excel', [DashboardController::class, 'exportJemaatExcel'])->name('dashboard.export.jemaat.excel');
+    Route::get('/export/keluarga/excel', [DashboardController::class, 'exportKeluargaExcel'])->name('dashboard.export.keluarga.excel');
     Route::get('/keuangan/{id}/edit', [DashboardController::class, 'editKeuangan'])->name('dashboard.keuangan.edit');
     Route::put('/keuangan/{id}', [DashboardController::class, 'updateKeuangan'])->name('dashboard.keuangan.update');
     Route::delete('/keuangan/{id}', [DashboardController::class, 'destroyKeuangan'])->name('dashboard.keuangan.destroy');

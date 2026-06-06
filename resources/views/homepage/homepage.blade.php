@@ -75,8 +75,8 @@
                         {{ $renunganUtama->judul }}
                     </h2>
                     <p class="text-slate-600 mb-6 italic leading-relaxed">
-                        "{{ Str::limit(strip_tags($renunganUtama->isi), 180) }}"
-                        @if(strlen(strip_tags($renunganUtama->isi)) > 180)
+                        "{{ Str::cleanExcerpt($renunganUtama->isi, 180) }}"
+                        @if(strlen(Str::cleanText($renunganUtama->isi)) > 180)
                             <a href="{{ route('renungan.show', $renunganUtama->id) }}" class="text-[#0058bf] hover:underline font-bold text-xs inline-block ml-1">Baca Selengkapnya →</a>
                         @endif
                     </p>
@@ -261,7 +261,7 @@
                             <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
                         </div>
                         <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
-                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::cleanExcerpt($item->isi, 100) }}</p>
                         <a href="{{ route('warta.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2 mt-auto">Detail Warta <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
                     </div>
                 </div>
@@ -296,7 +296,7 @@
                             <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
                         </div>
                         <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
-                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::cleanExcerpt($item->isi, 100) }}</p>
                         <a href="{{ route('artikel.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2">Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
                     </div>
                 </div>
@@ -367,7 +367,7 @@
                             <span class="text-slate-400 text-[10px] font-medium">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
                         </div>
                         <h3 class="font-[Manrope] font-semibold text-xl mb-3 text-[#001142] group-hover:text-[#0058bf] transition-colors">{{ $item->judul }}</h3>
-                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::limit(strip_tags($item->isi), 100) }}</p>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">{{ Str::cleanExcerpt($item->isi, 100) }}</p>
                         <a href="{{ route('informasi.show', $item->id) }}" class="text-[#0058bf] font-bold text-sm flex items-center gap-2 mt-auto">Detail Informasi <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
                     </div>
                 </div>

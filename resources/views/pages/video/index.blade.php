@@ -32,7 +32,7 @@
                             'category' => $dbVideo->kategori ?? 'Video',
                             'author' => 'Admin GKI',
                             'date' => $dbVideo->created_at->format('d M Y'),
-                            'excerpt' => Str::limit(strip_tags($dbVideo->isi), 100),
+                            'excerpt' => Str::cleanExcerpt($dbVideo->isi, 100),
                             'image' => $dbVideo->gambar ? asset('storage/' . $dbVideo->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop',
                         ];
                     @endphp
