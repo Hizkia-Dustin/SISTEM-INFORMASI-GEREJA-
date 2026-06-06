@@ -57,15 +57,19 @@ class DashboardController extends Controller
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'numeric' => 'Bagian ini hanya dapat diisi dengan angka.',
+            'digits' => 'Nomor KK harus terdiri dari tepat 16 digit angka.',
+            'mimes' => 'Lampiran harus berupa file PNG, JPG, atau PDF.',
+            'max' => 'Ukuran file lampiran tidak boleh lebih dari 2MB.',
         ];
 
         $validated = $request->validate([
-            'no_kk' => 'required|numeric',
+            'no_kk' => 'required|digits:16',
             'nama' => 'required|string',
             'sektor' => 'required|string',
             'tanggal_nikah' => 'required|date',
             'status' => 'required|string',
             'alamat' => 'required|string',
+            'lampiran_kk' => 'nullable|mimes:png,jpg,jpeg,pdf|max:2048',
         ], $messages);
 
         $data = [
@@ -109,14 +113,19 @@ class DashboardController extends Controller
     {
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
+            'digits' => 'Nomor KK harus terdiri dari tepat 16 digit angka.',
+            'mimes' => 'Lampiran harus berupa file PNG, JPG, atau PDF.',
+            'max' => 'Ukuran file lampiran tidak boleh lebih dari 2MB.',
         ];
 
         $validated = $request->validate([
+            'no_kk' => 'required|digits:16',
             'nama' => 'required|string',
             'sektor' => 'required|string',
             'tanggal_nikah' => 'required|date',
             'status' => 'required|string',
             'alamat' => 'required|string',
+            'lampiran_kk' => 'nullable|mimes:png,jpg,jpeg,pdf|max:2048',
         ], $messages);
 
         $keluarga = \App\Models\Keluarga::findOrFail($id);
@@ -166,10 +175,11 @@ class DashboardController extends Controller
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'numeric' => 'Bagian ini hanya dapat diisi dengan angka.',
+            'no_induk.digits' => 'NIK harus terdiri dari 16 digit.',
         ];
 
         $request->validate([
-            'no_induk' => 'required|numeric',
+            'no_induk' => 'required|digits:16',
             'nama_lengkap' => 'required|string',
             'no_telepon' => 'required|numeric',
             'username' => 'required|string',
@@ -216,10 +226,11 @@ class DashboardController extends Controller
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'numeric' => 'Bagian ini hanya dapat diisi dengan angka.',
+            'no_induk.digits' => 'NIK harus terdiri dari 16 digit.',
         ];
 
         $request->validate([
-            'no_induk' => 'required|numeric',
+            'no_induk' => 'required|digits:16',
             'nama_lengkap' => 'required|string',
             'no_telepon' => 'required|numeric',
             'username' => 'required|string',
@@ -347,6 +358,9 @@ class DashboardController extends Controller
     public function storePelayan(Request $request)
     {
         $data = $request->except(['_token', '_method']);
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
+        }
         \App\Models\Pelayan::create($data);
         return redirect()->route('dashboard.pelayan.index')->with('success', 'Data pelayan berhasil ditambahkan.');
     }
@@ -359,6 +373,9 @@ class DashboardController extends Controller
     {
         $pelayan = \App\Models\Pelayan::findOrFail($id);
         $data = $request->except(['_token', '_method']);
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
+        }
         $pelayan->update($data);
         return redirect()->route('dashboard.pelayan.index')->with('success', 'Data pelayan berhasil diperbarui.');
     }
@@ -369,20 +386,82 @@ class DashboardController extends Controller
     }
 
     // 7. Renungan
-    public function renungan() { return view('dashboard.renungan.index'); }
-    public function createRenungan() { return view('dashboard.renungan.form', ['type' => 'Tambah']); }
-    public function editRenungan($id) { return view('dashboard.renungan.form', ['type' => 'Edit']); }
-    public function destroyRenungan($id) { return redirect()->back()->with('success', 'Renungan berhasil dihapus.'); }
+    public function renungan() { 
+        $renungan = \App\Models\Renungan::latest()->get();
+        return view('dashboard.renungan.index', compact('renungan')); 
+    }
+    public function createRenungan() { return view('dashboard.renungan.form', ['type' => 'Tambah', 'renungan' => new \App\Models\Renungan()]); }
+    public function storeRenungan(\Illuminate\Http\Request $request) 
+    {
+        $data = $request->except(['_token', '_method']);
+        \App\Models\Renungan::create($data);
+        return redirect()->route('dashboard.renungan.index')->with('success', 'Renungan berhasil ditambahkan.');
+    }
+    public function editRenungan($id) { 
+        $renungan = \App\Models\Renungan::findOrFail($id);
+        return view('dashboard.renungan.form', ['type' => 'Edit', 'renungan' => $renungan]); 
+    }
+    public function updateRenungan(\Illuminate\Http\Request $request, $id) 
+    {
+        $renungan = \App\Models\Renungan::findOrFail($id);
+        $data = $request->except(['_token', '_method']);
+        $renungan->update($data);
+        return redirect()->route('dashboard.renungan.index')->with('success', 'Renungan berhasil diperbarui.');
+    }
+    public function destroyRenungan($id) { 
+        \App\Models\Renungan::destroy($id);
+        return redirect()->back()->with('success', 'Renungan berhasil dihapus.'); 
+    }
 
     // 8. Jadwal Ibadah
     public function jadwal() 
     { 
-        $jadwal = [];
+        $jadwal = \App\Models\Jadwal::latest()->get();
         return view('dashboard.jadwal.index', compact('jadwal')); 
     }
-    public function createJadwal() { return view('dashboard.jadwal.form', ['type' => 'Tambah']); }
-    public function editJadwal($id) { return view('dashboard.jadwal.form', ['type' => 'Edit']); }
-    public function destroyJadwal($id) { return redirect()->back()->with('success', 'Jadwal ibadah berhasil dihapus.'); }
+    public function createJadwal() { return view('dashboard.jadwal.form', ['type' => 'Tambah', 'jadwal' => new \App\Models\Jadwal()]); }
+    
+    public function storeJadwal(\Illuminate\Http\Request $request) 
+    {
+        $request->validate([
+            'lampiran' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120',
+        ]);
+        
+        $data = $request->except(['_token', '_method']);
+        if ($request->hasFile('lampiran')) {
+            $data['lampiran'] = $request->file('lampiran')->store('uploads/jadwal', 'public');
+        }
+        
+        \App\Models\Jadwal::create($data);
+        return redirect()->route('dashboard.jadwal.index')->with('success', 'Jadwal ibadah berhasil ditambahkan.');
+    }
+
+    public function editJadwal($id) { 
+        $jadwal = \App\Models\Jadwal::findOrFail($id);
+        return view('dashboard.jadwal.form', ['type' => 'Edit', 'jadwal' => $jadwal]); 
+    }
+    
+    public function updateJadwal(\Illuminate\Http\Request $request, $id) 
+    {
+        $jadwal = \App\Models\Jadwal::findOrFail($id);
+        
+        $request->validate([
+            'lampiran' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120',
+        ]);
+        
+        $data = $request->except(['_token', '_method']);
+        if ($request->hasFile('lampiran')) {
+            $data['lampiran'] = $request->file('lampiran')->store('uploads/jadwal', 'public');
+        }
+        
+        $jadwal->update($data);
+        return redirect()->route('dashboard.jadwal.index')->with('success', 'Jadwal ibadah berhasil diperbarui.');
+    }
+
+    public function destroyJadwal($id) { 
+        \App\Models\Jadwal::destroy($id);
+        return redirect()->back()->with('success', 'Jadwal ibadah berhasil dihapus.'); 
+    }
 
     // 9. Jadwal Pelayanan (Tugas)
     public function tugas() { return view('dashboard.tugas.index'); }
