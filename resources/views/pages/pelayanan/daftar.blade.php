@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">No. Telepon / WhatsApp</label>
-                    <input name="no_telepon" value="{{ old('no_telepon') }}" required class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-[#0058bf] focus:ring-2 focus:ring-blue-100 outline-none" placeholder="08xxxxxxxxxx">
+                    <input name="no_telepon" value="{{ old('no_telepon') }}" required inputmode="numeric" pattern="[0-9]{8,15}" minlength="8" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'').slice(0,15)" class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-[#0058bf] focus:ring-2 focus:ring-blue-100 outline-none" placeholder="08xxxxxxxxxx">
                 </div>
             </div>
 

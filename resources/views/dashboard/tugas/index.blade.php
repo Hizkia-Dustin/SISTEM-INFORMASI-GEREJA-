@@ -16,7 +16,9 @@
             <label class="block mb-3 font-bold text-gray-400 text-[10px] uppercase tracking-widest">Pilih Nama Pelayan</label>
             <select class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-xs font-bold text-gray-600 focus:ring-2 focus:ring-primary/10 transition-all">
                 <option>Semua Pelayan</option>
-                <option>Pnt. Budi Santoso</option>
+                @foreach($pelayanList ?? [] as $pelayan)
+                    <option>{{ $pelayan }}</option>
+                @endforeach
             </select>
         </div>
         <div>
@@ -49,6 +51,7 @@
                     <th class="px-8 py-4">No</th>
                     <th class="px-8 py-4">Nama Ibadah</th>
                     <th class="px-8 py-4">Tanggal</th>
+                    <th class="px-8 py-4">Petugas</th>
                     <th class="px-8 py-4 text-center">Status Pelayanan</th>
                     <th class="px-8 py-4 text-right">Aksi</th>
                 </tr>
@@ -59,6 +62,9 @@
                     <td class="px-8 py-5 text-gray-500">{{ $index + 1 }}</td>
                     <td class="px-8 py-5 font-bold text-gray-800">{{ $item->judul }}</td>
                     <td class="px-8 py-5 text-gray-500">{{ $item->deadline ? \Carbon\Carbon::parse($item->deadline)->format('d/m/Y') : '-' }}</td>
+                    <td class="px-8 py-5 text-gray-500">
+                        <div class="max-w-md whitespace-pre-line text-xs leading-5">{{ $item->deskripsi ?? '-' }}</div>
+                    </td>
                     <td class="px-8 py-5 text-center">
                         <span class="px-3 py-1 rounded-full bg-blue-50 text-primary text-xs font-bold">{{ ucfirst($item->status) }}</span>
                     </td>
@@ -75,7 +81,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="px-8 py-12 text-center text-gray-400 italic">Belum ada jadwal pelayanan.</td>
+                    <td colspan="6" class="px-8 py-12 text-center text-gray-400 italic">Belum ada jadwal pelayanan.</td>
                 </tr>
                 @endforelse
             </tbody>

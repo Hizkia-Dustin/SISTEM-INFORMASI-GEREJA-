@@ -21,7 +21,7 @@
             <x-form.input label="Nama Lengkap" name="nama" value="{{ old('nama', $pelayan->nama ?? '') }}" placeholder="Nama jemaat/pelayan..." />
             <x-form.input label="Nama Tampil" name="nama_tampilan" value="{{ old('nama_tampilan', $pelayan->nama_tampilan ?? '') }}" placeholder="Opsional, contoh: Daniel S." />
 
-            <x-form.input label="No. Telepon / WhatsApp" name="no_telepon" value="{{ old('no_telepon', $pelayan->no_telepon ?? '') }}" placeholder="08xxxxxxxxxx" />
+            <x-form.input label="No. Telepon / WhatsApp" name="no_telepon" type="text" value="{{ old('no_telepon', $pelayan->no_telepon ?? '') }}" placeholder="08xxxxxxxxxx" inputmode="numeric" pattern="[0-9]{8,15}" minlength="8" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'').slice(0,15)" />
             <x-form.input label="Email" name="email" type="email" value="{{ old('email', $pelayan->email ?? '') }}" placeholder="email jemaat..." />
 
             <x-form.select label="Bidang Pelayanan" name="posisi">

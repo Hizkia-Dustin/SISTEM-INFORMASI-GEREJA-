@@ -75,10 +75,12 @@ Route::prefix('pelayanan')->group(function () {
         $data = $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'no_telepon' => 'required|string|max:30',
+            'no_telepon' => 'required|regex:/^[0-9]{8,15}$/',
             'komisi_tujuan' => 'required|string|max:255',
             'posisi' => 'required|string|max:255',
             'alasan' => 'nullable|string|max:2000',
+        ], [
+            'no_telepon.regex' => 'Nomor telepon hanya boleh angka, panjang 8 sampai 15 digit.',
         ]);
 
         \App\Models\Pelayan::create([

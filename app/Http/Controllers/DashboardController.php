@@ -618,6 +618,11 @@ class DashboardController extends Controller
     public function storePelayan(Request $request)
     {
         $this->validateImageUpload($request, 'foto');
+        $request->validate([
+            'no_telepon' => 'nullable|regex:/^[0-9]{8,15}$/',
+        ], [
+            'no_telepon.regex' => 'Nomor telepon hanya boleh angka, panjang 8 sampai 15 digit.',
+        ]);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
@@ -635,6 +640,11 @@ class DashboardController extends Controller
     {
         $pelayan = \App\Models\Pelayan::findOrFail($id);
         $this->validateImageUpload($request, 'foto');
+        $request->validate([
+            'no_telepon' => 'nullable|regex:/^[0-9]{8,15}$/',
+        ], [
+            'no_telepon.regex' => 'Nomor telepon hanya boleh angka, panjang 8 sampai 15 digit.',
+        ]);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
@@ -831,12 +841,28 @@ class DashboardController extends Controller
     public function tugas()
     {
         $tugas = \App\Models\Tugas::latest()->get();
-        return view('dashboard.tugas.index', compact('tugas'));
+        $pelayanList = \App\Models\Pelayan::query()
+            ->where(function ($query) {
+                $query->whereNull('status')
+                    ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw('LOWER(status)'), ['ditolak', 'tidak aktif', 'nonaktif']);
+            })
+            ->orderBy('nama')
+            ->get()
+            ->map(fn ($item) => $this->formatPelayanOption($item))
+            ->filter()
+            ->unique()
+            ->values();
+
+        return view('dashboard.tugas.index', compact('tugas', 'pelayanList'));
     }
 
     public function createTugas()
     {
-        return view('dashboard.tugas.form', ['type' => 'Tambah', 'tugas' => new \App\Models\Tugas()]);
+        return view('dashboard.tugas.form', [
+            'type' => 'Tambah',
+            'tugas' => new \App\Models\Tugas(),
+            ...$this->getTugasFormData(new \App\Models\Tugas()),
+        ]);
     }
 
     public function storeTugas(Request $request)
@@ -849,7 +875,11 @@ class DashboardController extends Controller
     public function editTugas($id)
     {
         $tugas = \App\Models\Tugas::findOrFail($id);
-        return view('dashboard.tugas.form', ['type' => 'Edit', 'tugas' => $tugas]);
+        return view('dashboard.tugas.form', [
+            'type' => 'Edit',
+            'tugas' => $tugas,
+            ...$this->getTugasFormData($tugas),
+        ]);
     }
 
     public function updateTugas(Request $request, $id)
@@ -1401,13 +1431,20 @@ class DashboardController extends Controller
             'pemusik' => 'nullable|string|max:255',
             'song_leader' => 'nullable|string|max:255',
             'liturgis_sm' => 'nullable|string|max:255',
+            'pengumpul_1' => 'nullable|string|max:255',
+            'pengumpul_2' => 'nullable|string|max:255',
+            'pengumpul_3' => 'nullable|string|max:255',
+            'pengumpul_4' => 'nullable|string|max:255',
+            'penerima_tamu_1' => 'nullable|string|max:255',
+            'penerima_tamu_2' => 'nullable|string|max:255',
+            'penerima_tamu_3' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:255',
         ]);
 
         $roles = collect($data)
             ->except(['judul', 'tanggal', 'status'])
             ->filter()
-            ->map(fn ($value, $key) => str_replace('_', ' ', ucwords($key, '_')) . ': ' . $value)
+            ->map(fn ($value, $key) => $this->formatTugasRoleLabel($key) . ': ' . $value)
             ->implode("\n");
 
         return [
@@ -1417,6 +1454,106 @@ class DashboardController extends Controller
             'deadline' => $data['tanggal'] ?? now()->toDateString(),
             'status' => $data['status'] ?? 'pending',
         ];
+    }
+
+    private function getTugasFormData(\App\Models\Tugas $tugas): array
+    {
+        $pelayan = \App\Models\Pelayan::query()
+            ->where(function ($query) {
+                $query->whereNull('status')
+                    ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw('LOWER(status)'), ['ditolak', 'tidak aktif', 'nonaktif']);
+            })
+            ->orderBy('nama')
+            ->get();
+
+        $allOptions = $pelayan->map(fn ($item) => $this->formatPelayanOption($item))->filter()->unique()->values();
+        $optionsFor = function (array $keywords) use ($pelayan, $allOptions) {
+            $filtered = $pelayan
+                ->filter(function ($item) use ($keywords) {
+                    $haystack = strtolower(implode(' ', [
+                        $item->posisi,
+                        $item->komisi_tujuan,
+                        $item->area_layanan,
+                        $item->kelompok_layanan,
+                    ]));
+
+                    foreach ($keywords as $keyword) {
+                        if (str_contains($haystack, strtolower($keyword))) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                })
+                ->map(fn ($item) => $this->formatPelayanOption($item))
+                ->filter()
+                ->unique()
+                ->values();
+
+            return $filtered->isNotEmpty() ? $filtered : $allOptions;
+        };
+
+        return [
+            'pelayanOptions' => [
+                'all' => $allOptions,
+                'pengkhotbah' => $optionsFor(['pendeta', 'pengkhotbah', 'firman', 'pembaca firman']),
+                'liturgis' => $optionsFor(['liturgis', 'worship', 'wl', 'song leader', 'singer']),
+                'doa_syafaat' => $optionsFor(['doa', 'syafaat']),
+                'warta' => $optionsFor(['warta', 'majelis', 'pembaca']),
+                'pemusik' => $optionsFor(['musik', 'pemusik', 'keyboard', 'gitar', 'bass', 'drum']),
+                'song_leader' => $optionsFor(['song leader', 'singer', 'vocal', 'worship leader']),
+                'liturgis_sm' => $optionsFor(['sekolah minggu', 'guru sekolah minggu', 'anak']),
+                'pengumpul' => $optionsFor(['kolektan', 'persembahan', 'pengumpul']),
+                'penerima_tamu' => $optionsFor(['usher', 'penerima tamu', 'tamu']),
+            ],
+            'tugasRoles' => $this->parseTugasRoles($tugas->deskripsi ?? ''),
+        ];
+    }
+
+    private function formatPelayanOption($pelayan): ?string
+    {
+        $name = $pelayan->nama_tampilan ?: $pelayan->nama;
+        $role = $pelayan->posisi ?: $pelayan->komisi_tujuan;
+
+        if (!$name) {
+            return null;
+        }
+
+        return $role ? $name . ' - ' . $role : $name;
+    }
+
+    private function parseTugasRoles(string $description): array
+    {
+        $roles = [];
+
+        foreach (preg_split('/\r\n|\r|\n/', $description) as $line) {
+            if (!str_contains($line, ':')) {
+                continue;
+            }
+
+            [$label, $value] = array_map('trim', explode(':', $line, 2));
+            $key = strtolower(str_replace(' ', '_', $label));
+            $roles[$key] = $value;
+        }
+
+        return $roles;
+    }
+
+    private function formatTugasRoleLabel(string $key): string
+    {
+        return match ($key) {
+            'doa_syafaat' => 'Doa Syafaat',
+            'song_leader' => 'Song Leader',
+            'liturgis_sm' => 'Liturgis SM',
+            'pengumpul_1' => 'Pengumpul 1',
+            'pengumpul_2' => 'Pengumpul 2',
+            'pengumpul_3' => 'Pengumpul 3',
+            'pengumpul_4' => 'Pengumpul 4',
+            'penerima_tamu_1' => 'Penerima Tamu 1',
+            'penerima_tamu_2' => 'Penerima Tamu 2',
+            'penerima_tamu_3' => 'Penerima Tamu 3',
+            default => str_replace('_', ' ', ucwords($key, '_')),
+        };
     }
 
     // ==========================================
