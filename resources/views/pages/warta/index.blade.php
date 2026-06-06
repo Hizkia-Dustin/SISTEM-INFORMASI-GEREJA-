@@ -17,7 +17,6 @@
             </div>
         </header>
 
-        <x-article.category-chips routeName="warta.index" :active="$kategori ?? null" />
 
         @php
             $hasArticles = isset($warta) && $warta->count() > 0;

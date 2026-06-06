@@ -17,7 +17,7 @@
             </div>
         </header>
 
-        <x-article.category-chips routeName="artikel.index" :active="$kategori ?? null" />
+        <x-article.category-chips routeName="artikel.index" :active="$kategori ?? null" :categories="['Bahan Khotbah', 'Kajian Teologi', 'Kesaksian']" />
 
         @php
             $hasArticles = $articles->count() > 0;

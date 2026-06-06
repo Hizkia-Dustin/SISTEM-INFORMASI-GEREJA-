@@ -17,7 +17,6 @@
             </div>
         </header>
 
-        <x-article.category-chips routeName="racakitri.index" :active="$kategori ?? null" />
 
         @php
             $hasArticles = $racakitri->count() > 0;

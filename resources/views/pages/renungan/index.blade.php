@@ -17,7 +17,6 @@
             </div>
         </header>
 
-        <x-article.category-chips routeName="renungan.index" :active="$kategori ?? null" />
 
         @php
             $hasArticles = isset($renungan) && $renungan->count() > 0;
