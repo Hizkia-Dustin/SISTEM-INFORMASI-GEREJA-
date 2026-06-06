@@ -43,6 +43,17 @@ class DashboardController extends Controller
         ]);
     }
 
+    private function filterPayloadForTable(string $table, array $payload): array
+    {
+        if (!\Illuminate\Support\Facades\Schema::hasTable($table)) {
+            return $payload;
+        }
+
+        return collect($payload)
+            ->filter(fn ($value, $column) => \Illuminate\Support\Facades\Schema::hasColumn($table, $column))
+            ->all();
+    }
+
     public function index()
     {
         $jemaatList = \App\Models\Jemaat::all();
@@ -675,16 +686,20 @@ class DashboardController extends Controller
 
     public function storeRenungan(Request $request)
     {
+        $this->validateImageUpload($request, 'gambar', 5120);
         $data = $request->validate([
             'tanggal' => 'required|date',
             'ayat' => 'nullable|string|max:255',
             'judul' => 'required|string|max:255',
+            'penulis' => 'nullable|string|max:255',
             'isi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        $data['penulis'] = $data['ayat'] ?? null;
         $data['status'] = 'published';
-        unset($data['ayat']);
+        if ($request->hasFile('gambar')) {
+            $data['gambar'] = $request->file('gambar')->store('uploads/renungan', 'public');
+        }
 
         \App\Models\Renungan::create($data);
         return redirect()->route('dashboard.renungan.index')->with('success', 'Renungan berhasil ditambahkan.');
@@ -699,15 +714,19 @@ class DashboardController extends Controller
     public function updateRenungan(Request $request, $id)
     {
         $renungan = \App\Models\Renungan::findOrFail($id);
+        $this->validateImageUpload($request, 'gambar', 5120);
         $data = $request->validate([
             'tanggal' => 'required|date',
             'ayat' => 'nullable|string|max:255',
             'judul' => 'required|string|max:255',
+            'penulis' => 'nullable|string|max:255',
             'isi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        $data['penulis'] = $data['ayat'] ?? null;
-        unset($data['ayat']);
+        if ($request->hasFile('gambar')) {
+            $data['gambar'] = $request->file('gambar')->store('uploads/renungan', 'public');
+        }
 
         $renungan->update($data);
         return redirect()->route('dashboard.renungan.index')->with('success', 'Renungan berhasil diperbarui.');
@@ -744,17 +763,22 @@ class DashboardController extends Controller
 
         $payload = [
             'nama_acara' => $data['nama'],
+            'nama' => $data['nama'],
             'tanggal' => $data['tanggal'],
             'waktu_mulai' => $data['waktu'],
+            'waktu' => $data['waktu'],
+            'jenis' => $data['jenis'] ?? 'Umum',
             'lokasi' => $data['jenis'] ?? 'GKI Pakuwon',
+            'jumlah_hadir' => $data['jumlah_hadir'] ?? 0,
             'deskripsi' => 'Jumlah hadir: ' . ($data['jumlah_hadir'] ?? 0),
         ];
 
         if ($request->hasFile('lampiran')) {
-            $payload['deskripsi'] .= "\nLampiran: " . $request->file('lampiran')->store('uploads/jadwal', 'public');
+            $payload['lampiran'] = $request->file('lampiran')->store('uploads/jadwal', 'public');
+            $payload['deskripsi'] .= "\nLampiran: " . $payload['lampiran'];
         }
 
-        \App\Models\Jadwal::create($payload);
+        \App\Models\Jadwal::create($this->filterPayloadForTable('jadwal', $payload));
         return redirect()->route('dashboard.jadwal.index')->with('success', 'Jadwal ibadah berhasil ditambahkan.');
     }
 
@@ -778,17 +802,22 @@ class DashboardController extends Controller
 
         $payload = [
             'nama_acara' => $data['nama'],
+            'nama' => $data['nama'],
             'tanggal' => $data['tanggal'],
             'waktu_mulai' => $data['waktu'],
+            'waktu' => $data['waktu'],
+            'jenis' => $data['jenis'] ?? $jadwal->jenis ?? 'Umum',
             'lokasi' => $data['jenis'] ?? $jadwal->lokasi,
+            'jumlah_hadir' => $data['jumlah_hadir'] ?? 0,
             'deskripsi' => 'Jumlah hadir: ' . ($data['jumlah_hadir'] ?? 0),
         ];
 
         if ($request->hasFile('lampiran')) {
-            $payload['deskripsi'] .= "\nLampiran: " . $request->file('lampiran')->store('uploads/jadwal', 'public');
+            $payload['lampiran'] = $request->file('lampiran')->store('uploads/jadwal', 'public');
+            $payload['deskripsi'] .= "\nLampiran: " . $payload['lampiran'];
         }
 
-        $jadwal->update($payload);
+        $jadwal->update($this->filterPayloadForTable('jadwal', $payload));
         return redirect()->route('dashboard.jadwal.index')->with('success', 'Jadwal ibadah berhasil diperbarui.');
     }
 
@@ -902,12 +931,21 @@ class DashboardController extends Controller
     public function storeBerita(Request $request)
     {
         $this->validateImageUpload($request);
-        $data = $request->except(['_token', '_method']);
+        $data = $request->validate([
+            'judul' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'isi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+        $data['konten'] = $data['isi'];
+        $data['penulis'] = auth()->user()->name ?? 'Admin Gereja';
+        $data['publish_at'] = now();
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/berita', 'public');
         }
         
-        $berita = \App\Models\Berita::create($data);
+        $berita = \App\Models\Berita::create($this->filterPayloadForTable('berita', $data));
         $this->notifyAdmins('Berita baru dipublikasikan', ($berita->judul ?? 'Berita baru') . ' telah ditambahkan.', route('dashboard.berita.index'), 'success');
         return redirect()->route('dashboard.berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
@@ -928,13 +966,20 @@ class DashboardController extends Controller
     {
         $berita = \App\Models\Berita::findOrFail($id);
         $this->validateImageUpload($request);
-        $data = $request->except(['_token', '_method']);
+        $data = $request->validate([
+            'judul' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'isi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+        $data['konten'] = $data['isi'];
         
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/berita', 'public');
         }
         
-        $berita->update($data);
+        $berita->update($this->filterPayloadForTable('berita', $data));
         return redirect()->route('dashboard.berita.index')->with('success', 'Berita berhasil diperbarui.');
     }
     
@@ -1300,7 +1345,12 @@ class DashboardController extends Controller
     public function createVideo() { return view('dashboard.video.form', ['type' => 'Tambah', 'video' => new \App\Models\Video()]); }
     public function storeVideo(\Illuminate\Http\Request $request) 
     {
-        $this->validateDocumentUpload($request, 'gambar', 'mp4,webm,mov', 20480);
+        $request->validate([
+            'gambar' => 'nullable|file|mimes:mp4,webm,mov,qt',
+        ], [
+            'gambar.file' => 'Video harus berupa file yang valid.',
+            'gambar.mimes' => 'Video harus berupa MP4, WebM, atau MOV.',
+        ]);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/video', 'public');
@@ -1320,7 +1370,12 @@ class DashboardController extends Controller
     public function updateVideo(\Illuminate\Http\Request $request, $id) 
     {
         $model = \App\Models\Video::findOrFail($id);
-        $this->validateDocumentUpload($request, 'gambar', 'mp4,webm,mov', 20480);
+        $request->validate([
+            'gambar' => 'nullable|file|mimes:mp4,webm,mov,qt',
+        ], [
+            'gambar.file' => 'Video harus berupa file yang valid.',
+            'gambar.mimes' => 'Video harus berupa MP4, WebM, atau MOV.',
+        ]);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/video', 'public');

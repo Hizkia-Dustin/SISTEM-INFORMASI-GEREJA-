@@ -9,7 +9,7 @@
 />
 
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 max-w-5xl overflow-hidden relative">
-    <form action="{{ $type == 'Edit' ? route('dashboard.renungan.update', $renungan->id ?? 0) : route('dashboard.renungan.store') }}" method="POST">
+    <form action="{{ $type == 'Edit' ? route('dashboard.renungan.update', $renungan->id ?? 0) : route('dashboard.renungan.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @if($type == 'Edit') @method('PUT') @endif
         <div class="flex flex-col gap-10">
@@ -26,6 +26,15 @@
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Isi Renungan</label>
                 <textarea name="isi" rows="15" placeholder="Tuliskan detail renungan di sini..." class="w-full px-6 py-5 rounded-2xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium leading-relaxed shadow-inner">{{ old('isi', $renungan->isi ?? '') }}</textarea>
+            </div>
+
+            <div>
+                <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Gambar Renungan</label>
+                <input type="file" name="gambar" accept="image/png,image/jpeg,image/webp" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                <p class="mt-2 text-xs text-gray-400 font-medium">Hanya gambar JPG, PNG, atau WebP. Maksimal 5MB.</p>
+                @if(isset($renungan) && $renungan->gambar)
+                    <p class="mt-2 text-xs text-gray-500">Gambar saat ini: <a href="{{ asset('storage/' . $renungan->gambar) }}" target="_blank" class="text-primary underline">Lihat Gambar</a></p>
+                @endif
             </div>
 
             <!-- Submit -->

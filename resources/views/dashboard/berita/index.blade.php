@@ -42,7 +42,7 @@
                         <div class="flex items-center justify-end gap-3">
                             <a href="{{ route('dashboard.berita.show', $b->id) }}" class="px-4 py-2 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 hover:text-primary transition-all shadow-sm">Detail</a>
                             <a href="{{ route('dashboard.berita.edit', $b->id) }}" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-lg shadow-primary/10 hover:bg-blue-700 transition-all">Ubah</a>
-                            <form action="{{ route('dashboard.berita.destroy', $b->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
+                            <form class="confirm-delete" action="{{ route('dashboard.berita.destroy', $b->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus berita ini?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">Hapus</button>

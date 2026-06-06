@@ -57,15 +57,19 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4">
-    <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl overflow-hidden">
-        <div class="px-6 py-5 border-b border-slate-200">
-            <h2 class="text-lg font-semibold text-slate-900">Konfirmasi Hapus</h2>
-            <p id="deleteConfirmMessage" class="mt-2 text-sm text-slate-600">Apakah Anda yakin ingin menghapus data ini?</p>
+<div id="deleteConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-[1.75rem] bg-white shadow-2xl shadow-slate-900/20 overflow-hidden border border-white/80">
+        <div class="px-7 pt-7 pb-5">
+            <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
+                <span class="material-symbols-outlined text-[30px]">delete</span>
+            </div>
+            <h2 class="text-xl font-extrabold text-slate-950 tracking-tight">Hapus Data?</h2>
+            <p id="deleteConfirmMessage" class="mt-2 text-sm leading-6 text-slate-500">Apakah Anda yakin ingin menghapus data ini?</p>
+            <p class="mt-4 rounded-2xl bg-amber-50 px-4 py-3 text-xs font-semibold leading-5 text-amber-700">Data yang sudah dihapus tidak bisa dikembalikan dari panel ini.</p>
         </div>
-        <div class="px-6 py-4 bg-slate-50 flex items-center justify-end gap-3">
-            <button id="deleteConfirmCancel" type="button" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">Batal</button>
-            <button id="deleteConfirmAccept" type="button" class="rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-600 transition">Hapus</button>
+        <div class="px-7 py-5 bg-slate-50 flex items-center justify-end gap-3 border-t border-slate-100">
+            <button id="deleteConfirmCancel" type="button" class="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-100 transition">Batal</button>
+            <button id="deleteConfirmAccept" type="button" class="rounded-xl bg-rose-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-rose-600/20 hover:bg-rose-700 transition">Ya, Hapus</button>
         </div>
     </div>
 </div>

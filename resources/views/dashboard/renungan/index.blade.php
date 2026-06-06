@@ -34,7 +34,7 @@
                             <a href="{{ route('dashboard.renungan.edit', $r->id) }}" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             </a>
-                            <form action="{{ route('dashboard.renungan.destroy', $r->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                            <form class="confirm-delete" action="{{ route('dashboard.renungan.destroy', $r->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus renungan ini?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">

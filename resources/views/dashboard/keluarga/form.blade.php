@@ -48,7 +48,6 @@
             <x-form.select label="Status" name="status">
                 <option value="Aktif" {{ old('status', $keluarga['status'] ?? '') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
                 <option value="Pindah" {{ old('status', $keluarga['status'] ?? '') == 'Pindah' ? 'selected' : '' }}>Pindah</option>
-                <option value="Meninggal" {{ old('status', $keluarga['status'] ?? '') == 'Meninggal' ? 'selected' : '' }}>Meninggal</option>
             </x-form.select>
 
             <div class="col-span-2">
