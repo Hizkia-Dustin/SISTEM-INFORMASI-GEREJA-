@@ -24,7 +24,16 @@
                 <option value="Pendamping Komisi" {{ old('kategori', $penatua->kategori ?? '') == 'Pendamping Komisi' ? 'selected' : '' }}>Pendamping Komisi</option>
             </x-form.select>
 
-            <x-form.input label="Jabatan Detail" name="jabatan" value="{{ old('jabatan', $penatua->jabatan ?? '') }}" placeholder="Contoh: Ketua Umum, Sekretaris 1, Anggota Bidang, Pendamping Komisi" />
+            <x-form.select label="Jabatan Detail" name="jabatan">
+                <option value="Ketua Umum" {{ old('jabatan', $penatua->jabatan ?? '') == 'Ketua Umum' ? 'selected' : '' }}>Ketua Umum</option>
+                <option value="Wakil Ketua" {{ old('jabatan', $penatua->jabatan ?? '') == 'Wakil Ketua' ? 'selected' : '' }}>Wakil Ketua</option>
+                <option value="Sekretaris 1" {{ old('jabatan', $penatua->jabatan ?? '') == 'Sekretaris 1' ? 'selected' : '' }}>Sekretaris 1</option>
+                <option value="Sekretaris 2" {{ old('jabatan', $penatua->jabatan ?? '') == 'Sekretaris 2' ? 'selected' : '' }}>Sekretaris 2</option>
+                <option value="Bendahara 1" {{ old('jabatan', $penatua->jabatan ?? '') == 'Bendahara 1' ? 'selected' : '' }}>Bendahara 1</option>
+                <option value="Bendahara 2" {{ old('jabatan', $penatua->jabatan ?? '') == 'Bendahara 2' ? 'selected' : '' }}>Bendahara 2</option>
+                <option value="Anggota" {{ old('jabatan', $penatua->jabatan ?? '') == 'Anggota' ? 'selected' : '' }}>Anggota</option>
+                <option value="Pendamping" {{ old('jabatan', $penatua->jabatan ?? '') == 'Pendamping' ? 'selected' : '' }}>Pendamping</option>
+            </x-form.select>
 
             <x-form.input label="Sub Kategori / Klasifikasi (Opsional)" name="sub_kategori" value="{{ old('sub_kategori', $penatua->sub_kategori ?? '') }}" placeholder="Contoh: Bid. Sarpen, Komisi Anak, Komisi Pemuda, dll." />
 
