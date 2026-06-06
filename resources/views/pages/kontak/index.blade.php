@@ -30,7 +30,7 @@
         }
         
         $finalEmbed = $embedUrl ?: $fallbackEmbed;
-        $finalLink = $mapsLink ?: 'https://maps.app.goo.gl/tWp12345';
+        $finalLink = $mapsLink ?: 'https://www.google.com/maps/place/GKI+Pakuwon/data=!4m2!3m1!1s0x0:0x50117feb015c122c?sa=X&ved=1t:2428&ictx=111';
     @endphp
 
     <div class="py-12 bg-gradient-to-b from-[#f4f7ff] to-[#f8f9ff]">
