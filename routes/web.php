@@ -13,21 +13,35 @@ Route::get('/', function () {
     $artikel = \App\Models\Artikel::latest()->take(3)->get();
     $racakitri = \App\Models\Racakitri::latest()->take(3)->get();
     $informasi = \App\Models\Informasi::latest()->take(3)->get();
-    $video = \App\Models\Video::where('status', 'Published')->latest()->take(3)->get();
     $warta = \App\Models\Warta::latest()->take(3)->get();
     $renungan = \App\Models\Renungan::orderBy('updated_at', 'desc')->take(3)->get();
-    $jadwalTerdekat = \App\Models\Jadwal::where('lokasi', '!=', 'Sakramen')
-        ->whereDate('tanggal', '>=', now()->toDateString())
-        ->orderBy('tanggal')
-        ->orderBy('waktu_mulai')
-        ->take(3)
-        ->get();
-    $jadwalSakramen = \App\Models\Jadwal::where('lokasi', 'Sakramen')
-        ->whereDate('tanggal', '>=', now()->toDateString())
-        ->orderBy('tanggal')
-        ->orderBy('waktu_mulai')
-        ->take(3)
-        ->get();
+
+    // Safe query for video (table may not exist on first deploy)
+    try {
+        $video = \App\Models\Video::where('status', 'Published')->latest()->take(3)->get();
+    } catch (\Exception $e) {
+        $video = collect();
+    }
+
+    // Safe query for jadwal (column names may vary between schema versions)
+    try {
+        $jadwalTerdekat = \App\Models\Jadwal::where('lokasi', '!=', 'Sakramen')
+            ->whereDate('tanggal', '>=', now()->toDateString())
+            ->orderBy('tanggal')
+            ->orderBy('waktu_mulai')
+            ->take(3)
+            ->get();
+        $jadwalSakramen = \App\Models\Jadwal::where('lokasi', 'Sakramen')
+            ->whereDate('tanggal', '>=', now()->toDateString())
+            ->orderBy('tanggal')
+            ->orderBy('waktu_mulai')
+            ->take(3)
+            ->get();
+    } catch (\Exception $e) {
+        $jadwalTerdekat = collect();
+        $jadwalSakramen = collect();
+    }
+
     $statsHomepage = [
         'keluarga' => \App\Models\Keluarga::where('status', 'aktif')->orWhere('status', 'Aktif')->count(),
         'jemaat' => \App\Models\Jemaat::where('status_keanggotaan', 'Aktif')->orWhere('status_aktif', 'aktif')->count(),
@@ -36,6 +50,7 @@ Route::get('/', function () {
     
     return view('homepage.homepage', compact('artikel', 'racakitri', 'informasi', 'video', 'warta', 'renungan', 'jadwalTerdekat', 'jadwalSakramen', 'statsHomepage'));
 })->name('home');
+
 
 // Tentang Kami
 Route::prefix('tentang-kami')->group(function () {
