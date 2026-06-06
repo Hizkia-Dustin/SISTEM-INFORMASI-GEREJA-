@@ -142,7 +142,7 @@
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 text-center">
                 <label class="block mb-6 font-bold text-primary text-[11px] uppercase tracking-widest">Foto Profil</label>
                 <label class="w-32 h-32 bg-gray-50 border-2 border-dashed border-gray-100 rounded-full mx-auto mb-6 flex items-center justify-center group hover:border-primary transition-all cursor-pointer relative overflow-hidden block">
-                    <input type="file" name="foto_profil" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_foto').textContent = this.files[0] ? this.files[0].name : 'Pilih Foto'">
+                    <input type="file" name="foto_profil" accept="image/png,image/jpeg,image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_foto').textContent = this.files[0] ? this.files[0].name : 'Pilih Foto'">
                     @if(!empty($jemaat['foto_profil']))
                         <img src="{{ asset('storage/' . $jemaat['foto_profil']) }}" alt="Foto Profil" class="w-full h-full object-cover">
                     @else
@@ -157,7 +157,7 @@
                 <label class="block mb-6 font-bold text-primary text-[11px] uppercase tracking-widest">Lampiran Dokumen</label>
                 <div class="flex flex-col gap-4">
                     <label class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-3 relative cursor-pointer hover:border-primary transition-all">
-                        <input type="file" name="lampiran_baptis" accept=".png,.jpg,.jpeg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_baptis').textContent = this.files[0] ? this.files[0].name : 'Surat Baptis'">
+                        <input type="file" name="lampiran_baptis" accept="application/pdf,image/png,image/jpeg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_baptis').textContent = this.files[0] ? this.files[0].name : 'Surat Baptis'">
                         <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-gray-400">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         </div>
@@ -169,12 +169,12 @@
                                     Surat Baptis
                                 @endif
                             </p>
-                            <p class="text-[9px] text-gray-400">JPG/PNG</p>
+                            <p class="text-[9px] text-gray-400">PDF/JPG/PNG</p>
                         </div>
                         <span class="text-[10px] font-bold text-primary">Upload</span>
                     </label>
                     <label class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-3 relative cursor-pointer hover:border-primary transition-all">
-                        <input type="file" name="lampiran_sidi" accept=".png,.jpg,.jpeg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_sidi').textContent = this.files[0] ? this.files[0].name : 'Surat Sidi'">
+                        <input type="file" name="lampiran_sidi" accept="application/pdf,image/png,image/jpeg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_sidi').textContent = this.files[0] ? this.files[0].name : 'Surat Sidi'">
                         <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-gray-400">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         </div>
@@ -186,7 +186,7 @@
                                     Surat Sidi
                                 @endif
                             </p>
-                            <p class="text-[9px] text-gray-400">JPG/PNG</p>
+                            <p class="text-[9px] text-gray-400">PDF/JPG/PNG</p>
                         </div>
                         <span class="text-[10px] font-bold text-primary">Upload</span>
                     </label>

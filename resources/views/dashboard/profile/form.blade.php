@@ -29,7 +29,7 @@
             <div class="col-span-2 flex flex-col items-center">
                 <label class="block mb-2 font-bold text-primary text-[11px] uppercase tracking-widest">Foto Profil</label>
                 <label class="w-32 h-32 bg-gray-50 border-2 border-dashed border-gray-100 rounded-full flex items-center justify-center group hover:border-primary transition-all cursor-pointer relative overflow-hidden block">
-                    <input type="file" name="foto_profil" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_foto').textContent = this.files[0] ? this.files[0].name : 'Pilih Foto'">
+                    <input type="file" name="foto_profil" accept="image/png,image/jpeg,image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_foto').textContent = this.files[0] ? this.files[0].name : 'Pilih Foto'">
                     @if(!empty($user->foto_profil))
                         <img src="{{ asset('storage/' . $user->foto_profil) }}" class="w-full h-full object-cover rounded-xl" alt="Foto Profil">
                     @else

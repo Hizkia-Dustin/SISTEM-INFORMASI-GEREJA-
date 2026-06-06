@@ -63,8 +63,9 @@
             <x-form.input label="Estimasi / Jumlah Kehadiran" name="jumlah_hadir" value="{{ old('jumlah_hadir', $jadwal->jumlah_hadir ?? '') }}" type="number" placeholder="Jumlah jemaat..." />
 
             <div class="col-span-2">
-                <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Lampiran Tata Ibadah (PDF/JPG/PNG)</label>
-                <input type="file" name="lampiran" accept=".pdf, .jpg, .jpeg, .png" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700 cursor-pointer file:cursor-pointer">
+                <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Lampiran Tata Ibadah</label>
+                <input type="file" name="lampiran" accept="application/pdf,image/png,image/jpeg" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700 cursor-pointer file:cursor-pointer">
+                <p class="mt-2 text-xs text-gray-400 font-medium">Boleh PDF, JPG, atau PNG. Maksimal 5MB.</p>
                 @if(isset($jadwal) && $jadwal->lampiran)
                     <p class="mt-2 text-xs text-gray-500">File saat ini: <a href="{{ asset('storage/' . $jadwal->lampiran) }}" target="_blank" class="text-primary underline">Lihat File</a></p>
                 @endif

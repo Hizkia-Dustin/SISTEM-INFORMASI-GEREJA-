@@ -21,6 +21,28 @@ class DashboardController extends Controller
         });
     }
 
+    private function validateImageUpload(Request $request, string $field = 'gambar', int $maxKb = 2048): void
+    {
+        $request->validate([
+            $field => 'nullable|image|mimes:jpg,jpeg,png,webp|max:' . $maxKb,
+        ], [
+            $field . '.image' => 'File harus berupa gambar.',
+            $field . '.mimes' => 'Gambar harus berupa JPG, PNG, atau WebP.',
+            $field . '.max' => 'Ukuran gambar tidak boleh lebih dari ' . (int) ($maxKb / 1024) . 'MB.',
+        ]);
+    }
+
+    private function validateDocumentUpload(Request $request, string $field, string $mimes, int $maxKb): void
+    {
+        $request->validate([
+            $field => 'nullable|file|mimes:' . $mimes . '|max:' . $maxKb,
+        ], [
+            $field . '.file' => 'Lampiran harus berupa file yang valid.',
+            $field . '.mimes' => 'Tipe file lampiran tidak sesuai.',
+            $field . '.max' => 'Ukuran lampiran tidak boleh lebih dari ' . (int) ($maxKb / 1024) . 'MB.',
+        ]);
+    }
+
     public function index()
     {
         $jemaatList = \App\Models\Jemaat::all();
@@ -240,6 +262,9 @@ class DashboardController extends Controller
             'baptis' => 'required|string',
             'sidi' => 'required|string',
             'alamat' => 'required|string',
+            'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'lampiran_baptis' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran_sidi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ], $messages);
 
         $data = $request->except(['_token', '_method']);
@@ -292,6 +317,9 @@ class DashboardController extends Controller
             'baptis' => 'required|string',
             'sidi' => 'required|string',
             'alamat' => 'required|string',
+            'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'lampiran_baptis' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran_sidi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ], $messages);
 
         $data = $request->except(['_token', '_method']);
@@ -533,6 +561,7 @@ class DashboardController extends Controller
     }
     public function storePelayan(Request $request)
     {
+        $this->validateImageUpload($request, 'foto');
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
@@ -549,6 +578,7 @@ class DashboardController extends Controller
     public function updatePelayan(Request $request, $id)
     {
         $pelayan = \App\Models\Pelayan::findOrFail($id);
+        $this->validateImageUpload($request, 'foto');
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
@@ -664,7 +694,7 @@ class DashboardController extends Controller
             'waktu' => 'required',
             'jenis' => 'nullable|string|max:255',
             'jumlah_hadir' => 'nullable|integer|min:0',
-            'lampiran' => 'nullable|file|mimes:pdf|max:5120',
+            'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         $payload = [
@@ -698,7 +728,7 @@ class DashboardController extends Controller
             'waktu' => 'required',
             'jenis' => 'nullable|string|max:255',
             'jumlah_hadir' => 'nullable|integer|min:0',
-            'lampiran' => 'nullable|file|mimes:pdf|max:5120',
+            'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         $payload = [
@@ -775,6 +805,7 @@ class DashboardController extends Controller
 
     public function storeProgramKerja(Request $request)
     {
+        $this->validateDocumentUpload($request, 'lampiran', 'pdf', 5120);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('lampiran')) {
             $data['lampiran'] = $request->file('lampiran')->store('uploads/program_kerja', 'public');
@@ -794,6 +825,7 @@ class DashboardController extends Controller
     public function updateProgramKerja(Request $request, $id)
     {
         $program_kerja = \App\Models\ProgramKerja::findOrFail($id);
+        $this->validateDocumentUpload($request, 'lampiran', 'pdf', 5120);
         $data = $request->except(['_token', '_method']);
         
         if ($request->hasFile('lampiran')) {
@@ -824,6 +856,7 @@ class DashboardController extends Controller
 
     public function storeBerita(Request $request)
     {
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/berita', 'public');
@@ -849,6 +882,7 @@ class DashboardController extends Controller
     public function updateBerita(Request $request, $id)
     {
         $berita = \App\Models\Berita::findOrFail($id);
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         
         if ($request->hasFile('gambar')) {
@@ -879,6 +913,7 @@ class DashboardController extends Controller
 
     public function storeWarta(Request $request)
     {
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/warta', 'public');
@@ -904,6 +939,7 @@ class DashboardController extends Controller
     public function updateWarta(Request $request, $id)
     {
         $warta = \App\Models\Warta::findOrFail($id);
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         
         if ($request->hasFile('gambar')) {
@@ -934,6 +970,7 @@ class DashboardController extends Controller
 
     public function storeArtikel(Request $request)
     {
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/artikel', 'public');
@@ -959,6 +996,7 @@ class DashboardController extends Controller
     public function updateArtikel(Request $request, $id)
     {
         $artikel = \App\Models\Artikel::findOrFail($id);
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         
         if ($request->hasFile('gambar')) {
@@ -1005,6 +1043,7 @@ class DashboardController extends Controller
             'tanggal_baptis' => 'nullable|date',
             'tanggal_sidi' => 'nullable|date',
             'sektor' => 'nullable|string',
+            'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ], $messages);
         
         $data = $validated;
@@ -1132,6 +1171,7 @@ class DashboardController extends Controller
     public function createRacakitri() { return view('dashboard.racakitri.form', ['type' => 'Tambah', 'racakitri' => new \App\Models\Racakitri()]); }
     public function storeRacakitri(\Illuminate\Http\Request $request) 
     {
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/racakitri', 'public');
@@ -1151,6 +1191,7 @@ class DashboardController extends Controller
     public function updateRacakitri(\Illuminate\Http\Request $request, $id) 
     {
         $model = \App\Models\Racakitri::findOrFail($id);
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/racakitri', 'public');
@@ -1172,6 +1213,7 @@ class DashboardController extends Controller
     public function createInformasi() { return view('dashboard.informasi.form', ['type' => 'Tambah', 'informasi' => new \App\Models\Informasi()]); }
     public function storeInformasi(\Illuminate\Http\Request $request) 
     {
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/informasi', 'public');
@@ -1191,6 +1233,7 @@ class DashboardController extends Controller
     public function updateInformasi(\Illuminate\Http\Request $request, $id) 
     {
         $model = \App\Models\Informasi::findOrFail($id);
+        $this->validateImageUpload($request);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/informasi', 'public');
@@ -1212,6 +1255,7 @@ class DashboardController extends Controller
     public function createVideo() { return view('dashboard.video.form', ['type' => 'Tambah', 'video' => new \App\Models\Video()]); }
     public function storeVideo(\Illuminate\Http\Request $request) 
     {
+        $this->validateDocumentUpload($request, 'gambar', 'mp4,webm,mov', 20480);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/video', 'public');
@@ -1231,6 +1275,7 @@ class DashboardController extends Controller
     public function updateVideo(\Illuminate\Http\Request $request, $id) 
     {
         $model = \App\Models\Video::findOrFail($id);
+        $this->validateDocumentUpload($request, 'gambar', 'mp4,webm,mov', 20480);
         $data = $request->except(['_token', '_method']);
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('uploads/video', 'public');
@@ -1301,6 +1346,7 @@ class DashboardController extends Controller
             'riwayat_pelayanan' => 'nullable|array',
             'pendidikan' => 'nullable|array',
             'status' => 'required|string',
+            'foto_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         if ($request->hasFile('foto_file')) {
@@ -1336,6 +1382,7 @@ class DashboardController extends Controller
             'riwayat_pelayanan' => 'nullable|array',
             'pendidikan' => 'nullable|array',
             'status' => 'required|string',
+            'foto_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         if ($request->hasFile('foto_file')) {

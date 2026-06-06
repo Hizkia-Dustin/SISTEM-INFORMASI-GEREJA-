@@ -39,8 +39,9 @@
         </div>
 
         <div>
-            <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">File Video (MP4)</label>
-            <input type="file" name="gambar" accept="video/mp4,video/x-m4v,video/*" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+            <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">File Video</label>
+            <input type="file" name="gambar" accept="video/mp4,video/webm,video/quicktime" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+            <p class="mt-2 text-xs text-gray-400 font-medium">Hanya video MP4, WebM, atau MOV. Maksimal 20MB.</p>
             @if(isset($video) && $video->gambar)
                 <p class="mt-2 text-xs text-gray-500">Video saat ini: <a href="{{ asset('storage/' . $video->gambar) }}" target="_blank" class="text-primary underline">Lihat Video</a></p>
             @endif

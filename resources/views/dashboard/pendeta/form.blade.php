@@ -49,7 +49,8 @@
 
             <div class="col-span-2">
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Foto Profil</label>
-                <input type="file" name="foto_file" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                <input type="file" name="foto_file" accept="image/png,image/jpeg,image/webp" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                <p class="mt-2 text-xs text-gray-400 font-medium">Hanya gambar JPG, PNG, atau WebP. Maksimal 2MB.</p>
                 <div class="mt-4">
                     <x-form.input label="Atau Gunakan URL Foto (Opsional)" name="foto" value="{{ old('foto', $pendeta->foto ?? '') }}" placeholder="https://example.com/foto.jpg" />
                 </div>

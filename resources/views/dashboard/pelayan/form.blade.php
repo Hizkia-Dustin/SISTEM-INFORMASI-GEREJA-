@@ -100,7 +100,8 @@
 
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Foto Pelayan</label>
-                <input type="file" name="foto" accept="image/*" class="w-full cursor-pointer px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                <input type="file" name="foto" accept="image/png,image/jpeg,image/webp" class="w-full cursor-pointer px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                <p class="mt-2 text-xs text-gray-400 font-medium">Hanya gambar JPG, PNG, atau WebP. Maksimal 2MB.</p>
                 @if(isset($pelayan) && $pelayan->foto)
                     <p class="mt-2 text-xs text-gray-500">Foto saat ini: <a href="{{ asset('storage/' . $pelayan->foto) }}" target="_blank" class="text-primary underline">Lihat Foto</a></p>
                 @endif
