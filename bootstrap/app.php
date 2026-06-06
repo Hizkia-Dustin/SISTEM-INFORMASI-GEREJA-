@@ -11,6 +11,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Enforce trusted hosts to prevent Host manipulation and proxy/metadata scanning
+        $middleware->trustHosts(at: [
+            'gki-pakuwon-lav.sao.dom.my.id',
+            'localhost',
+            '127.0.0.1',
+        ]);
+
+        // Trust reverse proxies to resolve correct client IP and secure HTTPS connections
+        $middleware->trustProxies(at: '*');
+
+        // Append custom SecurityHeaders middleware globally
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
         $middleware->redirectUsersTo('/dashboard');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
