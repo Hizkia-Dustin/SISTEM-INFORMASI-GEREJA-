@@ -1,0 +1,40 @@
+source:
+  type: clone
+  url: https://github.com/Hizkia-Dustin/SISTEM-INFORMASI-GEREJA-.git
+  branch: codex/domcloud-deploy
+
+root: public_html/public
+
+features:
+  - php 8.4
+  - node lts
+  - mysql
+
+commands:
+  - composer install --no-dev --optimize-autoloader
+  - cp .env.example .env
+  - sed -ri "s/APP_ENV=.*/APP_ENV=production/g" .env
+  - sed -ri "s/APP_DEBUG=.*/APP_DEBUG=false/g" .env
+  - sed -ri "s/APP_URL=.*/APP_URL=https:\/\/${DOMAIN}/g" .env
+  - sed -ri "s/(# )?DB_CONNECTION=.*/DB_CONNECTION=mysql/g" .env
+  - sed -ri "s/(# )?DB_HOST=.*/DB_HOST=localhost/g" .env
+  - sed -ri "s/(# )?DB_PORT=.*/DB_PORT=3306/g" .env
+  - sed -ri "s/(# )?DB_DATABASE=.*/DB_DATABASE=${DATABASE}/g" .env
+  - sed -ri "s/(# )?DB_USERNAME=.*/DB_USERNAME=${USERNAME}/g" .env
+  - sed -ri "s/(# )?DB_PASSWORD=.*/DB_PASSWORD=${MYPASSWD}/g" .env
+  - php artisan key:generate --force
+  - php artisan migrate --force
+  - php artisan db:seed --class=UserSeeder --force
+  - php artisan storage:link
+  - npm install
+  - npm run build
+  - rm -f public/hot
+  - php artisan optimize:clear
+  - php artisan cache:clear
+  - php artisan config:clear
+  - php artisan route:clear
+  - php artisan view:clear
+  - php artisan event:clear
+  - php artisan config:cache
+  - php artisan route:cache
+  - php artisan view:cache
