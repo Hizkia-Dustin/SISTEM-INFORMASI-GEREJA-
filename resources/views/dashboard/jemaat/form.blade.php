@@ -33,9 +33,9 @@
                             @endforeach
                         </x-form.select>
                     </div>
-                    <x-form.input label="Nomor Induk Kependudukan (NIK)" name="no_induk" type="number" value="{{ old('no_induk', $jemaat['no_induk'] ?? '') }}" placeholder="16 digit NIK..." />
+                    <x-form.input label="Nomor Induk Kependudukan (NIK)" name="no_induk" type="text" value="{{ old('no_induk', $jemaat['no_induk'] ?? '') }}" placeholder="16 digit NIK..." inputmode="numeric" maxlength="16" minlength="16" pattern="[0-9]*" class="appearance-none" />
                     <x-form.input label="Nama Lengkap" name="nama_lengkap" value="{{ old('nama_lengkap', $jemaat['nama_lengkap'] ?? '') }}" placeholder="Nama lengkap sesuai KTP..." />
-                    <x-form.input label="Nomor Telepon" name="no_telepon" type="number" value="{{ old('no_telepon', $jemaat['no_telepon'] ?? '') }}" placeholder="Contoh: 0812..." />
+                    <x-form.input label="Nomor Telepon" name="no_telepon" type="text" value="{{ old('no_telepon', $jemaat['no_telepon'] ?? '') }}" placeholder="Contoh: 0812..." inputmode="tel" pattern="[0-9]*" class="appearance-none" />
                     <x-form.input label="Username" name="username" value="{{ old('username', $jemaat['username'] ?? '') }}" placeholder="Untuk login aplikasi..." />
                     
                     <x-form.select label="Jenis Kelamin" name="jenis_kelamin">
@@ -51,9 +51,35 @@
                     </x-form.select>
 
                     <x-form.input label="Tempat Lahir" name="tempat_lahir" value="{{ old('tempat_lahir', $jemaat['tempat_lahir'] ?? '') }}" placeholder="Kota kelahiran..." />
-                    <x-form.input label="Tanggal Lahir" name="tanggal_lahir" type="date" value="{{ old('tanggal_lahir', $jemaat['tanggal_lahir'] ?? '') }}" />
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700 text-sm">Tanggal Lahir</label>
+                        <div class="relative">
+                            <span class="pointer-events-auto absolute inset-y-0 left-3 flex items-center text-gray-400 cursor-pointer" onclick="document.getElementById('tanggal_lahir_picker').showPicker?.() || document.getElementById('tanggal_lahir_picker').focus()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h1V3a1 1 0 011-1zm11 7H3v7a1 1 0 001 1h12a1 1 0 001-1V9zm-3-3a1 1 0 100-2 1 1 0 000 2zm-8 0a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <input id="tanggal_lahir_display" type="text" value="{{ old('tanggal_lahir', $jemaat['tanggal_lahir'] ?? '') ? \Carbon\Carbon::parse(old('tanggal_lahir', $jemaat['tanggal_lahir'] ?? ''))->format('d / m / Y') : '' }}" class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm shadow-sm cursor-pointer" readonly onclick="document.getElementById('tanggal_lahir_picker').showPicker?.() || document.getElementById('tanggal_lahir_picker').focus()" placeholder="Pilih tanggal lahir" />
+                            <input id="tanggal_lahir_picker" type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir', $jemaat['tanggal_lahir'] ?? '') }}" class="absolute left-0 top-0 w-0 h-0 opacity-0 pointer-events-none" onchange="syncTanggalLahir(this.value)" required />
+                        </div>
+                        @error('tanggal_lahir')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
+
+            <script>
+                function syncTanggalLahir(value) {
+                    const display = document.getElementById('tanggal_lahir_display');
+                    if (!value) {
+                        display.value = '';
+                        return;
+                    }
+                    const [year, month, day] = value.split('-');
+                    display.value = `${day} / ${month} / ${year}`;
+                }
+            </script>
 
             <!-- Church Status -->
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-10">
@@ -131,7 +157,7 @@
                 <label class="block mb-6 font-bold text-primary text-[11px] uppercase tracking-widest">Lampiran Dokumen</label>
                 <div class="flex flex-col gap-4">
                     <label class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-3 relative cursor-pointer hover:border-primary transition-all">
-                        <input type="file" name="lampiran_baptis" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_baptis').textContent = this.files[0] ? this.files[0].name : 'Surat Baptis'">
+                        <input type="file" name="lampiran_baptis" accept=".png,.jpg,.jpeg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_baptis').textContent = this.files[0] ? this.files[0].name : 'Surat Baptis'">
                         <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-gray-400">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         </div>
@@ -143,12 +169,12 @@
                                     Surat Baptis
                                 @endif
                             </p>
-                            <p class="text-[9px] text-gray-400">PDF/JPG</p>
+                            <p class="text-[9px] text-gray-400">JPG/PNG</p>
                         </div>
                         <span class="text-[10px] font-bold text-primary">Upload</span>
                     </label>
                     <label class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-3 relative cursor-pointer hover:border-primary transition-all">
-                        <input type="file" name="lampiran_sidi" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_sidi').textContent = this.files[0] ? this.files[0].name : 'Surat Sidi'">
+                        <input type="file" name="lampiran_sidi" accept=".png,.jpg,.jpeg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50" onchange="document.getElementById('filename_sidi').textContent = this.files[0] ? this.files[0].name : 'Surat Sidi'">
                         <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-gray-400">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         </div>
@@ -160,7 +186,7 @@
                                     Surat Sidi
                                 @endif
                             </p>
-                            <p class="text-[9px] text-gray-400">PDF/JPG</p>
+                            <p class="text-[9px] text-gray-400">JPG/PNG</p>
                         </div>
                         <span class="text-[10px] font-bold text-primary">Upload</span>
                     </label>

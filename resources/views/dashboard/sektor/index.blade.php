@@ -97,11 +97,15 @@
                             <td class="px-8 py-4 text-gray-500">{{ $s->keterangan }}</td>
                             <td class="px-8 py-4 text-right">
                                 <div class="flex items-center justify-end gap-3">
-                                    <a href="{{ route('dashboard.sektor.edit', $s->id) }}" class="text-gray-400 hover:text-primary transition-colors text-xs font-bold">Edit</a>
-                                    <form action="{{ route('dashboard.sektor.destroy', $s->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus sektor ini?')">
+                                    <a href="{{ route('dashboard.sektor.edit', $s->id) }}" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-lg shadow-primary/10 hover:bg-blue-700 transition-all">
+                                        Ubah
+                                    </a>
+                                    <form class="confirm-delete" action="{{ route('dashboard.sektor.destroy', $s->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus sektor ini?">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-400 hover:text-red-600 transition-colors text-xs font-bold">Hapus</button>
+                                        <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">
+                                            Hapus
+                                        </button>
                                     </form>
                                 </div>
                             </td>

@@ -39,7 +39,7 @@
             @endif
             <div class="pt-8 border-t border-gray-50 flex flex-col gap-3">
                 <a href="{{ route('dashboard.keluarga.edit', $keluarga->id) }}" class="w-full py-3.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all text-center">Ubah Data Keluarga</a>
-                <form action="{{ route('dashboard.keluarga.destroy', $keluarga->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus seluruh data keluarga ini?')">
+                <form class="confirm-delete" action="{{ route('dashboard.keluarga.destroy', $keluarga->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus seluruh data keluarga ini?">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="w-full py-3.5 bg-rose-50 text-rose-500 rounded-xl text-sm font-bold hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center gap-2">Hapus Keluarga</button>

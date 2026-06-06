@@ -39,13 +39,15 @@
                             <span class="text-gray-400 italic text-xs">Tidak ada file</span>
                             @endif
                         </td>
-                        <td class="px-8 py-5 text-right flex items-center justify-end gap-3">
-                            <a href="{{ route('dashboard.program_kerja.edit', $item->id) }}" class="text-gray-400 hover:text-primary transition-colors">Ubah</a>
-                            <form action="{{ route('dashboard.program_kerja.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                        <td class="px-8 py-5 text-right">
+                            <div class="flex items-center justify-end gap-3">
+                            <a href="{{ route('dashboard.program_kerja.edit', $item->id) }}" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-lg shadow-primary/10 hover:bg-blue-700 transition-all">Ubah</a>
+                            <form class="confirm-delete" action="{{ route('dashboard.program_kerja.destroy', $item->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus data ini?">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-gray-400 hover:text-rose-500 transition-colors">Hapus</button>
+                                <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">Hapus</button>
                             </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
@@ -87,13 +89,15 @@
                             <span class="text-gray-400 italic text-xs">Tidak ada file</span>
                             @endif
                         </td>
-                        <td class="px-8 py-5 text-right flex items-center justify-end gap-3">
-                            <a href="{{ route('dashboard.program_kerja.edit', $item->id) }}" class="text-gray-400 hover:text-primary transition-colors">Ubah</a>
-                            <form action="{{ route('dashboard.program_kerja.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                        <td class="px-8 py-5 text-right">
+                            <div class="flex items-center justify-end gap-3">
+                            <a href="{{ route('dashboard.program_kerja.edit', $item->id) }}" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-lg shadow-primary/10 hover:bg-blue-700 transition-all">Ubah</a>
+                            <form class="confirm-delete" action="{{ route('dashboard.program_kerja.destroy', $item->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus data ini?">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-gray-400 hover:text-rose-500 transition-colors">Hapus</button>
+                                <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">Hapus</button>
                             </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

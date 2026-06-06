@@ -26,7 +26,7 @@
         <!-- 2. Modul Keluarga -->
         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 pt-6 pb-2">Manajemen Data</div>
         <div x-data="{ open: {{ request()->routeIs('dashboard.keluarga.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                     Keluarga
@@ -41,7 +41,7 @@
 
         <!-- 3. Modul Jemaat -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.jemaat.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Jemaat
@@ -56,7 +56,7 @@
 
         <!-- 4. Modul Sektor -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.sektor.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                     Sektor
@@ -88,7 +88,7 @@
         <!-- 5. Keuangan -->
         <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 pt-6 pb-2">Administrasi</div>
         <div x-data="{ open: {{ request()->routeIs('dashboard.keuangan.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     Keuangan
@@ -108,7 +108,7 @@
 
         <!-- 6. Pelayan Gereja -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.pelayan.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg>
                     Pelayan Gereja
@@ -123,7 +123,7 @@
 
         <!-- 7. Renungan Harian -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.renungan.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     Renungan Harian
@@ -138,7 +138,7 @@
 
         <!-- 7b. Warta Jemaat -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.warta.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                     Warta Jemaat
@@ -153,7 +153,7 @@
 
         <!-- 8 & 9. Jadwal Ibadah & Pelayanan -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.jadwal.*') || request()->routeIs('dashboard.tugas.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     Jadwal & Pelayanan
@@ -163,13 +163,14 @@
             <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
                 <a href="{{ route('dashboard.jadwal.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.jadwal.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Jadwal Ibadah</a>
                 <a href="{{ route('dashboard.jadwal.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.jadwal.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Jadwal Ibadah</a>
-                <a href="{{ route('dashboard.tugas.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.tugas.*') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Jadwal Pelayan</a>
+                <a href="{{ route('dashboard.tugas.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.tugas.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Jadwal Pelayan</a>
+                <a href="{{ route('dashboard.tugas.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.tugas.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Jadwal Pelayan</a>
             </div>
         </div>
 
         <!-- 10. Program Kerja Pelayanan -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.program_kerja.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                     Program Kerja
@@ -184,7 +185,7 @@
 
         <!-- 11. Berita Gereja -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.berita.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                     Berita Gereja
@@ -199,7 +200,7 @@
 
         <!-- 12. Artikel -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.artikel.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                     Artikel
@@ -214,7 +215,7 @@
 
         <!-- 13. Racakitri -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.racakitri.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1.5 7.5L12 18l-6.5 3.5L7 14l-5-5 7-1z"/></svg>
                     Racakitri
@@ -229,7 +230,7 @@
 
         <!-- 14. Informasi -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.informasi.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Informasi
@@ -244,7 +245,7 @@
 
         <!-- 15. Video -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.video.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                     Video
@@ -259,7 +260,7 @@
 
         <!-- 16. Komisi & Bagian -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.komisi.*') ? 'true' : 'false' }} }">
-            <button @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
+            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     Komisi & Bagian

@@ -104,15 +104,19 @@ class DashboardController extends Controller
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'numeric' => 'Bagian ini hanya dapat diisi dengan angka.',
+            'digits' => 'Nomor KK harus terdiri dari tepat 16 digit angka.',
+            'mimes' => 'Lampiran harus berupa file PNG, JPG, atau PDF.',
+            'max' => 'Ukuran file lampiran tidak boleh lebih dari 2MB.',
         ];
 
         $validated = $request->validate([
-            'no_kk' => 'required|numeric',
+            'no_kk' => 'required|digits:16',
             'nama' => 'required|string',
             'sektor' => 'required|string',
             'tanggal_nikah' => 'required|date',
             'status' => 'required|string',
             'alamat' => 'required|string',
+            'lampiran_kk' => 'nullable|mimes:png,jpg,jpeg,pdf|max:2048',
         ], $messages);
 
         $data = [
@@ -157,14 +161,19 @@ class DashboardController extends Controller
     {
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
+            'digits' => 'Nomor KK harus terdiri dari tepat 16 digit angka.',
+            'mimes' => 'Lampiran harus berupa file PNG, JPG, atau PDF.',
+            'max' => 'Ukuran file lampiran tidak boleh lebih dari 2MB.',
         ];
 
         $validated = $request->validate([
+            'no_kk' => 'required|digits:16',
             'nama' => 'required|string',
             'sektor' => 'required|string',
             'tanggal_nikah' => 'required|date',
             'status' => 'required|string',
             'alamat' => 'required|string',
+            'lampiran_kk' => 'nullable|mimes:png,jpg,jpeg,pdf|max:2048',
         ], $messages);
 
         $keluarga = \App\Models\Keluarga::findOrFail($id);
@@ -214,10 +223,11 @@ class DashboardController extends Controller
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'numeric' => 'Bagian ini hanya dapat diisi dengan angka.',
+            'no_induk.digits' => 'NIK harus terdiri dari 16 digit.',
         ];
 
         $request->validate([
-            'no_induk' => 'required|numeric',
+            'no_induk' => 'required|digits:16',
             'nama_lengkap' => 'required|string',
             'no_telepon' => 'required|numeric',
             'username' => 'required|string',
@@ -265,10 +275,11 @@ class DashboardController extends Controller
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'numeric' => 'Bagian ini hanya dapat diisi dengan angka.',
+            'no_induk.digits' => 'NIK harus terdiri dari 16 digit.',
         ];
 
         $request->validate([
-            'no_induk' => 'required|numeric',
+            'no_induk' => 'required|digits:16',
             'nama_lengkap' => 'required|string',
             'no_telepon' => 'required|numeric',
             'username' => 'required|string',
@@ -523,6 +534,9 @@ class DashboardController extends Controller
     public function storePelayan(Request $request)
     {
         $data = $request->except(['_token', '_method']);
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
+        }
         \App\Models\Pelayan::create($data);
         $this->notifyAdmins('Data pelayan ditambahkan', 'Pelayan baru telah masuk ke data pelayanan.', route('dashboard.pelayan.index'));
         return redirect()->route('dashboard.pelayan.index')->with('success', 'Data pelayan berhasil ditambahkan.');
@@ -536,6 +550,9 @@ class DashboardController extends Controller
     {
         $pelayan = \App\Models\Pelayan::findOrFail($id);
         $data = $request->except(['_token', '_method']);
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('uploads/pelayan', 'public');
+        }
         $pelayan->update($data);
         return redirect()->route('dashboard.pelayan.index')->with('success', 'Data pelayan berhasil diperbarui.');
     }

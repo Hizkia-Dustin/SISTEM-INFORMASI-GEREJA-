@@ -55,6 +55,65 @@
 
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4">
+    <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl overflow-hidden">
+        <div class="px-6 py-5 border-b border-slate-200">
+            <h2 class="text-lg font-semibold text-slate-900">Konfirmasi Hapus</h2>
+            <p id="deleteConfirmMessage" class="mt-2 text-sm text-slate-600">Apakah Anda yakin ingin menghapus data ini?</p>
+        </div>
+        <div class="px-6 py-4 bg-slate-50 flex items-center justify-end gap-3">
+            <button id="deleteConfirmCancel" type="button" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">Batal</button>
+            <button id="deleteConfirmAccept" type="button" class="rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-600 transition">Hapus</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('deleteConfirmModal');
+        const messageEl = document.getElementById('deleteConfirmMessage');
+        const acceptButton = document.getElementById('deleteConfirmAccept');
+        const cancelButton = document.getElementById('deleteConfirmCancel');
+        let targetForm = null;
+
+        document.querySelectorAll('form.confirm-delete').forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                targetForm = form;
+                messageEl.textContent = form.dataset.confirm || 'Apakah Anda yakin ingin menghapus data ini?';
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+        });
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            targetForm = null;
+        }
+
+        cancelButton.addEventListener('click', closeModal);
+        acceptButton.addEventListener('click', function() {
+            if (targetForm) {
+                targetForm.submit();
+            }
+        });
+
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    });
+</script>
+
 @stack('scripts')
 </body>
 </html>

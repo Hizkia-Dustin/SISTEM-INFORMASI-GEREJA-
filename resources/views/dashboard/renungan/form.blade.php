@@ -15,10 +15,13 @@
         <div class="flex flex-col gap-10">
             <div class="grid grid-cols-2 gap-8">
                 <x-form.input label="Tanggal Renungan" name="tanggal" type="date" value="{{ old('tanggal', $renungan->tanggal ?? '') }}" />
-                <x-form.input label="Ayat Renungan" name="ayat" value="{{ old('ayat', $renungan->penulis ?? '') }}" placeholder="Contoh: Yohanes 3:16 atau Mazmur 23:1" />
+                <x-form.input label="Ayat Renungan" name="ayat" placeholder="Contoh: Yohanes 3:16 atau Mazmur 23:1" value="{{ old('ayat', $renungan->ayat ?? '') }}" />
             </div>
 
-            <x-form.input label="Judul Renungan" name="judul" value="{{ old('judul', $renungan->judul ?? '') }}" placeholder="Masukkan judul yang menginspirasi..." />
+            <div class="grid grid-cols-2 gap-8">
+                <x-form.input label="Judul Renungan" name="judul" placeholder="Masukkan judul yang menginspirasi..." value="{{ old('judul', $renungan->judul ?? '') }}" />
+                <x-form.input label="Penulis / Pendeta" name="penulis" placeholder="Contoh: Pdt. Hizkia, S.Th." value="{{ old('penulis', $renungan->penulis ?? '') }}" />
+            </div>
 
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Isi Renungan</label>

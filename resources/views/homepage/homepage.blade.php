@@ -68,6 +68,16 @@
                         }
                     @endphp
                     @if($renunganUtama)
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        @if(!empty($renunganUtama->ayat))
+                        <span class="inline-flex items-center rounded-full bg-[#e5eeff] px-3 py-1 text-[11px] font-bold tracking-wide text-[#29428c]">
+                            {{ $renunganUtama->ayat }}
+                        </span>
+                        @endif
+                        <span class="text-xs font-medium text-slate-400">
+                            {{ \Carbon\Carbon::parse($renunganUtama->tanggal ?? $renunganUtama->created_at)->format('d M Y') }}
+                        </span>
+                    </div>
                     <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">
                         @if($renunganUtama->penulis)
                             {{ $renunganUtama->penulis }} - 
@@ -81,7 +91,12 @@
                         @endif
                     </p>
                     @else
-                    <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">Mazmur 23:1 - TUHAN adalah gembalaku, takkan kekurangan aku.</h2>
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <span class="inline-flex items-center rounded-full bg-[#e5eeff] px-3 py-1 text-[11px] font-bold tracking-wide text-[#29428c]">
+                            Mazmur 23:1
+                        </span>
+                    </div>
+                    <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">TUHAN adalah gembalaku, takkan kekurangan aku.</h2>
                     <p class="text-slate-600 mb-6 italic leading-relaxed">"Di tengah badai kehidupan yang tak menentu, ingatlah bahwa kita memiliki Gembala yang Agung. Dia tidak hanya menuntun, tetapi juga mencukupkan segala kebutuhan kita tepat pada waktu-Nya."</p>
                     @endif
                     
@@ -343,7 +358,7 @@
     </section>
 
     {{-- Informasi Section --}}
-    <section class="py-16 bg-[#eff4ff]">
+    <section class="py-16">
         <div class="container mx-auto px-8">
             <div class="flex justify-between items-end mb-12 gap-4">
                 <div class="max-w-xl">
@@ -395,9 +410,20 @@
                 <div class="church-card p-0 overflow-hidden flex flex-col group border border-gray-100 shadow-sm bg-white">
                     <div class="relative h-48 overflow-hidden bg-gray-900 flex items-center justify-center">
                         @if($item->gambar)
-                        <img class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"/>
+                            @php
+                                $videoUrl = asset('storage/' . $item->gambar);
+                                $videoExt = strtolower(pathinfo(parse_url($videoUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
+                            @endphp
+                            @if(in_array($videoExt, ['mp4', 'webm', 'ogg']))
+                                <video controls class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" muted loop playsinline preload="metadata">
+                                    <source src="{{ $videoUrl }}" type="video/{{ $videoExt }}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            @else
+                                <img class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" src="{{ $videoUrl }}" alt="{{ $item->judul }}"/>
+                            @endif
                         @endif
-                        <span class="material-symbols-outlined text-white text-5xl relative z-10 opacity-90 drop-shadow-lg">play_circle</span>
+                        <span class="material-symbols-outlined text-white text-5xl relative z-10 opacity-90 drop-shadow-lg pointer-events-none">play_circle</span>
                     </div>
                     <div class="p-6">
                         <div class="flex gap-2 mb-4">

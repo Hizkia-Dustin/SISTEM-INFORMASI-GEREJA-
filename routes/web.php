@@ -13,7 +13,7 @@ Route::get('/', function () {
     $artikel = \App\Models\Artikel::latest()->take(3)->get();
     $racakitri = \App\Models\Racakitri::latest()->take(3)->get();
     $informasi = \App\Models\Informasi::latest()->take(3)->get();
-    $video = \App\Models\Video::latest()->take(3)->get();
+    $video = \App\Models\Video::where('status', 'Published')->latest()->take(3)->get();
     $warta = \App\Models\Warta::latest()->take(3)->get();
     $renungan = \App\Models\Renungan::orderBy('updated_at', 'desc')->take(3)->get();
     $jadwalTerdekat = \App\Models\Jadwal::where('lokasi', '!=', 'Sakramen')
@@ -164,7 +164,7 @@ Route::prefix('download')->group(function () {
 Route::get('/kontak', function () { return view('pages.kontak.index'); })->name('kontak.index');
 Route::prefix('video')->group(function () {
     Route::get('/', function () { 
-        $videos = \App\Models\Video::latest()->paginate(9);
+        $videos = \App\Models\Video::where('status', 'Published')->latest()->paginate(9);
         return view('pages.video.index', compact('videos')); 
     })->name('video.index');
     Route::get('/{id}', function ($id) { 

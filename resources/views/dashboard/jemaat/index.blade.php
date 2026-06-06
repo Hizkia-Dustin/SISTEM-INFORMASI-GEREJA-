@@ -57,13 +57,13 @@
                     </td>
                     <td class="px-8 py-5 text-gray-500 font-medium max-w-xs truncate">{{ $j->alamat ?? '-' }}</td>
                     <td class="px-8 py-5 text-right">
-                        <div class="flex items-center justify-end gap-2">
-                            <a href="{{ route('dashboard.jemaat.show', $j->id) }}" class="px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-500 hover:text-primary transition-all">Detail</a>
-                            <a href="{{ route('dashboard.jemaat.edit', $j->id) }}" class="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all">Ubah</a>
-                            <form action="{{ route('dashboard.jemaat.destroy', $j->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                        <div class="flex items-center justify-end gap-3">
+                            <a href="{{ route('dashboard.jemaat.show', $j->id) }}" class="px-4 py-2 bg-white border border-gray-100 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-50 hover:text-primary transition-all shadow-sm">Detail</a>
+                            <a href="{{ route('dashboard.jemaat.edit', $j->id) }}" class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold shadow-lg shadow-primary/10 hover:bg-blue-700 transition-all">Ubah</a>
+                            <form class="confirm-delete" action="{{ route('dashboard.jemaat.destroy', $j->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus data ini?">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="px-3 py-1.5 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">Hapus</button>
+                                <button type="submit" class="px-4 py-2 bg-rose-50 text-rose-500 rounded-lg text-xs font-bold hover:bg-rose-500 hover:text-white transition-all">Hapus</button>
                             </form>
                         </div>
                     </td>

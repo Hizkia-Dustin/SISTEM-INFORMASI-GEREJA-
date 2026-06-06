@@ -131,9 +131,18 @@
                             </td>
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -182,9 +191,18 @@
                             <td class="px-8 py-4 font-bold text-emerald-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -216,9 +234,18 @@
                             <td class="px-8 py-4 font-bold text-rose-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -267,9 +294,18 @@
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 font-bold text-emerald-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -301,9 +337,18 @@
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 font-bold text-rose-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -352,9 +397,18 @@
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 font-bold text-emerald-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -386,9 +440,18 @@
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 font-bold text-rose-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -437,9 +500,18 @@
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 font-bold text-emerald-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -471,9 +543,18 @@
                             <td class="px-8 py-4 text-gray-500 font-medium">{{ $k->keterangan }}</td>
                             <td class="px-8 py-4 font-bold text-rose-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td>
                             <td class="px-8 py-4 text-right">
-                                <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                </a>
+                                <div class="flex justify-end items-center gap-1">
+                                    <a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="inline-flex p-2 text-gray-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </a>
+                                    <form action="{{ route('dashboard.keuangan.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data keuangan ini?')" class="inline-flex">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Hapus">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty
