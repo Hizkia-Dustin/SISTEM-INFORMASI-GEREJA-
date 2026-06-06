@@ -147,12 +147,59 @@
                 </table>
             </div>
         </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mt-8">
+            <div class="px-8 py-5 border-b border-gray-50 bg-gray-50/30">
+                <h3 class="text-sm font-bold text-gray-700 uppercase tracking-widest">Jurnal Umum</h3>
+                <p class="text-xs text-gray-400 mt-1">Format akuntansi berpasangan: setiap transaksi punya debit dan kredit yang sama.</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        <tr>
+                            <th class="px-6 py-4">Tanggal</th>
+                            <th class="px-6 py-4">No. Bukti</th>
+                            <th class="px-6 py-4">Akun</th>
+                            <th class="px-6 py-4">Keterangan</th>
+                            <th class="px-6 py-4 text-right">Debit</th>
+                            <th class="px-6 py-4 text-right">Kredit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($laporan['rows'] as $row)
+                            <tr class="border-b border-gray-50">
+                                <td rowspan="2" class="px-6 py-4 text-gray-500 align-top">{{ \Carbon\Carbon::parse($row['tanggal'])->format('d/m/Y') }}</td>
+                                <td rowspan="2" class="px-6 py-4 font-bold text-gray-600 align-top">{{ $row['nomor_bukti'] }}</td>
+                                <td class="px-6 py-3 font-bold text-gray-700">{{ $row['akun_debit'] }}</td>
+                                <td rowspan="2" class="px-6 py-4 text-gray-500 align-top">{{ $row['uraian'] }}</td>
+                                <td class="px-6 py-3 text-right font-bold text-emerald-700">{{ number_format($row['jurnal_debit'], 0, ',', '.') }}</td>
+                                <td class="px-6 py-3 text-right text-gray-300">-</td>
+                            </tr>
+                            <tr class="border-b border-gray-50 bg-gray-50/30">
+                                <td class="px-6 py-3 pl-10 text-gray-600">{{ $row['akun_kredit'] }}</td>
+                                <td class="px-6 py-3 text-right text-gray-300">-</td>
+                                <td class="px-6 py-3 text-right font-bold text-rose-700">{{ number_format($row['jurnal_kredit'], 0, ',', '.') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-8 py-12 text-center text-gray-400">Belum ada jurnal pada periode ini.</td>
+                            </tr>
+                        @endforelse
+                        <tr class="bg-gray-50">
+                            <td colspan="4" class="px-6 py-4 text-right font-extrabold text-gray-800">Total Jurnal</td>
+                            <td class="px-6 py-4 text-right font-extrabold text-gray-800">{{ number_format($laporan['total_jurnal_debit'], 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 text-right font-extrabold text-gray-800">{{ number_format($laporan['total_jurnal_kredit'], 0, ',', '.') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <div class="print-full col-span-4 space-y-8">
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-50 bg-gray-50/30">
-                <h3 class="text-sm font-bold text-gray-700 uppercase tracking-widest">Ringkasan Akun</h3>
+                <h3 class="text-sm font-bold text-gray-700 uppercase tracking-widest">Neraca Saldo</h3>
                 <p class="text-xs text-gray-400 mt-1">Total jurnal debit dan kredit harus sama.</p>
             </div>
             <div class="overflow-x-auto">

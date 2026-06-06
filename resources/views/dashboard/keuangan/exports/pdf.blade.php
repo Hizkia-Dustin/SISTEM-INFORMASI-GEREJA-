@@ -88,7 +88,45 @@
         </tbody>
     </table>
 
-    <div class="section">Ringkasan Akun Jurnal</div>
+    <div class="section">Jurnal Umum</div>
+    <table class="report">
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>No. Bukti</th>
+                <th>Akun</th>
+                <th>Keterangan</th>
+                <th>Debit</th>
+                <th>Kredit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($laporan['rows'] as $row)
+                <tr>
+                    <td rowspan="2" class="center">{{ \Carbon\Carbon::parse($row['tanggal'])->format('d/m/Y') }}</td>
+                    <td rowspan="2" class="center">{{ $row['nomor_bukti'] }}</td>
+                    <td>{{ $row['akun_debit'] }}</td>
+                    <td rowspan="2">{{ $row['uraian'] }}</td>
+                    <td class="right">{{ number_format($row['jurnal_debit'], 0, ',', '.') }}</td>
+                    <td class="right">-</td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 18px;">{{ $row['akun_kredit'] }}</td>
+                    <td class="right">-</td>
+                    <td class="right">{{ number_format($row['jurnal_kredit'], 0, ',', '.') }}</td>
+                </tr>
+            @empty
+                <tr><td colspan="6" class="center">Belum ada jurnal pada periode ini.</td></tr>
+            @endforelse
+            <tr class="total">
+                <td colspan="4" class="right">Total Jurnal</td>
+                <td class="right">{{ number_format($laporan['total_jurnal_debit'], 0, ',', '.') }}</td>
+                <td class="right">{{ number_format($laporan['total_jurnal_kredit'], 0, ',', '.') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section">Neraca Saldo</div>
     <table class="report">
         <thead>
             <tr>

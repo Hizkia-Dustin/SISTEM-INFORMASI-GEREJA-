@@ -77,7 +77,42 @@
             <td class="money">{{ $laporan['saldo_akhir'] }}</td>
         </tr>
         <tr><td colspan="9">&nbsp;</td></tr>
-        <tr><td colspan="9" class="section">Ringkasan Akun Jurnal</td></tr>
+        <tr><td colspan="9" class="section">Jurnal Umum</td></tr>
+        <tr>
+            <th>Tanggal</th>
+            <th>No. Bukti</th>
+            <th colspan="2">Akun</th>
+            <th colspan="2">Keterangan</th>
+            <th>Debit</th>
+            <th>Kredit</th>
+            <th>Status</th>
+        </tr>
+        @forelse($laporan['rows'] as $row)
+            <tr>
+                <td rowspan="2" class="center">{{ \Carbon\Carbon::parse($row['tanggal'])->format('d/m/Y') }}</td>
+                <td rowspan="2" class="center">{{ $row['nomor_bukti'] }}</td>
+                <td colspan="2">{{ $row['akun_debit'] }}</td>
+                <td colspan="2" rowspan="2">{{ $row['uraian'] }}</td>
+                <td class="money">{{ $row['jurnal_debit'] }}</td>
+                <td class="money"></td>
+                <td rowspan="2" class="center">Seimbang</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;&nbsp;&nbsp;{{ $row['akun_kredit'] }}</td>
+                <td class="money"></td>
+                <td class="money">{{ $row['jurnal_kredit'] }}</td>
+            </tr>
+        @empty
+            <tr><td colspan="9" class="center">Belum ada jurnal pada periode ini.</td></tr>
+        @endforelse
+        <tr class="total">
+            <td colspan="6" class="right">Total Jurnal</td>
+            <td class="money">{{ $laporan['total_jurnal_debit'] }}</td>
+            <td class="money">{{ $laporan['total_jurnal_kredit'] }}</td>
+            <td class="center">{{ $laporan['total_jurnal_debit'] == $laporan['total_jurnal_kredit'] ? 'Seimbang' : 'Tidak Seimbang' }}</td>
+        </tr>
+        <tr><td colspan="9">&nbsp;</td></tr>
+        <tr><td colspan="9" class="section">Neraca Saldo</td></tr>
         <tr>
             <th colspan="4">Akun</th>
             <th colspan="2">Debit</th>
