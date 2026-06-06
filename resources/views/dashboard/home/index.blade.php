@@ -3,78 +3,48 @@
 
 @php
     $summaryCards = [
-        ['label' => 'Keluarga', 'value' => $stats['keluarga'] ?? 0, 'icon' => 'family_home', 'tone' => 'bg-blue-50 text-blue-600'],
-        ['label' => 'Total Jemaat', 'value' => $stats['jemaat'] ?? 0, 'icon' => 'groups', 'tone' => 'bg-indigo-50 text-indigo-600'],
-        ['label' => 'Jemaat Aktif', 'value' => $stats['aktif'] ?? 0, 'icon' => 'verified', 'tone' => 'bg-emerald-50 text-emerald-600'],
+        ['label' => 'Jumlah Keluarga', 'value' => $stats['keluarga'] ?? 0, 'icon' => 'home', 'tone' => 'bg-blue-50 text-blue-600'],
         ['label' => 'Pemuda/Pemudi', 'value' => $stats['pemuda'] ?? 0, 'icon' => 'diversity_3', 'tone' => 'bg-purple-50 text-purple-600'],
-        ['label' => 'Sudah Baptis', 'value' => $stats['baptis'] ?? 0, 'icon' => 'water_drop', 'tone' => 'bg-sky-50 text-sky-600'],
-        ['label' => 'Sudah Sidi', 'value' => $stats['sidi'] ?? 0, 'icon' => 'workspace_premium', 'tone' => 'bg-teal-50 text-teal-600'],
+        ['label' => 'Laki-laki (Ama)', 'value' => $stats['ama'] ?? 0, 'icon' => 'person', 'tone' => 'bg-indigo-50 text-indigo-600'],
+        ['label' => 'Perempuan (Ina)', 'value' => $stats['ina'] ?? 0, 'icon' => 'person', 'tone' => 'bg-pink-50 text-pink-500'],
+        ['label' => 'Jemaat Aktif', 'value' => $stats['aktif'] ?? 0, 'icon' => 'verified', 'tone' => 'bg-emerald-50 text-emerald-600'],
     ];
 @endphp
 
 @section('content')
-<div class="w-full max-w-[1560px] mx-auto">
-    <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 mb-6">
+<div class="w-full max-w-[1480px] mx-auto pt-1">
+    <div class="mb-6">
         <div class="min-w-0">
             <h1 class="text-2xl font-extrabold text-slate-900">Selamat Datang, Admin</h1>
-            <p class="text-slate-500 text-sm font-medium mt-1 max-w-2xl">Ringkasan statistik jemaat GKI Pakuwon hari ini.</p>
-        </div>
-
-        <div class="flex flex-wrap gap-3">
-            <a href="{{ url('/') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-md shadow-primary/15 hover:bg-blue-800 transition-all">
-                <span class="material-symbols-outlined text-[18px]">home</span>
-                Lihat Website
-            </a>
-
-            <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                <button type="button" @click="open = !open" class="inline-flex items-center gap-2 px-5 py-2.5 dashboard-muted-card rounded-xl text-sm font-bold text-slate-700 hover:bg-white transition-all">
-                    <span class="material-symbols-outlined text-[18px]">download</span>
-                    Unduh Laporan
-                    <span class="material-symbols-outlined text-[18px]" :class="open ? 'rotate-180' : ''">expand_more</span>
-                </button>
-                <div x-show="open" x-transition x-cloak class="absolute right-0 mt-2 w-72 dashboard-card rounded-xl z-50 overflow-hidden py-2">
-                    <a href="{{ route('dashboard.export.jemaat.pdf') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold text-gray-700 hover:bg-slate-50 transition-colors">
-                        <span class="material-symbols-outlined text-[18px] text-red-500">picture_as_pdf</span>
-                        Laporan Statistik Jemaat (PDF)
-                    </a>
-                    <a href="{{ route('dashboard.export.jemaat.excel') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold text-gray-700 hover:bg-slate-50 transition-colors">
-                        <span class="material-symbols-outlined text-[18px] text-emerald-500">table_view</span>
-                        Data Jemaat Lengkap (Excel)
-                    </a>
-                    <a href="{{ route('dashboard.export.keluarga.excel') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold text-gray-700 hover:bg-slate-50 transition-colors">
-                        <span class="material-symbols-outlined text-[18px] text-indigo-500">backup_table</span>
-                        Data Keluarga Lengkap (Excel)
-                    </a>
-                </div>
-            </div>
+            <p class="text-slate-500 text-sm font-semibold mt-1 max-w-2xl">Berikut adalah ringkasan statistik jemaat GKI Pakuwon hari ini.</p>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-4 mb-6 min-w-0">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-6 min-w-0">
         @foreach($summaryCards as $card)
-            <div class="min-w-0 dashboard-card p-5 rounded-xl">
-                <div class="flex items-start justify-between gap-4">
+            <div class="min-w-0 dashboard-card p-5 rounded-xl min-h-[124px]">
+                <div class="flex flex-col h-full justify-between gap-4">
                     <div class="min-w-0">
                         <p class="text-slate-400 text-[10px] font-extrabold uppercase tracking-widest truncate">{{ $card['label'] }}</p>
-                        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ number_format($card['value'], 0, ',', '.') }}</p>
+                        <p class="text-2xl font-extrabold text-slate-900 mt-2">{{ number_format($card['value'], 0, ',', '.') }}</p>
                     </div>
-                    <div class="w-10 h-10 shrink-0 rounded-xl {{ $card['tone'] }} flex items-center justify-center">
-                        <span class="material-symbols-outlined text-[20px]">{{ $card['icon'] }}</span>
+                    <div class="w-9 h-9 shrink-0 rounded-lg {{ $card['tone'] }} flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[18px]">{{ $card['icon'] }}</span>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 
-    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,1fr)_360px] gap-6 mb-6 min-w-0">
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_350px] gap-6 mb-6 min-w-0 items-start">
         <div class="min-w-0 dashboard-card rounded-xl overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100">
                 <h2 class="text-base font-extrabold text-slate-900">Statistik Keluarga per Sektor</h2>
                 <p class="text-xs text-slate-500 font-medium mt-1">Persebaran keluarga dan anggota jemaat berdasarkan wilayah pelayanan.</p>
             </div>
-            <div class="p-6">
+            <div class="p-6 min-h-[300px]">
                 @if(empty($sektorLabels))
-                    <div class="py-16 text-center text-gray-400 italic text-sm">Belum ada data sektor.</div>
+                    <div class="min-h-[220px] flex items-center justify-center text-gray-400 italic text-sm">Belum ada data sektor.</div>
                 @else
                     <div class="space-y-4">
                         @foreach($sektorLabels as $index => $label)
@@ -110,28 +80,41 @@
             </div>
         </div>
 
-        <div class="min-w-0 dashboard-card rounded-xl overflow-hidden">
-            <div class="px-6 py-5 border-b border-gray-100">
-                <h2 class="text-base font-extrabold text-slate-900">Demografi Usia Jemaat</h2>
-                <p class="text-xs text-slate-500 font-medium mt-1">Kategori umur jemaat aktif.</p>
+        <div class="min-w-0 flex flex-col gap-5">
+            <div class="dashboard-card rounded-xl p-6">
+                <h2 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-5">Aksi Cepat</h2>
+                <div class="flex flex-col divide-y divide-slate-100">
+                    <a href="{{ route('dashboard.jemaat.create') }}" class="flex items-center justify-between gap-4 py-4 group">
+                        <span class="text-sm font-extrabold text-slate-700 group-hover:text-primary">Tambah Jemaat</span>
+                        <span class="material-symbols-outlined text-gray-300 group-hover:text-primary text-[18px]">add</span>
+                    </a>
+                    <a href="{{ route('dashboard.keluarga.create') }}" class="flex items-center justify-between gap-4 py-4 group">
+                        <span class="text-sm font-extrabold text-slate-700 group-hover:text-primary">Tambah Keluarga</span>
+                        <span class="material-symbols-outlined text-gray-300 group-hover:text-primary text-[18px]">add</span>
+                    </a>
+                </div>
             </div>
-            <div class="p-6 space-y-4">
-                @forelse($ageStats ?? [] as $label => $value)
-                    <div class="flex items-center justify-between gap-4">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <span class="w-2.5 h-2.5 rounded-full {{ $loop->iteration === 1 ? 'bg-blue-500' : ($loop->iteration === 2 ? 'bg-purple-500' : ($loop->iteration === 3 ? 'bg-indigo-500' : ($loop->iteration === 4 ? 'bg-emerald-500' : 'bg-rose-500'))) }}"></span>
-                            <span class="text-sm font-bold text-gray-700 truncate">{{ $label }}</span>
+
+            <div class="bg-primary rounded-xl p-6 text-white shadow-lg shadow-primary/15">
+                <h3 class="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest mb-5">Aktivitas Terakhir</h3>
+                <div class="flex flex-col gap-4">
+                    @forelse($recentActivities as $activity)
+                        <div class="flex gap-3">
+                            <div class="w-1.5 h-1.5 rounded-full bg-blue-300 mt-1.5 shrink-0"></div>
+                            <div class="min-w-0">
+                                <p class="text-xs font-bold leading-tight break-words">{{ $activity['action'] }}</p>
+                                <p class="text-[9px] text-blue-200/70 mt-1 uppercase tracking-wider font-semibold">{{ $activity['time'] }}</p>
+                            </div>
                         </div>
-                        <span class="text-sm font-extrabold text-gray-900">{{ number_format($value, 0, ',', '.') }}</span>
-                    </div>
-                @empty
-                    <div class="py-12 text-center text-gray-400 italic text-sm">Belum ada data usia.</div>
-                @endforelse
+                    @empty
+                        <p class="text-xs text-blue-200/70 italic font-medium">Belum ada aktivitas.</p>
+                    @endforelse
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,1fr)_360px] gap-6 min-w-0">
+    <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_350px] gap-6 min-w-0">
         <div class="min-w-0 dashboard-card rounded-xl overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
@@ -173,35 +156,42 @@
             </div>
         </div>
 
-        <div class="min-w-0 flex flex-col gap-6">
-            <div class="dashboard-card rounded-xl p-6">
-                <h2 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-5">Aksi Cepat</h2>
-                <div class="flex flex-col gap-3">
-                    <a href="{{ route('dashboard.jemaat.create') }}" class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 hover:border-primary hover:bg-blue-50/30 transition-all group">
-                        <span class="text-sm font-bold text-gray-700 group-hover:text-primary">Tambah Jemaat</span>
-                        <span class="material-symbols-outlined text-gray-300 group-hover:text-primary">chevron_right</span>
-                    </a>
-                    <a href="{{ route('dashboard.keluarga.create') }}" class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 hover:border-indigo-500 hover:bg-indigo-50/30 transition-all group">
-                        <span class="text-sm font-bold text-gray-700 group-hover:text-indigo-600">Tambah Keluarga</span>
-                        <span class="material-symbols-outlined text-gray-300 group-hover:text-indigo-600">chevron_right</span>
-                    </a>
-                </div>
+        <div class="min-w-0 dashboard-card rounded-xl overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-100">
+                <h2 class="text-base font-extrabold text-slate-900">Demografi Usia Jemaat</h2>
+                <p class="text-xs text-slate-500 font-medium mt-1">Kategori umur jemaat aktif.</p>
             </div>
-
-            <div class="bg-primary rounded-xl p-6 text-white shadow-lg shadow-primary/15">
-                <h3 class="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest mb-5">Aktivitas Terakhir Admin</h3>
-                <div class="flex flex-col gap-4">
-                    @forelse($recentActivities as $activity)
-                        <div class="flex gap-3">
-                            <div class="w-1.5 h-1.5 rounded-full bg-blue-300 mt-1.5 shrink-0"></div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-bold leading-tight break-words">{{ $activity['action'] }}</p>
-                                <p class="text-[9px] text-blue-200/70 mt-1 uppercase tracking-wider font-semibold">{{ $activity['time'] }}</p>
-                            </div>
+            <div class="p-6 space-y-4">
+                @forelse($ageStats ?? [] as $label => $value)
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <span class="w-2.5 h-2.5 rounded-full {{ $loop->iteration === 1 ? 'bg-blue-500' : ($loop->iteration === 2 ? 'bg-purple-500' : ($loop->iteration === 3 ? 'bg-indigo-500' : ($loop->iteration === 4 ? 'bg-emerald-500' : 'bg-rose-500'))) }}"></span>
+                            <span class="text-sm font-bold text-gray-700 truncate">{{ $label }}</span>
                         </div>
-                    @empty
-                        <p class="text-xs text-blue-200/70 italic font-medium">Belum ada aktivitas.</p>
-                    @endforelse
+                        <span class="text-sm font-extrabold text-gray-900">{{ number_format($value, 0, ',', '.') }}</span>
+                    </div>
+                @empty
+                    <div class="py-12 text-center text-gray-400 italic text-sm">Belum ada data usia.</div>
+                @endforelse
+                <div class="pt-4 mt-4 border-t border-slate-100" x-data="{ open: false }" @click.outside="open = false">
+                    <button type="button" @click="open = !open" class="w-full flex items-center justify-between gap-3 text-xs font-extrabold text-primary uppercase tracking-widest">
+                        Unduh Laporan
+                        <span class="material-symbols-outlined text-[18px]" :class="open ? 'rotate-180' : ''">expand_more</span>
+                    </button>
+                    <div x-show="open" x-transition x-cloak class="mt-3 space-y-2">
+                        <a href="{{ route('dashboard.export.jemaat.pdf') }}" class="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 hover:text-primary">
+                            <span class="material-symbols-outlined text-[17px] text-red-500">picture_as_pdf</span>
+                            Statistik Jemaat PDF
+                        </a>
+                        <a href="{{ route('dashboard.export.jemaat.excel') }}" class="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 hover:text-primary">
+                            <span class="material-symbols-outlined text-[17px] text-emerald-500">table_view</span>
+                            Data Jemaat Excel
+                        </a>
+                        <a href="{{ route('dashboard.export.keluarga.excel') }}" class="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 hover:text-primary">
+                            <span class="material-symbols-outlined text-[17px] text-indigo-500">backup_table</span>
+                            Data Keluarga Excel
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
