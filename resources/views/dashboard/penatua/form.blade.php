@@ -35,7 +35,18 @@
                 <option value="Pendamping" {{ old('jabatan', $penatua->jabatan ?? '') == 'Pendamping' ? 'selected' : '' }}>Pendamping</option>
             </x-form.select>
 
-            <x-form.input label="Sub Kategori / Klasifikasi (Opsional)" name="sub_kategori" value="{{ old('sub_kategori', $penatua->sub_kategori ?? '') }}" placeholder="Contoh: Bid. Sarpen, Komisi Anak, Komisi Pemuda, dll." />
+            <x-form.select label="Sub Kategori / Divisi / Komisi (Opsional)" name="sub_kategori">
+                <option value="" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == '' ? 'selected' : '' }}>-- Tanpa Bidang / Komisi --</option>
+                <option value="Bid. Sarpen" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Bid. Sarpen' ? 'selected' : '' }}>Bid. Sarpen (Sarana & Penunjang)</option>
+                <option value="Bid. Pembinaan" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Bid. Pembinaan' ? 'selected' : '' }}>Bid. Pembinaan</option>
+                <option value="Bid. Kespel" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Bid. Kespel' ? 'selected' : '' }}>Bid. Kespel (Kesaksian & Pelayanan)</option>
+                <option value="Bid. Persekutuan" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Bid. Persekutuan' ? 'selected' : '' }}>Bid. Persekutuan</option>
+                <option value="Komisi Anak" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Komisi Anak' ? 'selected' : '' }}>Komisi Anak</option>
+                <option value="Komisi Remaja" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Komisi Remaja' ? 'selected' : '' }}>Komisi Remaja</option>
+                <option value="Komisi Pemuda" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Komisi Pemuda' ? 'selected' : '' }}>Komisi Pemuda</option>
+                <option value="Komisi Dewasa" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Komisi Dewasa' ? 'selected' : '' }}>Komisi Dewasa</option>
+                <option value="Komisi Lansia" {{ old('sub_kategori', $penatua->sub_kategori ?? '') == 'Komisi Lansia' ? 'selected' : '' }}>Komisi Lansia</option>
+            </x-form.select>
 
             <x-form.input label="Urutan Urut (Order Index)" name="urutan" type="number" value="{{ old('urutan', $penatua->urutan ?? 0) }}" placeholder="Contoh: 1, 2, 3..." />
 
