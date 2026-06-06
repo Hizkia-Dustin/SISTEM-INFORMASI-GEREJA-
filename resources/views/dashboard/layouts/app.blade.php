@@ -28,19 +28,19 @@
 </head>
 <body class="bg-surface font-sans text-on-surface antialiased overflow-hidden">
 
-<div class="flex h-screen w-screen overflow-hidden">
+<div class="grid h-screen w-full overflow-hidden lg:grid-cols-[280px_minmax(0,1fr)]">
 
     <!-- SIDEBAR COMPONENT -->
     <x-dashboard.sidebar />
 
     <!-- MAIN CONTENT AREA -->
-    <div class="flex-1 min-w-0 flex flex-col overflow-hidden">
+    <div class="min-w-0 flex flex-col overflow-hidden">
         
         <!-- TOPBAR COMPONENT -->
         <x-dashboard.topbar />
 
         <!-- PAGE CONTENT -->
-        <main class="flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-6 lg:px-10 xl:px-12 pb-16 relative">
+        <main class="flex-1 min-w-0 w-full overflow-y-auto overflow-x-hidden px-6 lg:px-8 xl:px-10 pb-16 relative">
             <!-- Flash Message -->
             @if(session('success'))
             <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition class="fixed top-24 right-12 z-[100] bg-emerald-500 text-white px-6 py-3 rounded-2xl shadow-xl shadow-emerald-500/20 flex items-center gap-3 font-bold text-sm">

@@ -1,4 +1,4 @@
-<aside class="w-[280px] bg-white border-r border-gray-100 flex flex-col z-50 shrink-0 h-screen overflow-hidden shadow-sm">
+<aside class="w-[280px] max-w-[280px] bg-white border-r border-gray-100 flex flex-col z-50 h-screen overflow-hidden shadow-sm">
     <!-- Brand -->
     <div class="px-8 py-8 flex items-center gap-3">
         <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">

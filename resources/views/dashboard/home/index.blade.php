@@ -13,7 +13,7 @@
 @endphp
 
 @section('content')
-<div class="w-full max-w-[1280px] mx-auto">
+<div class="w-full max-w-[1180px] mx-auto">
     <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 mb-8">
         <div class="min-w-0">
             <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Selamat Datang, Admin</h1>
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-4 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-8 min-w-0">
         @foreach($summaryCards as $card)
             <div class="min-w-0 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
                 <div class="flex items-start justify-between gap-4">
@@ -66,8 +66,8 @@
         @endforeach
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
-        <div class="xl:col-span-2 min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)] gap-6 mb-8 min-w-0">
+        <div class="min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100">
                 <h2 class="text-base font-extrabold text-gray-900">Statistik Keluarga & Jemaat per Sektor</h2>
                 <p class="text-xs text-gray-500 font-medium mt-1">Persebaran keluarga dan anggota jemaat berdasarkan wilayah pelayanan.</p>
@@ -131,8 +131,8 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div class="xl:col-span-2 min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)] gap-6 min-w-0">
+        <div class="min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                     <h2 class="text-sm font-extrabold text-gray-900 uppercase tracking-wider">Jemaat Baru Terdaftar</h2>

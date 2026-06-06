@@ -1,4 +1,4 @@
-<header class="h-20 px-6 lg:px-10 xl:px-12 flex items-center justify-between gap-4 bg-transparent shrink-0 min-w-0">
+<header class="h-20 w-full max-w-full px-6 lg:px-8 xl:px-10 flex items-center justify-between gap-4 bg-transparent shrink-0 min-w-0 overflow-hidden">
     <!-- Search Bar -->
     <div class="relative w-full max-w-md min-w-0 group">
         <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -14,7 +14,7 @@
     </div>
 
     <!-- User & Notifications -->
-    <div class="flex items-center gap-3 lg:gap-6 shrink-0">
+    <div class="flex items-center gap-3 lg:gap-5 shrink-0 min-w-0">
         <!-- Lihat Website Button -->
         <a href="{{ route('home') }}" target="_blank" class="hidden md:flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 text-gray-600 rounded-xl text-xs font-bold hover:bg-gray-50 hover:text-primary transition-all shadow-sm">
             <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -85,7 +85,7 @@
         <div 
             x-data="{ open: false }" 
             @click.away="open = false"
-            class="relative"
+            class="relative shrink-0"
         >
             <button 
                 @click="open = !open"
