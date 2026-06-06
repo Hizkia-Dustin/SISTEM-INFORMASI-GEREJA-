@@ -1,6 +1,6 @@
-<header class="h-20 w-full max-w-full px-6 lg:px-8 xl:px-10 flex items-center justify-between gap-4 bg-transparent shrink-0 min-w-0 overflow-hidden">
+<header class="h-20 w-full max-w-full px-6 lg:px-8 xl:px-10 2xl:px-12 flex items-center justify-between gap-4 bg-transparent shrink-0 min-w-0 overflow-visible">
     <!-- Search Bar -->
-    <div class="relative w-full max-w-md min-w-0 group">
+    <div class="relative w-full max-w-xl min-w-0 group">
         <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <svg class="w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -9,14 +9,14 @@
         <input 
             type="text" 
             placeholder="Cari jemaat atau kegiatan..." 
-            class="w-full bg-white border border-gray-100 rounded-2xl py-3 pl-12 pr-4 text-sm font-medium focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 shadow-sm transition-all"
+            class="w-full dashboard-muted-card rounded-xl py-3 pl-12 pr-4 text-sm font-semibold text-slate-700 placeholder:text-slate-400 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all"
         >
     </div>
 
     <!-- User & Notifications -->
     <div class="flex items-center gap-3 lg:gap-5 shrink-0 min-w-0">
         <!-- Lihat Website Button -->
-        <a href="{{ route('home') }}" target="_blank" class="hidden md:flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 text-gray-600 rounded-xl text-xs font-bold hover:bg-gray-50 hover:text-primary transition-all shadow-sm">
+        <a href="{{ route('home') }}" target="_blank" class="hidden md:flex items-center gap-2 px-4 py-2 dashboard-muted-card text-slate-600 rounded-xl text-xs font-bold hover:bg-white hover:text-primary transition-all">
             <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
@@ -40,7 +40,7 @@
                     x-transition:enter-end="opacity-100 scale-100 translate-y-0"
                     x-transition:leave="transition ease-in duration-150"
                     x-cloak
-                    class="absolute top-full right-0 mt-3 w-80 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-[60] py-2"
+                    class="absolute top-full right-0 mt-3 w-80 dashboard-card rounded-xl overflow-hidden z-[60] py-2"
                 >
                     <div class="px-5 py-3 border-b border-gray-50 flex items-center justify-between">
                         <span class="text-xs font-extrabold text-gray-800 uppercase tracking-widest">Notifikasi</span>
@@ -95,7 +95,7 @@
                     <p class="text-base font-extrabold text-gray-800 leading-none">{{ auth()->user()->name ?? 'Super Admin' }}</p>
                     <p class="text-[10px] font-bold text-blue-300/80 uppercase tracking-[0.1em] mt-1.5">{{ auth()->user()->role ?? 'Administrator' }}</p>
                 </div>
-                <div class="w-12 h-12 rounded-2xl bg-[#001a57] text-white text-base font-bold flex items-center justify-center shadow-xl shadow-blue-900/10 group-hover:scale-105 transition-all border-2 border-white overflow-hidden">
+                <div class="w-12 h-12 rounded-xl bg-primary text-white text-base font-bold flex items-center justify-center shadow-lg shadow-blue-900/10 group-hover:scale-105 transition-all border-2 border-white overflow-hidden">
                     @if(auth()->check() && !empty(auth()->user()->foto_profil))
                         <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" alt="Foto Profil" class="w-full h-full object-cover">
                     @else
@@ -114,7 +114,7 @@
                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                 x-transition:leave-end="opacity-0 scale-95 translate-y-2"
                 x-cloak
-                class="absolute top-full right-0 mt-3 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-50 py-2"
+                class="absolute top-full right-0 mt-3 w-56 dashboard-card rounded-xl overflow-hidden z-50 py-2"
             >
                 <a href="{{ route('dashboard.profil') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-primary transition-colors">
                     Profil Saya

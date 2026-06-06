@@ -1,20 +1,20 @@
-<aside class="w-[280px] max-w-[280px] bg-white border-r border-gray-100 flex flex-col z-50 h-screen overflow-hidden shadow-sm">
+<aside class="w-[276px] max-w-[276px] bg-white border-r border-slate-200/70 flex flex-col z-50 h-screen overflow-hidden shadow-sm">
     <!-- Brand -->
-    <div class="px-8 py-8 flex items-center gap-3">
-        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
+    <div class="px-7 py-7 flex items-center gap-3">
+        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/15">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
         <div>
-            <h1 class="font-heading text-lg font-bold text-gray-800 leading-tight">GKI Pakuwon</h1>
-            <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest">Panel Administrasi</p>
+            <h1 class="font-heading text-lg font-extrabold text-slate-800 leading-tight">GKI Pakuwon</h1>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Panel Admin</p>
         </div>
     </div>
 
     <!-- Navigation -->
     <nav class="flex-1 px-4 pb-10 overflow-y-auto no-scrollbar">
         @php
-            $navItemClass = "flex items-center gap-3 px-4 py-2.5 text-gray-500 font-medium rounded-xl transition-all duration-200 mb-1 hover:bg-gray-50 hover:text-primary group text-sm";
-            $navItemActiveClass = "flex items-center gap-3 px-4 py-2.5 bg-blue-50 text-primary font-bold rounded-xl transition-all duration-200 mb-1 border-r-4 border-primary shadow-sm text-sm";
+            $navItemClass = "flex items-center gap-3 px-4 py-2.5 text-slate-500 font-semibold rounded-xl transition-all duration-200 mb-1 hover:bg-slate-50 hover:text-primary group text-sm";
+            $navItemActiveClass = "flex items-center gap-3 px-4 py-2.5 bg-blue-50 text-primary font-extrabold rounded-xl transition-all duration-200 mb-1 border-r-4 border-primary shadow-sm text-sm";
         @endphp
 
         <!-- 1. Beranda -->

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard') — GKI Pakuwon</title>
+    <title>@yield('title', 'Dashboard') - GKI Pakuwon</title>
     <meta name="description" content="Sistem Informasi Manajemen GKI Pakuwon - Panel Administrasi Gereja">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Tailwind / Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -28,7 +28,7 @@
 </head>
 <body class="bg-surface font-sans text-on-surface antialiased overflow-hidden">
 
-<div class="grid h-screen w-full overflow-hidden lg:grid-cols-[280px_minmax(0,1fr)]">
+<div class="grid h-screen w-full overflow-hidden lg:grid-cols-[276px_minmax(0,1fr)]">
 
     <!-- SIDEBAR COMPONENT -->
     <x-dashboard.sidebar />
@@ -40,7 +40,7 @@
         <x-dashboard.topbar />
 
         <!-- PAGE CONTENT -->
-        <main class="flex-1 min-w-0 w-full overflow-y-auto overflow-x-hidden px-6 lg:px-8 xl:px-10 pb-16 relative">
+        <main class="flex-1 min-w-0 w-full overflow-y-auto overflow-x-hidden px-6 lg:px-8 xl:px-10 2xl:px-12 pb-16 relative">
             <!-- Flash Message -->
             @if(session('success'))
             <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" x-transition class="fixed top-24 right-12 z-[100] bg-emerald-500 text-white px-6 py-3 rounded-2xl shadow-xl shadow-emerald-500/20 flex items-center gap-3 font-bold text-sm">

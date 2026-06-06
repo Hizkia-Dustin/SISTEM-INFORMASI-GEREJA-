@@ -7,24 +7,24 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
     /* === Primary Colors === */
-    --color-primary: #00236f;
+    --color-primary: #0b3b8f;
     --color-on-primary: #ffffff;
     --color-primary-container: #00236f;
     --color-on-primary-container: #778ede;
 
     /* === Secondary Colors === */
-    --color-secondary: #0058bf;
+    --color-secondary: #0f766e;
     --color-on-secondary: #ffffff;
     --color-secondary-container: #2170e4;
     --color-on-secondary-container: #fefcff;
 
     /* === Surface Colors === */
-    --color-surface: #f8f9ff;
-    --color-on-surface: #0b1c30;
+    --color-surface: #f5f7fb;
+    --color-on-surface: #102033;
     --color-surface-variant: #d3e4fe;
     --color-on-surface-variant: #444651;
     --color-surface-dim: #cbdbf5;
@@ -36,8 +36,8 @@
     --color-surface-container-highest: #d3e4fe;
 
     /* === Background === */
-    --color-background: #f8f9ff;
-    --color-on-background: #0b1c30;
+    --color-background: #f5f7fb;
+    --color-on-background: #102033;
 
     /* === Outline === */
     --color-outline: #757682;
@@ -54,19 +54,19 @@
 
     /* === Fonts === */
     --font-serif: "Playfair Display", serif;
-    --font-heading: "Manrope", sans-serif;
-    --font-h1: "Manrope", sans-serif;
-    --font-h2: "Manrope", sans-serif;
-    --font-h3: "Manrope", sans-serif;
-    --font-label-md: "Manrope", sans-serif;
-    --font-label-sm: "Manrope", sans-serif;
-    --font-body-lg: "Manrope", sans-serif;
-    --font-body-md: "Manrope", sans-serif;
-    --font-caption: "Manrope", sans-serif;
-    --font-headline-xl: "Manrope";
-    --font-headline-md: "Manrope";
-    --font-stat-value: "Manrope";
-    --font-caption-bold: "Manrope";
+    --font-heading: "Plus Jakarta Sans", sans-serif;
+    --font-h1: "Plus Jakarta Sans", sans-serif;
+    --font-h2: "Plus Jakarta Sans", sans-serif;
+    --font-h3: "Plus Jakarta Sans", sans-serif;
+    --font-label-md: "Plus Jakarta Sans", sans-serif;
+    --font-label-sm: "Plus Jakarta Sans", sans-serif;
+    --font-body-lg: "Plus Jakarta Sans", sans-serif;
+    --font-body-md: "Plus Jakarta Sans", sans-serif;
+    --font-caption: "Plus Jakarta Sans", sans-serif;
+    --font-headline-xl: "Plus Jakarta Sans";
+    --font-headline-md: "Plus Jakarta Sans";
+    --font-stat-value: "Plus Jakarta Sans";
+    --font-caption-bold: "Plus Jakarta Sans";
 
     /* === Text Sizes === */
     --text-h1: 32px;
@@ -121,4 +121,16 @@ input[type="time"]::-webkit-outer-spin-button {
     opacity: 1 !important;
     display: block !important;
     -webkit-appearance: inner-spin-button !important;
+}
+
+.dashboard-card {
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    background: #ffffff;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045);
+}
+
+.dashboard-muted-card {
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.035);
 }

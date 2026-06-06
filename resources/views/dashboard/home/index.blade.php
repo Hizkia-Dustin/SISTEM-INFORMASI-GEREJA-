@@ -13,26 +13,26 @@
 @endphp
 
 @section('content')
-<div class="w-full max-w-[1180px] mx-auto">
-    <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 mb-8">
+<div class="w-full max-w-[1560px] mx-auto">
+    <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 mb-6">
         <div class="min-w-0">
-            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Selamat Datang, Admin</h1>
-            <p class="text-gray-500 text-sm font-medium mt-1 max-w-2xl">Ringkasan data jemaat GKI Pakuwon hari ini dari database sistem.</p>
+            <h1 class="text-2xl font-extrabold text-slate-900">Selamat Datang, Admin</h1>
+            <p class="text-slate-500 text-sm font-medium mt-1 max-w-2xl">Ringkasan statistik jemaat GKI Pakuwon hari ini.</p>
         </div>
 
         <div class="flex flex-wrap gap-3">
-            <a href="{{ url('/') }}" class="inline-flex items-center gap-2 px-5 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all">
+            <a href="{{ url('/') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-md shadow-primary/15 hover:bg-blue-800 transition-all">
                 <span class="material-symbols-outlined text-[18px]">home</span>
-                Homepage
+                Lihat Website
             </a>
 
             <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                <button type="button" @click="open = !open" class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-700 shadow-sm hover:bg-gray-50 transition-all">
+                <button type="button" @click="open = !open" class="inline-flex items-center gap-2 px-5 py-2.5 dashboard-muted-card rounded-xl text-sm font-bold text-slate-700 hover:bg-white transition-all">
                     <span class="material-symbols-outlined text-[18px]">download</span>
-                    Export Laporan
+                    Unduh Laporan
                     <span class="material-symbols-outlined text-[18px]" :class="open ? 'rotate-180' : ''">expand_more</span>
                 </button>
-                <div x-show="open" x-transition x-cloak class="absolute right-0 mt-2 w-72 bg-white border border-gray-100 rounded-2xl shadow-xl z-50 overflow-hidden py-2">
+                <div x-show="open" x-transition x-cloak class="absolute right-0 mt-2 w-72 dashboard-card rounded-xl z-50 overflow-hidden py-2">
                     <a href="{{ route('dashboard.export.jemaat.pdf') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold text-gray-700 hover:bg-slate-50 transition-colors">
                         <span class="material-symbols-outlined text-[18px] text-red-500">picture_as_pdf</span>
                         Laporan Statistik Jemaat (PDF)
@@ -50,13 +50,13 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-8 min-w-0">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-4 mb-6 min-w-0">
         @foreach($summaryCards as $card)
-            <div class="min-w-0 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+            <div class="min-w-0 dashboard-card p-5 rounded-xl">
                 <div class="flex items-start justify-between gap-4">
                     <div class="min-w-0">
-                        <p class="text-gray-400 text-[10px] font-extrabold uppercase tracking-widest truncate">{{ $card['label'] }}</p>
-                        <p class="text-3xl font-extrabold text-gray-900 tracking-tight mt-2">{{ number_format($card['value'], 0, ',', '.') }}</p>
+                        <p class="text-slate-400 text-[10px] font-extrabold uppercase tracking-widest truncate">{{ $card['label'] }}</p>
+                        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ number_format($card['value'], 0, ',', '.') }}</p>
                     </div>
                     <div class="w-10 h-10 shrink-0 rounded-xl {{ $card['tone'] }} flex items-center justify-center">
                         <span class="material-symbols-outlined text-[20px]">{{ $card['icon'] }}</span>
@@ -66,11 +66,11 @@
         @endforeach
     </div>
 
-    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)] gap-6 mb-8 min-w-0">
-        <div class="min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,1fr)_360px] gap-6 mb-6 min-w-0">
+        <div class="min-w-0 dashboard-card rounded-xl overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100">
-                <h2 class="text-base font-extrabold text-gray-900">Statistik Keluarga & Jemaat per Sektor</h2>
-                <p class="text-xs text-gray-500 font-medium mt-1">Persebaran keluarga dan anggota jemaat berdasarkan wilayah pelayanan.</p>
+                <h2 class="text-base font-extrabold text-slate-900">Statistik Keluarga per Sektor</h2>
+                <p class="text-xs text-slate-500 font-medium mt-1">Persebaran keluarga dan anggota jemaat berdasarkan wilayah pelayanan.</p>
             </div>
             <div class="p-6">
                 @if(empty($sektorLabels))
@@ -110,10 +110,10 @@
             </div>
         </div>
 
-        <div class="min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="min-w-0 dashboard-card rounded-xl overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100">
-                <h2 class="text-base font-extrabold text-gray-900">Demografi Usia Jemaat</h2>
-                <p class="text-xs text-gray-500 font-medium mt-1">Ringkasan kategori umur jemaat aktif.</p>
+                <h2 class="text-base font-extrabold text-slate-900">Demografi Usia Jemaat</h2>
+                <p class="text-xs text-slate-500 font-medium mt-1">Kategori umur jemaat aktif.</p>
             </div>
             <div class="p-6 space-y-4">
                 @forelse($ageStats ?? [] as $label => $value)
@@ -131,11 +131,11 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)] gap-6 min-w-0">
-        <div class="min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="grid grid-cols-1 2xl:grid-cols-[minmax(0,1fr)_360px] gap-6 min-w-0">
+        <div class="min-w-0 dashboard-card rounded-xl overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                    <h2 class="text-sm font-extrabold text-gray-900 uppercase tracking-wider">Jemaat Baru Terdaftar</h2>
+                <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Jemaat Baru Terdaftar</h2>
                     <p class="text-xs text-gray-500 font-medium mt-1">5 jemaat terakhir di database.</p>
                 </div>
                 <a href="{{ route('dashboard.jemaat.index') }}" class="text-xs font-bold text-primary hover:underline">Lihat Semua</a>
@@ -174,21 +174,21 @@
         </div>
 
         <div class="min-w-0 flex flex-col gap-6">
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+            <div class="dashboard-card rounded-xl p-6">
                 <h2 class="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-5">Aksi Cepat</h2>
                 <div class="flex flex-col gap-3">
-                    <a href="{{ route('dashboard.jemaat.create') }}" class="flex items-center justify-between gap-4 p-4 rounded-2xl border border-gray-100 hover:border-primary hover:bg-blue-50/30 transition-all group">
-                        <span class="text-sm font-bold text-gray-700 group-hover:text-primary">Tambah Anggota Jemaat</span>
+                    <a href="{{ route('dashboard.jemaat.create') }}" class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 hover:border-primary hover:bg-blue-50/30 transition-all group">
+                        <span class="text-sm font-bold text-gray-700 group-hover:text-primary">Tambah Jemaat</span>
                         <span class="material-symbols-outlined text-gray-300 group-hover:text-primary">chevron_right</span>
                     </a>
-                    <a href="{{ route('dashboard.keluarga.create') }}" class="flex items-center justify-between gap-4 p-4 rounded-2xl border border-gray-100 hover:border-indigo-500 hover:bg-indigo-50/30 transition-all group">
-                        <span class="text-sm font-bold text-gray-700 group-hover:text-indigo-600">Daftarkan Keluarga Baru</span>
+                    <a href="{{ route('dashboard.keluarga.create') }}" class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 hover:border-indigo-500 hover:bg-indigo-50/30 transition-all group">
+                        <span class="text-sm font-bold text-gray-700 group-hover:text-indigo-600">Tambah Keluarga</span>
                         <span class="material-symbols-outlined text-gray-300 group-hover:text-indigo-600">chevron_right</span>
                     </a>
                 </div>
             </div>
 
-            <div class="bg-primary rounded-3xl p-6 text-white shadow-xl shadow-primary/20">
+            <div class="bg-primary rounded-xl p-6 text-white shadow-lg shadow-primary/15">
                 <h3 class="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest mb-5">Aktivitas Terakhir Admin</h3>
                 <div class="flex flex-col gap-4">
                     @forelse($recentActivities as $activity)
