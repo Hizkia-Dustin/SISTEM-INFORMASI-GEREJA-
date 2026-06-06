@@ -1,27 +1,35 @@
 <?php
-$file = 'app/Http/Controllers/DashboardController.php';
+
+$file = __DIR__ . '/app/Http/Controllers/DashboardController.php';
+
+if (! file_exists($file)) {
+    fwrite(STDERR, "DashboardController.php not found.\n");
+    exit(1);
+}
+
 $content = file_get_contents($file);
+$obsoletePatterns = [
+    "dashboard.racakitri.index', ['artikel' =>",
+    "dashboard.racakitri.form', ['type' => 'Tambah', 'artikel' =>",
+    "dashboard.racakitri.detail', ['artikel' =>",
+    "dashboard.racakitri.form', ['type' => 'Edit', 'artikel' =>",
+    "dashboard.informasi.index', ['artikel' =>",
+    "dashboard.informasi.form', ['type' => 'Tambah', 'artikel' =>",
+    "dashboard.informasi.detail', ['artikel' =>",
+    "dashboard.informasi.form', ['type' => 'Edit', 'artikel' =>",
+    "dashboard.video.index', ['artikel' =>",
+    "dashboard.video.form', ['type' => 'Tambah', 'artikel' =>",
+    "dashboard.video.detail', ['artikel' =>",
+    "dashboard.video.form', ['type' => 'Edit', 'artikel' =>",
+];
 
-// Replace for Racakitri
-$content = str_replace(
-    ["view('dashboard.racakitri.index', ['artikel' =>", "view('dashboard.racakitri.form', ['type' => 'Tambah', 'artikel' =>", "view('dashboard.racakitri.detail', ['artikel' =>", "view('dashboard.racakitri.form', ['type' => 'Edit', 'artikel' =>"],
-    ["view('dashboard.racakitri.index', ['racakitri' =>", "view('dashboard.racakitri.form', ['type' => 'Tambah', 'racakitri' =>", "view('dashboard.racakitri.detail', ['racakitri' =>", "view('dashboard.racakitri.form', ['type' => 'Edit', 'racakitri' =>"],
-    $content
-);
+foreach ($obsoletePatterns as $pattern) {
+    if (str_contains($content, $pattern)) {
+        fwrite(STDERR, "Found obsolete view variable pattern: {$pattern}\n");
+        fwrite(STDERR, "Fix DashboardController.php from source control instead of running a blind replacement.\n");
+        exit(1);
+    }
+}
 
-// Replace for Informasi
-$content = str_replace(
-    ["view('dashboard.informasi.index', ['artikel' =>", "view('dashboard.informasi.form', ['type' => 'Tambah', 'artikel' =>", "view('dashboard.informasi.detail', ['artikel' =>", "view('dashboard.informasi.form', ['type' => 'Edit', 'artikel' =>"],
-    ["view('dashboard.informasi.index', ['informasi' =>", "view('dashboard.informasi.form', ['type' => 'Tambah', 'informasi' =>", "view('dashboard.informasi.detail', ['informasi' =>", "view('dashboard.informasi.form', ['type' => 'Edit', 'informasi' =>"],
-    $content
-);
-
-// Replace for Video
-$content = str_replace(
-    ["view('dashboard.video.index', ['artikel' =>", "view('dashboard.video.form', ['type' => 'Tambah', 'artikel' =>", "view('dashboard.video.detail', ['artikel' =>", "view('dashboard.video.form', ['type' => 'Edit', 'artikel' =>"],
-    ["view('dashboard.video.index', ['video' =>", "view('dashboard.video.form', ['type' => 'Tambah', 'video' =>", "view('dashboard.video.detail', ['video' =>", "view('dashboard.video.form', ['type' => 'Edit', 'video' =>"],
-    $content
-);
-
-file_put_contents($file, $content);
-echo "Replacement done!\n";
+echo "DashboardController view variables are already correct. No changes made.\n";
+exit(0);
