@@ -21,11 +21,19 @@
         <x-form.input label="Judul artikel" name="judul" value="{{ old('judul', $artikel->judul ?? '') }}" placeholder="Masukkan judul yang menarik..." />
 
         <div class="grid grid-cols-2 gap-8">
-            <x-form.select label="Kategori" name="kategori">
-                <option value="Warta" {{ old('kategori', $artikel->kategori ?? '') == 'Warta' ? 'selected' : '' }}>Warta Jemaat</option>
-                <option value="artikel" {{ old('kategori', $artikel->kategori ?? '') == 'artikel' ? 'selected' : '' }}>artikel Umum</option>
-                <option value="Renungan" {{ old('kategori', $artikel->kategori ?? '') == 'Renungan' ? 'selected' : '' }}>Renungan</option>
-            </x-form.select>
+            @php
+                $defaultCategories = ['Bahan Khotbah', 'Kajian Teologi', 'Kesaksian', 'Artikel Umum'];
+                $dbCategories = \App\Models\Artikel::whereNotNull('kategori')->where('kategori', '!=', '')->distinct()->pluck('kategori')->toArray();
+                $suggestedCategories = array_unique(array_merge($defaultCategories, $dbCategories));
+            @endphp
+            <div>
+                <x-form.input label="Kategori Artikel" name="kategori" list="kategori-list" value="{{ old('kategori', $artikel->kategori ?? '') }}" placeholder="Pilih atau ketik kategori baru..." />
+                <datalist id="kategori-list">
+                    @foreach($suggestedCategories as $cat)
+                        <option value="{{ $cat }}">
+                    @endforeach
+                </datalist>
+            </div>
             
             <x-form.select label="Status Publikasi" name="status">
                 <option value="Draft" {{ old('status', $artikel->status ?? '') == 'Draft' ? 'selected' : '' }}>Draft (Belum Terbit)</option>

@@ -17,7 +17,11 @@
             </div>
         </header>
 
-        <x-article.category-chips routeName="artikel.index" :active="$kategori ?? null" :categories="['Bahan Khotbah', 'Kajian Teologi', 'Kesaksian']" />
+        @php
+            $dbCategories = \App\Models\Artikel::where('status', 'Published')->whereNotNull('kategori')->where('kategori', '!=', '')->distinct()->pluck('kategori')->toArray();
+            $suggestedCategories = !empty($dbCategories) ? $dbCategories : ['Bahan Khotbah', 'Kajian Teologi', 'Kesaksian'];
+        @endphp
+        <x-article.category-chips routeName="artikel.index" :active="$kategori ?? null" :categories="$suggestedCategories" />
 
         @php
             $hasArticles = $articles->count() > 0;
