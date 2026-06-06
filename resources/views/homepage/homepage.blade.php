@@ -190,7 +190,12 @@
                     <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('d F Y') }}</span></div>
                     <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->waktu_mulai)->format('H:i') }} WIB</span></div>
                     @if($jadwal->deskripsi)
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ \Illuminate\Support\Str::limit($jadwal->deskripsi, 55) }}</span></div>
+                        @php
+                            $cleanDeskripsi = trim(preg_replace('/Lampiran:.*$/i', '', $jadwal->deskripsi));
+                        @endphp
+                        @if(!empty($cleanDeskripsi))
+                            <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ \Illuminate\Support\Str::limit($cleanDeskripsi, 55) }}</span></div>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -240,7 +245,12 @@
                     <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->tanggal)->translatedFormat('d F Y') }}</span></div>
                     <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->waktu_mulai)->format('H:i') }} WIB</span></div>
                     @if($sakramen->deskripsi)
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ $sakramen->deskripsi }}</span></div>
+                        @php
+                            $cleanDeskripsi = trim(preg_replace('/Lampiran:.*$/i', '', $sakramen->deskripsi));
+                        @endphp
+                        @if(!empty($cleanDeskripsi))
+                            <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ \Illuminate\Support\Str::limit($cleanDeskripsi, 55) }}</span></div>
+                        @endif
                     @endif
                 </div>
             </div>
