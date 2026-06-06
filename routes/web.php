@@ -12,7 +12,7 @@ Route::get('/', function () {
     $artikel = \App\Models\Artikel::latest()->take(3)->get();
     $racakitri = \App\Models\Racakitri::latest()->take(3)->get();
     $informasi = \App\Models\Informasi::latest()->take(3)->get();
-    $video = \App\Models\Video::latest()->take(3)->get();
+    $video = \App\Models\Video::where('status', 'Published')->latest()->take(3)->get();
     $warta = \App\Models\Warta::latest()->take(3)->get();
     $renungan = \App\Models\Renungan::latest()->take(3)->get();
     
@@ -23,8 +23,14 @@ Route::get('/', function () {
 Route::prefix('tentang-kami')->group(function () {
     Route::get('/sejarah', function () { return view('pages.about.sejarah'); })->name('about.sejarah');
     Route::get('/visi-misi', function () { return view('pages.about.visi-misi'); })->name('about.visi-misi');
-    Route::get('/pendeta', function () { return view('pages.about.pendeta'); })->name('about.pendeta');
-    Route::get('/penatua', function () { return view('pages.about.penatua'); })->name('about.penatua');
+    Route::get('/pendeta', function () {
+        $pelayan = \App\Models\Pelayan::latest()->get();
+        return view('pages.about.pendeta', compact('pelayan'));
+    })->name('about.pendeta');
+    Route::get('/penatua', function () {
+        $pelayan = \App\Models\Pelayan::latest()->get();
+        return view('pages.about.penatua', compact('pelayan'));
+    })->name('about.penatua');
 });
 
 // Pelayanan
@@ -111,7 +117,7 @@ Route::prefix('download')->group(function () {
 Route::get('/kontak', function () { return view('pages.kontak.index'); })->name('kontak.index');
 Route::prefix('video')->group(function () {
     Route::get('/', function () { 
-        $videos = \App\Models\Video::latest()->paginate(9);
+        $videos = \App\Models\Video::where('status', 'Published')->latest()->paginate(9);
         return view('pages.video.index', compact('videos')); 
     })->name('video.index');
     Route::get('/{id}', function ($id) { 

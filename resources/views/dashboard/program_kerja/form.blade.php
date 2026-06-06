@@ -26,7 +26,7 @@
 
             <div>
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Unggah Lampiran (PDF)</label>
-                <input type="file" name="lampiran" accept=".pdf" class="w-full px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
+                <input type="file" name="lampiran" accept=".pdf" class="w-full cursor-pointer px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-medium text-gray-700">
                 @if(isset($program_kerja) && $program_kerja->lampiran)
                     <p class="mt-2 text-xs text-gray-500">File saat ini: <a href="{{ asset('storage/' . $program_kerja->lampiran) }}" target="_blank" class="text-primary underline">Lihat PDF</a></p>
                 @endif

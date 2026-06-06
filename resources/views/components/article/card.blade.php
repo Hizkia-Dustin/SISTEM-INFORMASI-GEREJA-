@@ -2,8 +2,21 @@
 
 <article class="relative bg-white rounded-2xl overflow-hidden border border-outline-variant/50 shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col h-full hover:-translate-y-1">
     <!-- Thumbnail -->
+    @php
+        $imageUrl = $article->image;
+        $imagePath = parse_url($imageUrl, PHP_URL_PATH);
+        $imageExt = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
+        $isVideo = in_array($imageExt, ['mp4', 'webm', 'ogg']);
+    @endphp
     <div class="aspect-[16/10] overflow-hidden relative">
-        <img src="{{ $article->image }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        @if($isVideo)
+            <video muted loop playsinline preload="metadata" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <source src="{{ $imageUrl }}" type="video/{{ $imageExt }}">
+                Your browser does not support the video tag.
+            </video>
+        @else
+            <img src="{{ $imageUrl }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+        @endif
         <!-- Kategori Badge -->
         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-md">
             <span class="font-label-sm text-secondary uppercase tracking-wider">{{ $article->category ?? 'Umum' }}</span>
@@ -24,6 +37,14 @@
                 <span class="truncate max-w-[120px]">{{ $article->author ?? 'Admin' }}</span>
             </div>
         </div>
+
+        @if(!empty($article->verse))
+            <div class="mb-4">
+                <span class="inline-flex items-center rounded-full bg-[#e5eeff] px-3 py-1 text-xs font-semibold tracking-wide text-[#0b3f91]">
+                    {{ $article->verse }}
+                </span>
+            </div>
+        @endif
         
         <!-- Judul -->
         <h2 class="font-h3 text-h3 text-primary-container mb-3 group-hover:text-secondary transition-colors line-clamp-2">

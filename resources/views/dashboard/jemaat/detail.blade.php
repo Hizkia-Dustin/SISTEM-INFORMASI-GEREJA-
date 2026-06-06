@@ -41,7 +41,7 @@
                 </div>
                 <div class="flex flex-col gap-3 mt-8">
                     <a href="{{ route('dashboard.jemaat.edit', $jemaat->id) }}" class="w-full py-3.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all text-center">Ubah Profil</a>
-                    <form action="{{ route('dashboard.jemaat.destroy', $jemaat->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data jemaat ini?')">
+                    <form class="confirm-delete" action="{{ route('dashboard.jemaat.destroy', $jemaat->id) }}" method="POST" data-confirm="Apakah Anda yakin ingin menghapus data jemaat ini?">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="w-full py-3.5 bg-rose-50 text-rose-500 rounded-xl text-sm font-bold hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center gap-2">Hapus Jemaat</button>
@@ -99,10 +99,10 @@
                     </div>
                     @if(!empty($jemaat->lampiran_baptis))
                     <div class="mt-4 pt-4 border-t border-gray-100">
-                        <a href="{{ asset('storage/' . $jemaat->lampiran_baptis) }}" target="_blank" class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
+                        <button type="button" onclick="openLampiranModal('{{ asset('storage/' . $jemaat->lampiran_baptis) }}')" class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
                             Lihat Lampiran Baptis
-                        </a>
+                        </button>
                     </div>
                     @endif
                 </div>
@@ -113,10 +113,10 @@
                     </div>
                     @if(!empty($jemaat->lampiran_sidi))
                     <div class="mt-4 pt-4 border-t border-gray-100">
-                        <a href="{{ asset('storage/' . $jemaat->lampiran_sidi) }}" target="_blank" class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
+                        <button type="button" onclick="openLampiranModal('{{ asset('storage/' . $jemaat->lampiran_sidi) }}')" class="text-xs font-bold text-primary hover:underline flex items-center gap-1">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
                             Lihat Lampiran Sidi
-                        </a>
+                        </button>
                     </div>
                     @endif
                 </div>
@@ -126,4 +126,47 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Preview -->
+<div id="lampiranModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+    <div class="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-white shadow-2xl">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <h3 class="text-sm font-bold text-gray-700">Preview Lampiran</h3>
+            <button type="button" onclick="closeLampiranModal()" class="text-gray-400 hover:text-gray-700 transition-all">✕</button>
+        </div>
+        <div class="p-4 bg-gray-50 flex items-center justify-center min-h-[320px]">
+            <img id="lampiranModalImage" src="" alt="Preview Lampiran" class="max-h-[600px] w-full object-contain" />
+        </div>
+    </div>
+</div>
+
+<script>
+    function openLampiranModal(src) {
+        const modal = document.getElementById('lampiranModal');
+        const img = document.getElementById('lampiranModalImage');
+        img.src = src;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeLampiranModal() {
+        const modal = document.getElementById('lampiranModal');
+        const img = document.getElementById('lampiranModalImage');
+        img.src = '';
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeLampiranModal();
+        }
+    });
+
+    document.getElementById('lampiranModal').addEventListener('click', function(event) {
+        if (event.target.id === 'lampiranModal') {
+            closeLampiranModal();
+        }
+    });
+</script>
 @endsection

@@ -104,3 +104,20 @@
     background-color: var(--color-accent-gold);
     color: white;
 }
+
+/* Button cursor pointer */
+button,
+[type="button"],
+[type="submit"],
+[role="button"],
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+/* Force spin button arrows to show on time inputs */
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-outer-spin-button {
+    opacity: 1 !important;
+    display: block !important;
+    -webkit-appearance: inner-spin-button !important;
+}

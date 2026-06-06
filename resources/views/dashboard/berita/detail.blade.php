@@ -30,7 +30,7 @@
 
         <div class="mt-12 pt-8 border-t border-gray-50 flex items-center gap-4">
             <a href="{{ route('dashboard.berita.edit', 1) }}" class="px-6 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all text-center">Ubah Berita</a>
-            <form action="{{ route('dashboard.berita.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')">
+            <form action="{{ route('dashboard.berita.destroy', 1) }}" method="POST" class="confirm-delete" data-confirm="Apakah Anda yakin ingin menghapus berita ini?">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="px-6 py-3 bg-rose-50 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-100 transition-all">Hapus Berita</button>

@@ -40,7 +40,8 @@
                             'title' => $dbArticle->judul,
                             'category' => $dbArticle->kategori ?? 'Renungan',
                             'author' => 'Admin GKI',
-                            'date' => $dbArticle->created_at->format('d M Y'),
+                            'date' => \Carbon\Carbon::parse($dbArticle->tanggal ?? $dbArticle->created_at)->format('d M Y'),
+                            'verse' => $dbArticle->ayat,
                             'excerpt' => Str::limit(strip_tags($dbArticle->isi), 100),
                             'image' => 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop', // Renungan tidak ada gambar di database
                         ];

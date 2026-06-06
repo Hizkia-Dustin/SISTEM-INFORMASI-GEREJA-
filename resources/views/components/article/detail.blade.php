@@ -23,47 +23,61 @@
 
 <!-- Article Container -->
 <article class="max-w-4xl mx-auto bg-white rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm">
-    
-    <!-- Cover Image -->
-    <div class="w-full h-[300px] md:h-[450px] relative">
-        <img src="{{ $article->image }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
-        
-        <!-- Title Overlay -->
-        <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12 text-white">
-            <div class="mb-4 inline-block px-3 py-1 bg-secondary text-white rounded-md font-label-sm uppercase tracking-widest shadow-sm">
+    @php
+        $imageUrl = $article->image;
+        $imagePath = parse_url($imageUrl, PHP_URL_PATH);
+        $imageExt = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
+        $isVideo = in_array($imageExt, ['mp4', 'webm', 'ogg']);
+    @endphp
+    <!-- Video Player -->
+    <div class="w-full bg-black">
+        @if($isVideo)
+            <video controls preload="metadata" playsinline class="w-full h-auto max-h-[650px] bg-black">
+                <source src="{{ $imageUrl }}" type="video/{{ $imageExt }}">
+                Your browser does not support the video tag.
+            </video>
+        @else
+            <img src="{{ $article->image }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+        @endif
+    </div>
+
+    <div class="p-8 md:p-12">
+        <div class="mb-6 flex flex-col gap-4">
+            <div class="inline-flex items-center gap-3 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-[0.2em]">
                 {{ $article->category }}
             </div>
-            <h1 class="font-h1 text-3xl md:text-5xl font-bold leading-tight mb-4">
-                {{ $article->title }}
-            </h1>
-            
-            <div class="flex flex-wrap items-center gap-4 font-caption md:text-base opacity-90">
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[18px]">person</span>
-                    <span>{{ $article->author }}</span>
-                </div>
-                <span class="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[18px]">calendar_today</span>
-                    <span>{{ $article->date }}</span>
+            <div>
+                <h1 class="font-h1 text-3xl md:text-4xl font-bold text-primary-container leading-tight mb-3">
+                    {{ $article->title }}
+                </h1>
+                <div class="flex flex-wrap items-center gap-6 text-sm text-on-surface-variant">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">person</span>
+                        <span>{{ $article->author }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        <span>{{ $article->date }}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Content Area -->
-    <div class="p-8 md:p-12">
         <div class="prose prose-lg prose-slate max-w-none 
                     prose-headings:font-h2 prose-headings:text-primary-container
                     prose-p:font-body-lg prose-p:text-on-surface prose-p:leading-relaxed
                     prose-blockquote:border-l-4 prose-blockquote:border-secondary prose-blockquote:bg-surface-container prose-blockquote:p-6 prose-blockquote:rounded-r-xl prose-blockquote:font-serif prose-blockquote:text-primary prose-blockquote:italic
                     prose-ul:list-disc prose-ul:pl-6 prose-li:font-body-md prose-li:mb-2
                     prose-a:text-secondary hover:prose-a:text-primary transition-colors">
-            
-            <!-- Backend Note: Use {!! $article->content !!} to render HTML content -->
-            {!! $article->content !!}
-            
+            @php
+                $content = $article->content ?? '';
+                $hasHtml = $content !== strip_tags($content);
+            @endphp
+
+            @if($hasHtml)
+                {!! $content !!}
+            @else
+                {!! nl2br(e($content)) !!}
+            @endif
         </div>
         
         <!-- Tags -->

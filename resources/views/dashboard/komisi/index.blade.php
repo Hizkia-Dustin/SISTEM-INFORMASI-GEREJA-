@@ -32,7 +32,7 @@
                     <td class="px-8 py-5">
                         <div class="flex items-center justify-end gap-3">
                             <a href="{{ route('dashboard.komisi.edit', 1) }}" class="text-primary font-bold text-xs hover:underline">Ubah</a>
-                            <form action="{{ route('dashboard.komisi.destroy', 1) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus komisi ini?')">
+                            <form action="{{ route('dashboard.komisi.destroy', 1) }}" method="POST" class="confirm-delete" data-confirm="Apakah Anda yakin ingin menghapus komisi ini?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-rose-500 font-bold text-xs hover:underline">Hapus</button>
