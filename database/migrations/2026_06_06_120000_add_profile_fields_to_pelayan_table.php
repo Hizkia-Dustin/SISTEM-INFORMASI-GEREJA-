@@ -12,25 +12,33 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pelayan', function (Blueprint $table) {
-            $table->string('kategori_halaman')->nullable()->after('posisi');
-            $table->string('kelompok_layanan')->nullable()->after('kategori_halaman');
-            $table->string('jabatan_tampilan')->nullable()->after('kelompok_layanan');
-            $table->string('nama_tampilan')->nullable()->after('jabatan_tampilan');
-            $table->string('foto')->nullable()->after('nama_tampilan');
-            $table->string('pasangan')->nullable()->after('foto');
-            $table->string('email')->nullable()->after('pasangan');
-            $table->string('area_layanan')->nullable()->after('email');
-            $table->string('ikon')->nullable()->after('area_layanan');
-            $table->string('visi_strategis')->nullable()->after('ikon');
-            $table->string('fokus_utama')->nullable()->after('visi_strategis');
-            $table->text('deskripsi_singkat')->nullable()->after('fokus_utama');
-            $table->text('pendidikan')->nullable()->after('deskripsi_singkat');
-            $table->text('riwayat_pelayanan')->nullable()->after('pendidikan');
-            $table->text('visi_pelayanan')->nullable()->after('riwayat_pelayanan');
-            $table->string('jadwal_konseling')->nullable()->after('visi_pelayanan');
-            $table->string('masa_bakti')->nullable()->after('jadwal_konseling');
-            $table->date('update_terakhir')->nullable()->after('masa_bakti');
-            $table->unsignedInteger('urutan')->default(0)->after('update_terakhir');
+            $columns = [
+                'kategori_halaman' => fn() => $table->string('kategori_halaman')->nullable()->after('posisi'),
+                'kelompok_layanan' => fn() => $table->string('kelompok_layanan')->nullable()->after('kategori_halaman'),
+                'jabatan_tampilan' => fn() => $table->string('jabatan_tampilan')->nullable()->after('kelompok_layanan'),
+                'nama_tampilan'    => fn() => $table->string('nama_tampilan')->nullable()->after('jabatan_tampilan'),
+                'foto'             => fn() => $table->string('foto')->nullable()->after('nama_tampilan'),
+                'pasangan'         => fn() => $table->string('pasangan')->nullable()->after('foto'),
+                'email'            => fn() => $table->string('email')->nullable()->after('pasangan'),
+                'area_layanan'     => fn() => $table->string('area_layanan')->nullable()->after('email'),
+                'ikon'             => fn() => $table->string('ikon')->nullable()->after('area_layanan'),
+                'visi_strategis'   => fn() => $table->string('visi_strategis')->nullable()->after('ikon'),
+                'fokus_utama'      => fn() => $table->string('fokus_utama')->nullable()->after('visi_strategis'),
+                'deskripsi_singkat'=> fn() => $table->text('deskripsi_singkat')->nullable()->after('fokus_utama'),
+                'pendidikan'       => fn() => $table->text('pendidikan')->nullable()->after('deskripsi_singkat'),
+                'riwayat_pelayanan'=> fn() => $table->text('riwayat_pelayanan')->nullable()->after('pendidikan'),
+                'visi_pelayanan'   => fn() => $table->text('visi_pelayanan')->nullable()->after('riwayat_pelayanan'),
+                'jadwal_konseling' => fn() => $table->string('jadwal_konseling')->nullable()->after('visi_pelayanan'),
+                'masa_bakti'       => fn() => $table->string('masa_bakti')->nullable()->after('jadwal_konseling'),
+                'update_terakhir'  => fn() => $table->date('update_terakhir')->nullable()->after('masa_bakti'),
+                'urutan'           => fn() => $table->unsignedInteger('urutan')->default(0)->after('update_terakhir'),
+            ];
+
+            foreach ($columns as $col => $addCol) {
+                if (!Schema::hasColumn('pelayan', $col)) {
+                    $addCol();
+                }
+            }
         });
     }
 
