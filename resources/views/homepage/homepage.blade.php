@@ -60,7 +60,13 @@
                         <span class="material-symbols-outlined text-[#0058bf]">auto_stories</span>
                         <span class="text-[#0058bf] text-xs uppercase font-bold tracking-widest">Renungan Harian</span>
                     </div>
-                    @php $renunganUtama = $renungan->first(); @endphp
+                    @php 
+                        $renunganUtama = $renungan->first(); 
+                        $penulisPendeta = null;
+                        if ($renunganUtama && $renunganUtama->penulis) {
+                            $penulisPendeta = \App\Models\Pendeta::where('nama', 'like', '%' . $renunganUtama->penulis . '%')->first();
+                        }
+                    @endphp
                     @if($renunganUtama)
                     <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">
                         @if($renunganUtama->penulis)
@@ -78,12 +84,33 @@
                     <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">Mazmur 23:1 - TUHAN adalah gembalaku, takkan kekurangan aku.</h2>
                     <p class="text-slate-600 mb-6 italic leading-relaxed">"Di tengah badai kehidupan yang tak menentu, ingatlah bahwa kita memiliki Gembala yang Agung. Dia tidak hanya menuntun, tetapi juga mencukupkan segala kebutuhan kita tepat pada waktu-Nya."</p>
                     @endif
+                    
                     <div class="flex items-center gap-4">
-                        <img class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB4N9ElRVNeg_OEQIsZeT4znLR5Y8NPf46jRHaW7qmb_eJ7X9bt1G49oFkjng6VhSPnxU4IHBLhTDFJnBxycSNbwpds8z7ttAszPCYUEYGgbylqWBzu2bUorTY4NhhL5ZwtqrZpBGzOO2Mr8J-YG86plmTdCfcRMlYEwkWE-il8-GOa28rkZgR3jPJBOdrneXJ22QA-wklRCRirl12DJW0KVx3YH7OV_umvT_T078xvUGnzG-t81pAAGa52ke6Ur5uY1d3RyZv2Ik" alt="Pastor"/>
-                        <div>
-                            <p class="text-sm font-bold text-[#001142]">Pdt. Dr. Andreas Wijaya</p>
-                            <p class="text-xs text-slate-500">Gembala Sidang</p>
-                        </div>
+                        @if($penulisPendeta)
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0">
+                                <img class="w-full h-full object-cover" src="{{ $penulisPendeta->foto ?? 'https://via.placeholder.com/150' }}" alt="{{ $penulisPendeta->nama }}"/>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-[#001142]">{{ $penulisPendeta->nama }}</p>
+                                <p class="text-xs text-slate-500">{{ $penulisPendeta->jabatan }}</p>
+                            </div>
+                        @elseif($renunganUtama && $renunganUtama->penulis)
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold shrink-0">
+                                {{ strtoupper(substr($renunganUtama->penulis, 0, 2)) }}
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-[#001142]">{{ $renunganUtama->penulis }}</p>
+                                <p class="text-xs text-slate-500">Pelayan Tuhan</p>
+                            </div>
+                        @else
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0">
+                                <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCB4N9ElRVNeg_OEQIsZeT4znLR5Y8NPf46jRHaW7qmb_eJ7X9bt1G49oFkjng6VhSPnxU4IHBLhTDFJnBxycSNbwpds8z7ttAszPCYUEYGgbylqWBzu2bUorTY4NhhL5ZwtqrZpBGzOO2Mr8J-YG86plmTdCfcRMlYEwkWE-il8-GOa28rkZgR3jPJBOdrneXJ22QA-wklRCRirl12DJW0KVx3YH7OV_umvT_T078xvUGnzG-t81pAAGa52ke6Ur5uY1d3RyZv2Ik" alt="Pastor"/>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-[#001142]">Pdt. Dr. Andreas Wijaya</p>
+                                <p class="text-xs text-slate-500">Gembala Sidang</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
