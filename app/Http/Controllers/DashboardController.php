@@ -1195,6 +1195,34 @@ class DashboardController extends Controller
         $allNotifications = \App\Models\Notification::where('user_id', auth()->id())->latest()->paginate(10);
         return view('dashboard.settings.index', compact('user', 'admins', 'allNotifications')); 
     }
+
+    public function updateSystemSettings(Request $request)
+    {
+        $data = $request->validate([
+            'hero_title' => 'nullable|string|max:255',
+            'hero_subtitle' => 'nullable|string|max:1000',
+            'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email|max:100',
+            'address' => 'nullable|string|max:1000',
+            'youtube_link' => 'nullable|string|max:500',
+            'instagram_link' => 'nullable|string|max:500',
+            'maps_link' => 'nullable|string|max:1000',
+        ]);
+
+        if ($request->hasFile('hero_image')) {
+            $path = $request->file('hero_image')->store('uploads/settings', 'public');
+            \App\Models\Setting::set('hero_image', $path);
+        }
+
+        foreach ($data as $key => $value) {
+            if ($key !== 'hero_image') {
+                \App\Models\Setting::set($key, $value);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Pengaturan sistem berhasil diperbarui.');
+    }
     public function createAdmin() { return view('dashboard.settings.admin_form', ['type' => 'Tambah']); }
     public function storeAdmin(Request $request) 
     {

@@ -259,12 +259,78 @@
         </div>
 
         <!-- System Section -->
-        <div x-show="activeTab === 'sistem'" x-transition class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8 p-12 text-center">
-            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mx-auto mb-6">
-                <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <div x-show="activeTab === 'sistem'" x-transition class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+            <div class="px-8 py-6 border-b border-gray-50">
+                <h2 class="text-lg font-extrabold text-gray-800">Pengaturan Sistem &amp; Homepage</h2>
+                <p class="text-xs text-gray-400 font-medium mt-1">Kelola konten halaman utama, gambar banner hero, dan informasi kontak gereja secara dinamis.</p>
             </div>
-            <h3 class="text-xl font-bold text-gray-800">Pengaturan Sistem</h3>
-            <p class="text-gray-400 mt-2 max-w-sm mx-auto">Kelola konfigurasi dasar aplikasi dan pemeliharaan sistem di sini.</p>
+            <form action="{{ route('dashboard.settings.system') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="p-8 space-y-8">
+                    <!-- Hero Section Banner -->
+                    <div>
+                        <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">1. Banner Utama (Hero Section)</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Judul Hero Banner</label>
+                                <input type="text" name="hero_title" value="{{ \App\Models\Setting::get('hero_title', 'Selamat Datang di GKI PAKUWON') }}" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Subjudul / Deskripsi Hero</label>
+                                <textarea name="hero_subtitle" rows="3" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">{{ \App\Models\Setting::get('hero_subtitle', 'Temukan kedamaian dan komunitas dalam perjalanan iman Anda. Mari bergabung dalam ibadah dan bertumbuh bersama dalam kasih Kristus.') }}</textarea>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Gambar Latar Belakang (Hero Image)</label>
+                                @php $currentHero = \App\Models\Setting::get('hero_image'); @endphp
+                                @if($currentHero)
+                                    <div class="mb-3 w-full max-w-md h-48 rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+                                        <img src="{{ asset('storage/' . $currentHero) }}" class="w-full h-full object-cover" alt="Hero Banner Preview">
+                                    </div>
+                                @endif
+                                <input type="file" name="hero_image" class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-primary hover:file:bg-blue-100 transition-all">
+                                <p class="text-[10px] text-gray-400 mt-1">Format gambar: JPG, PNG, JPEG, WEBP. Maksimal 5MB.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact & Social Details -->
+                    <div>
+                        <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">2. Informasi Kontak &amp; Footer</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Nomor Telepon / WhatsApp</label>
+                                <input type="text" name="phone" value="{{ \App\Models\Setting::get('phone') }}" placeholder="Contoh: +62 812-3456-7890" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Alamat Email Gereja</label>
+                                <input type="email" name="email" value="{{ \App\Models\Setting::get('email') }}" placeholder="Contoh: info@gkipakuwon.or.id" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Alamat Fisik Gereja</label>
+                                <textarea name="address" rows="2" placeholder="Tulis alamat lengkap gereja" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">{{ \App\Models\Setting::get('address') }}</textarea>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Link Google Maps (Iframe URL / Share Link)</label>
+                                <input type="text" name="maps_link" value="{{ \App\Models\Setting::get('maps_link') }}" placeholder="https://maps.google.com/..." class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Link Instagram Gereja</label>
+                                <input type="text" name="instagram_link" value="{{ \App\Models\Setting::get('instagram_link') }}" placeholder="https://instagram.com/..." class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Link YouTube Channel</label>
+                                <input type="text" name="youtube_link" value="{{ \App\Models\Setting::get('youtube_link') }}" placeholder="https://youtube.com/..." class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10 transition-all">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="px-8 py-5 bg-gray-50/50 border-t border-gray-50 flex items-center gap-3">
+                    <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-xl text-xs font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all">Simpan Pengaturan</button>
+                </div>
+            </form>
         </div>
 
         <!-- Danger Zone -->

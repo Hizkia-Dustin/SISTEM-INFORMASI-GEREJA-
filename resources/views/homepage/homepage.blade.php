@@ -32,14 +32,15 @@
     {{-- Hero Section --}}
     <section class="relative h-[600px] flex items-center overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzU5taX6A_7HKANT8o5WTu9FHHpU8zR1h2hL7TPFvrZpLbjJENkN7n11uSy2hmu9BdjK9XnoRo3FdcguxWqr3z2ooBAP2GVaVwPa54Xii3UnI1_hJEal0Mr6UcQYNeIu1VthYKVWLuglgek5eopmR8LOC0UHbNH5d4S2VBsbwXqt4DyQBRfIg2dw9Dtt4L4n65hJoqI1V69YrYk5hNF62Ai0esXgCXhixafowJRufp6IJisRt0v0J9vPswEox6CiEqYIWTXkic3tU" alt="Interior gereja modern"/>
+            @php $heroImageSetting = \App\Models\Setting::get('hero_image'); @endphp
+            <img class="w-full h-full object-cover" src="{{ $heroImageSetting ? asset('storage/' . $heroImageSetting) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzU5taX6A_7HKANT8o5WTu9FHHpU8zR1h2hL7TPFvrZpLbjJENkN7n11uSy2hmu9BdjK9XnoRo3FdcguxWqr3z2ooBAP2GVaVwPa54Xii3UnI1_hJEal0Mr6UcQYNeIu1VthYKVWLuglgek5eopmR8LOC0UHbNH5d4S2VBsbwXqt4DyQBRfIg2dw9Dtt4L4n65hJoqI1V69YrYk5hNF62Ai0esXgCXhixafowJRufp6IJisRt0v0J9vPswEox6CiEqYIWTXkic3tU' }}" alt="Interior gereja modern"/>
             <div class="absolute inset-0 bg-gradient-to-r from-[#00236f]/80 to-transparent"></div>
         </div>
         <div class="container mx-auto px-8 relative z-10">
             <div class="max-w-2xl text-white">
                 <span class="bg-[#0058bf]/20 backdrop-blur-md px-4 py-1 rounded-full text-xs uppercase tracking-widest mb-6 inline-block font-bold">Selamat Datang di GKI PAKUWON</span>
-                <h1 class="font-[Manrope] text-6xl font-bold leading-tight mb-6">Selamat Datang di GKI PAKUWON </h1>
-                <p class="text-slate-200 mb-8 max-w-lg text-lg">Temukan kedamaian dan komunitas dalam perjalanan iman Anda. Mari bergabung dalam ibadah dan bertumbuh bersama dalam kasih Kristus.</p>
+                <h1 class="font-[Manrope] text-6xl font-bold leading-tight mb-6">{{ \App\Models\Setting::get('hero_title', 'Selamat Datang di GKI PAKUWON') }}</h1>
+                <p class="text-slate-200 mb-8 max-w-lg text-lg">{{ \App\Models\Setting::get('hero_subtitle', 'Temukan kedamaian dan komunitas dalam perjalanan iman Anda. Mari bergabung dalam ibadah dan bertumbuh bersama dalam kasih Kristus.') }}</p>
                 <div class="flex gap-4">
                     <button class="bg-white text-[#00236f] px-8 py-3 rounded-lg text-sm font-bold shadow-lg hover:bg-slate-100 transition-all">Ikuti Ibadah Offline</button>
                     <button class="border-2 border-white text-white px-8 py-3 rounded-lg text-sm font-bold hover:bg-white/10 transition-all">Jadwal Kegiatan</button>

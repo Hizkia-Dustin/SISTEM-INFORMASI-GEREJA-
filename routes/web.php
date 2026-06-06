@@ -367,6 +367,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // Settings
     Route::get('/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
+    Route::post('/settings/system', [DashboardController::class, 'updateSystemSettings'])->name('dashboard.settings.system');
     Route::get('/settings/admin/create', [DashboardController::class, 'createAdmin'])->name('dashboard.settings.admin.create');
     Route::post('/settings/admin', [DashboardController::class, 'storeAdmin'])->name('dashboard.settings.admin.store');
     Route::get('/settings/admin/{id}/edit', [DashboardController::class, 'editAdmin'])->name('dashboard.settings.admin.edit');
