@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('renungan') || Schema::hasColumn('renungan', 'ayat')) {
+            return;
+        }
+
         Schema::table('renungan', function (Blueprint $table) {
-            $table->string('ayat')->nullable()->after('judul');
+            $table->string('ayat')->nullable();
         });
     }
 

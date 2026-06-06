@@ -11,9 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('artikel')) {
+            return;
+        }
+
         Schema::table('artikel', function (Blueprint $table) {
-            $table->renameColumn('konten', 'isi');
-            $table->string('gambar')->nullable()->after('kategori');
+            if (Schema::hasColumn('artikel', 'konten') && !Schema::hasColumn('artikel', 'isi')) {
+                $table->renameColumn('konten', 'isi');
+            }
+            if (!Schema::hasColumn('artikel', 'gambar')) {
+                $table->string('gambar')->nullable();
+            }
         });
     }
 
@@ -22,9 +30,17 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (!Schema::hasTable('artikel')) {
+            return;
+        }
+
         Schema::table('artikel', function (Blueprint $table) {
-            $table->dropColumn('gambar');
-            $table->renameColumn('isi', 'konten');
+            if (Schema::hasColumn('artikel', 'gambar')) {
+                $table->dropColumn('gambar');
+            }
+            if (Schema::hasColumn('artikel', 'isi') && !Schema::hasColumn('artikel', 'konten')) {
+                $table->renameColumn('isi', 'konten');
+            }
         });
     }
 };

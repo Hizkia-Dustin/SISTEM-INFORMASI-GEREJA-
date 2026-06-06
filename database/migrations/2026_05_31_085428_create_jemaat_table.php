@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('jemaat')) {
+            return;
+        }
+
         Schema::create('jemaat', function (Blueprint $table) {
             $table->id();
             $table->string('no_induk')->unique()->nullable();

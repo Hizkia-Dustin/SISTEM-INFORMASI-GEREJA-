@@ -12,32 +12,65 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pelayan', function (Blueprint $table) {
-            $columns = [
-                'kategori_halaman' => fn() => $table->string('kategori_halaman')->nullable()->after('posisi'),
-                'kelompok_layanan' => fn() => $table->string('kelompok_layanan')->nullable()->after('kategori_halaman'),
-                'jabatan_tampilan' => fn() => $table->string('jabatan_tampilan')->nullable()->after('kelompok_layanan'),
-                'nama_tampilan'    => fn() => $table->string('nama_tampilan')->nullable()->after('jabatan_tampilan'),
-                'foto'             => fn() => $table->string('foto')->nullable()->after('nama_tampilan'),
-                'pasangan'         => fn() => $table->string('pasangan')->nullable()->after('foto'),
-                'email'            => fn() => $table->string('email')->nullable()->after('pasangan'),
-                'area_layanan'     => fn() => $table->string('area_layanan')->nullable()->after('email'),
-                'ikon'             => fn() => $table->string('ikon')->nullable()->after('area_layanan'),
-                'visi_strategis'   => fn() => $table->string('visi_strategis')->nullable()->after('ikon'),
-                'fokus_utama'      => fn() => $table->string('fokus_utama')->nullable()->after('visi_strategis'),
-                'deskripsi_singkat'=> fn() => $table->text('deskripsi_singkat')->nullable()->after('fokus_utama'),
-                'pendidikan'       => fn() => $table->text('pendidikan')->nullable()->after('deskripsi_singkat'),
-                'riwayat_pelayanan'=> fn() => $table->text('riwayat_pelayanan')->nullable()->after('pendidikan'),
-                'visi_pelayanan'   => fn() => $table->text('visi_pelayanan')->nullable()->after('riwayat_pelayanan'),
-                'jadwal_konseling' => fn() => $table->string('jadwal_konseling')->nullable()->after('visi_pelayanan'),
-                'masa_bakti'       => fn() => $table->string('masa_bakti')->nullable()->after('jadwal_konseling'),
-                'update_terakhir'  => fn() => $table->date('update_terakhir')->nullable()->after('masa_bakti'),
-                'urutan'           => fn() => $table->unsignedInteger('urutan')->default(0)->after('update_terakhir'),
-            ];
-
-            foreach ($columns as $col => $addCol) {
-                if (!Schema::hasColumn('pelayan', $col)) {
-                    $addCol();
-                }
+            if (!Schema::hasColumn('pelayan', 'posisi')) {
+                $table->string('posisi')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'kategori_halaman')) {
+                $table->string('kategori_halaman')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'kelompok_layanan')) {
+                $table->string('kelompok_layanan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'jabatan_tampilan')) {
+                $table->string('jabatan_tampilan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'nama_tampilan')) {
+                $table->string('nama_tampilan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'foto')) {
+                $table->string('foto')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'pasangan')) {
+                $table->string('pasangan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'email')) {
+                $table->string('email')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'area_layanan')) {
+                $table->string('area_layanan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'ikon')) {
+                $table->string('ikon')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'visi_strategis')) {
+                $table->string('visi_strategis')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'fokus_utama')) {
+                $table->string('fokus_utama')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'deskripsi_singkat')) {
+                $table->text('deskripsi_singkat')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'pendidikan')) {
+                $table->text('pendidikan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'riwayat_pelayanan')) {
+                $table->text('riwayat_pelayanan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'visi_pelayanan')) {
+                $table->text('visi_pelayanan')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'jadwal_konseling')) {
+                $table->string('jadwal_konseling')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'masa_bakti')) {
+                $table->string('masa_bakti')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'update_terakhir')) {
+                $table->date('update_terakhir')->nullable();
+            }
+            if (!Schema::hasColumn('pelayan', 'urutan')) {
+                $table->unsignedInteger('urutan')->default(0);
             }
         });
     }
@@ -48,7 +81,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pelayan', function (Blueprint $table) {
-            $table->dropColumn([
+            $columns = array_filter([
                 'kategori_halaman',
                 'kelompok_layanan',
                 'jabatan_tampilan',
@@ -68,7 +101,11 @@ return new class extends Migration
                 'masa_bakti',
                 'update_terakhir',
                 'urutan',
-            ]);
+            ], fn ($column) => Schema::hasColumn('pelayan', $column));
+
+            if ($columns !== []) {
+                $table->dropColumn($columns);
+            }
         });
     }
 };

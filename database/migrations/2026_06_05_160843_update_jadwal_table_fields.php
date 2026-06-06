@@ -11,12 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('jadwal')) {
+            return;
+        }
+
         Schema::table('jadwal', function (Blueprint $table) {
-            $table->renameColumn('nama_acara', 'nama');
-            $table->renameColumn('waktu_mulai', 'waktu');
-            $table->string('jenis')->nullable();
-            $table->integer('jumlah_hadir')->nullable();
-            $table->string('lampiran')->nullable();
+            if (!Schema::hasColumn('jadwal', 'nama_acara')) {
+                $table->string('nama_acara')->nullable();
+            }
+            if (!Schema::hasColumn('jadwal', 'waktu_mulai')) {
+                $table->time('waktu_mulai')->nullable();
+            }
+            if (!Schema::hasColumn('jadwal', 'jenis')) {
+                $table->string('jenis')->nullable();
+            }
+            if (!Schema::hasColumn('jadwal', 'jumlah_hadir')) {
+                $table->integer('jumlah_hadir')->nullable();
+            }
+            if (!Schema::hasColumn('jadwal', 'lampiran')) {
+                $table->string('lampiran')->nullable();
+            }
         });
     }
 

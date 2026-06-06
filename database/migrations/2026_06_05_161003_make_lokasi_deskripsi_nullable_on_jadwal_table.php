@@ -11,9 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('jadwal')) {
+            return;
+        }
+
         Schema::table('jadwal', function (Blueprint $table) {
-            $table->string('lokasi')->nullable()->change();
-            $table->text('deskripsi')->nullable()->change();
+            if (Schema::hasColumn('jadwal', 'lokasi')) {
+                $table->string('lokasi')->nullable()->change();
+            }
+            if (Schema::hasColumn('jadwal', 'deskripsi')) {
+                $table->text('deskripsi')->nullable()->change();
+            }
         });
     }
 

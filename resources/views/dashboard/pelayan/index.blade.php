@@ -1,8 +1,8 @@
 @extends('dashboard.layouts.app')
-@section('title', 'Pelayan Jemaat')
+@section('title', 'Pelayan Ibadah')
 
 @section('content')
-<x-dashboard.page-header title="Daftar Pelayan Gereja" subtitle="Kelola data pelayan dan pendaftaran pelayanan dari jemaat.">
+<x-dashboard.page-header title="Daftar Pelayan Ibadah" subtitle="Kelola pelayan seperti pemusik, singers, multimedia, usher, dan guru sekolah minggu.">
     <a href="{{ route('dashboard.pelayan.create') }}" class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all flex items-center gap-2">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4"/></svg>
         Tambah Pelayan
@@ -16,8 +16,8 @@
             <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                 <tr>
                     <th class="px-8 py-4">Nama</th>
-                    <th class="px-8 py-4">Posisi</th>
-                    <th class="px-8 py-4">Komisi</th>
+                    <th class="px-8 py-4">Bidang Pelayanan</th>
+                    <th class="px-8 py-4">Area</th>
                     <th class="px-8 py-4">Kontak</th>
                     <th class="px-8 py-4">Tanggal Mulai</th>
                     <th class="px-8 py-4">Status</th>
@@ -34,12 +34,12 @@
                             <p class="text-xs text-gray-400 mt-1 max-w-xs">{{ \Illuminate\Support\Str::limit($p->alasan, 80) }}</p>
                         @endif
                     </td>
-                    <td class="px-8 py-4 text-gray-600">{{ $p->komisi_tujuan ?? $p->kelompok_layanan ?? '-' }}</td>
+                    <td class="px-8 py-4 text-gray-600">{{ $p->komisi_tujuan ?? $p->area_layanan ?? '-' }}</td>
                     <td class="px-8 py-4 text-gray-600">
                         <p>{{ $p->no_telepon ?? $p->email ?? '-' }}</p>
                         <p class="text-xs text-gray-400">{{ $p->email ?? '-' }}</p>
                     </td>
-                    <td class="px-8 py-4 text-gray-600">{{ \Carbon\Carbon::parse($p->tanggal_mulai)->format('d M Y') }}</td>
+                    <td class="px-8 py-4 text-gray-600">{{ $p->tanggal_mulai ? \Carbon\Carbon::parse($p->tanggal_mulai)->format('d M Y') : '-' }}</td>
                     <td class="px-8 py-4">
                         @if(strtolower($p->status) == 'aktif')
                             <span class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-bold">Aktif</span>

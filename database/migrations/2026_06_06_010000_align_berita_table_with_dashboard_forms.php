@@ -8,17 +8,21 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (!Schema::hasTable('berita')) {
+            return;
+        }
+
         Schema::table('berita', function (Blueprint $table) {
             if (!Schema::hasColumn('berita', 'kategori')) {
-                $table->string('kategori')->nullable()->after('judul');
+                $table->string('kategori')->nullable();
             }
 
             if (!Schema::hasColumn('berita', 'isi')) {
-                $table->text('isi')->nullable()->after('kategori');
+                $table->text('isi')->nullable();
             }
 
             if (!Schema::hasColumn('berita', 'gambar')) {
-                $table->string('gambar')->nullable()->after('isi');
+                $table->string('gambar')->nullable();
             }
         });
 
@@ -31,6 +35,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (!Schema::hasTable('berita')) {
+            return;
+        }
+
         Schema::table('berita', function (Blueprint $table) {
             if (Schema::hasColumn('berita', 'gambar')) {
                 $table->dropColumn('gambar');

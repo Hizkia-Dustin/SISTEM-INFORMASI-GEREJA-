@@ -400,7 +400,13 @@ class DashboardController extends Controller
     }
     public function storeKeuangan(Request $request)
     {
-        $data = $request->except(['_token', '_method']);
+        $data = $request->validate([
+            'kategori' => 'required|string',
+            'jenis_transaksi' => 'required|in:Pemasukan,Pengeluaran',
+            'keterangan' => 'required|string',
+            'tanggal' => 'required|date',
+            'jumlah' => 'required|numeric|min:0',
+        ]);
         if (isset($data['jumlah'])) {
             $data['jumlah'] = abs((float)$data['jumlah']);
         }
@@ -416,7 +422,13 @@ class DashboardController extends Controller
     public function updateKeuangan(Request $request, $id)
     {
         $keuangan = \App\Models\Keuangan::findOrFail($id);
-        $data = $request->except(['_token', '_method']);
+        $data = $request->validate([
+            'kategori' => 'required|string',
+            'jenis_transaksi' => 'required|in:Pemasukan,Pengeluaran',
+            'keterangan' => 'required|string',
+            'tanggal' => 'required|date',
+            'jumlah' => 'required|numeric|min:0',
+        ]);
         if (isset($data['jumlah'])) {
             $data['jumlah'] = abs((float)$data['jumlah']);
         }
