@@ -34,4 +34,9 @@ class Jemaat extends Model
     {
         return $this->belongsTo(Keluarga::class, 'keluarga_id', 'id');
     }
+
+    public function riwayatPelayanan()
+    {
+        return $this->hasMany(JemaatPelayananHistory::class, 'jemaat_id')->latest('periode_mulai');
+    }
 }

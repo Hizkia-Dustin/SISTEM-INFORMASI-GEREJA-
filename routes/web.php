@@ -210,6 +210,8 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::get('/jemaat/create', [DashboardController::class, 'createJemaat'])->name('dashboard.jemaat.create');
     Route::post('/jemaat', [DashboardController::class, 'storeJemaat'])->name('dashboard.jemaat.store');
     Route::get('/jemaat/{id}', [DashboardController::class, 'showJemaat'])->name('dashboard.jemaat.show');
+    Route::post('/jemaat/{id}/riwayat-pelayanan', [DashboardController::class, 'storeJemaatPelayananHistory'])->name('dashboard.jemaat.riwayat-pelayanan.store');
+    Route::delete('/jemaat/{jemaatId}/riwayat-pelayanan/{historyId}', [DashboardController::class, 'destroyJemaatPelayananHistory'])->name('dashboard.jemaat.riwayat-pelayanan.destroy');
     Route::get('/jemaat/{id}/edit', [DashboardController::class, 'editJemaat'])->name('dashboard.jemaat.edit');
     Route::put('/jemaat/{id}', [DashboardController::class, 'updateJemaat'])->name('dashboard.jemaat.update');
     Route::delete('/jemaat/{id}', [DashboardController::class, 'destroyJemaat'])->name('dashboard.jemaat.destroy');

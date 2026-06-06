@@ -285,8 +285,41 @@ class DashboardController extends Controller
     }
 
     public function showJemaat($id) { 
-        $jemaat = \App\Models\Jemaat::findOrFail($id);
+        $jemaat = \App\Models\Jemaat::with(['keluarga', 'riwayatPelayanan'])->findOrFail($id);
         return view('dashboard.jemaat.detail', compact('jemaat')); 
+    }
+
+    public function storeJemaatPelayananHistory(Request $request, $id)
+    {
+        $jemaat = \App\Models\Jemaat::findOrFail($id);
+
+        $data = $request->validate([
+            'bidang_pelayanan' => 'required|string|max:120',
+            'peran' => 'nullable|string|max:120',
+            'periode_mulai' => 'nullable|date',
+            'periode_selesai' => 'nullable|date|after_or_equal:periode_mulai',
+            'status' => 'required|in:Aktif,Selesai,Nonaktif',
+            'keterangan' => 'nullable|string|max:1000',
+        ], [
+            'bidang_pelayanan.required' => 'Bidang pelayanan wajib diisi.',
+            'periode_selesai.after_or_equal' => 'Tanggal selesai tidak boleh lebih awal dari tanggal mulai.',
+        ]);
+
+        $jemaat->riwayatPelayanan()->create($data);
+
+        return redirect()
+            ->route('dashboard.jemaat.show', $jemaat->id)
+            ->with('success', 'Riwayat pelayanan berhasil ditambahkan.');
+    }
+
+    public function destroyJemaatPelayananHistory($jemaatId, $historyId)
+    {
+        $history = \App\Models\JemaatPelayananHistory::where('jemaat_id', $jemaatId)->findOrFail($historyId);
+        $history->delete();
+
+        return redirect()
+            ->route('dashboard.jemaat.show', $jemaatId)
+            ->with('success', 'Riwayat pelayanan berhasil dihapus.');
     }
     
     public function editJemaat($id) { 
