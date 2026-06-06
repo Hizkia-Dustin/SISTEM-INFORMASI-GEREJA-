@@ -177,27 +177,57 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($jadwalTerdekat as $jadwal)
-            <div class="church-card group hover:border-[#0058bf] transition-all">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+            <div class="church-card group hover:border-[#0058bf] transition-all flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+                        </div>
+                        <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('D') }}</span>
                     </div>
-                    <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('D') }}</span>
-                </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">{{ $jadwal->nama_acara }}</h4>
-                <p class="text-slate-500 text-sm mb-6">{{ $jadwal->lokasi }}</p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('d F Y') }}</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->waktu_mulai)->format('H:i') }} WIB</span></div>
-                    @if($jadwal->deskripsi)
+                    <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">{{ $jadwal->nama_acara }}</h4>
+                    <p class="text-slate-500 text-sm mb-6">{{ $jadwal->lokasi }}</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('d F Y') }}</span></div>
+                        <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($jadwal->waktu_mulai)->format('H:i') }} WIB</span></div>
                         @php
-                            $cleanDeskripsi = trim(preg_replace('/Lampiran:.*$/i', '', $jadwal->deskripsi));
+                            $cleanDeskripsi = $jadwal->deskripsi;
+                            if ($cleanDeskripsi) {
+                                $cleanDeskripsi = trim(preg_replace('/Lampiran:\s*[^\s\r\n]+/i', '', $cleanDeskripsi));
+                                $cleanDeskripsi = trim(preg_replace('/Lampiran:.*$/si', '', $cleanDeskripsi));
+                            }
+                            $lampiran = $jadwal->lampiran;
+                            if (empty($lampiran) && !empty($jadwal->deskripsi) && preg_match('/Lampiran:\s*([^\s\r\n]+)/i', $jadwal->deskripsi, $matches)) {
+                                $lampiran = $matches[1];
+                            }
                         @endphp
                         @if(!empty($cleanDeskripsi))
                             <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ \Illuminate\Support\Str::limit($cleanDeskripsi, 55) }}</span></div>
                         @endif
-                    @endif
+                    </div>
                 </div>
+
+                @if(!empty($lampiran))
+                    @php
+                        $ext = strtolower(pathinfo($lampiran, PATHINFO_EXTENSION));
+                        $isImage = in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp']);
+                    @endphp
+                    <div class="mt-4 pt-4 border-t border-slate-100 w-full">
+                        @if($isImage)
+                            <div class="group/thumb relative rounded-lg overflow-hidden border border-slate-100 bg-slate-50 max-h-32 flex items-center justify-center">
+                                <img src="{{ asset('storage/' . $lampiran) }}" alt="Lampiran" class="w-full h-full object-cover max-h-32 group-hover/thumb:scale-105 transition-transform duration-300">
+                                <a href="{{ asset('storage/' . $lampiran) }}" target="_blank" class="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-1">
+                                    <span class="material-symbols-outlined text-sm">open_in_new</span> Lihat Gambar
+                                </a>
+                            </div>
+                        @else
+                            <a href="{{ asset('storage/' . $lampiran) }}" target="_blank" class="flex items-center gap-2 text-[#0058bf] hover:text-[#00236f] text-xs font-bold bg-[#eff4ff] px-3 py-2 rounded-lg transition-colors w-full justify-center">
+                                <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                <span>Lihat Tata Ibadah (PDF)</span>
+                            </a>
+                        @endif
+                    </div>
+                @endif
             </div>
             @empty
             <div class="church-card lg:col-span-3 text-center text-slate-500">
@@ -221,7 +251,7 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($jadwalSakramen as $sakramen)
-            <div class="church-card group hover:border-[#0058bf] transition-all">
+            <div class="church-card group hover:border-[#0058bf] transition-all flex flex-col justify-between">
                 @php
                     $icon = 'calendar_today';
                     $lowerName = strtolower($sakramen->nama_acara);
@@ -233,26 +263,56 @@
                         $icon = 'workspace_premium';
                     }
                 @endphp
-                <div class="flex justify-between items-start mb-6">
-                    <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">{{ $icon }}</span>
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 rounded-lg bg-[#eff4ff] flex items-center justify-center text-[#0058bf]">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">{{ $icon }}</span>
+                        </div>
+                        <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">{{ \Carbon\Carbon::parse($sakramen->tanggal)->translatedFormat('l') }}</span>
                     </div>
-                    <span class="bg-[#0058bf]/10 text-[#0058bf] px-3 py-1 rounded-full text-xs font-bold uppercase">{{ \Carbon\Carbon::parse($sakramen->tanggal)->translatedFormat('l') }}</span>
-                </div>
-                <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">{{ $sakramen->nama_acara }}</h4>
-                <p class="text-slate-500 text-sm mb-6">{{ $sakramen->lokasi }}</p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->tanggal)->translatedFormat('d F Y') }}</span></div>
-                    <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->waktu_mulai)->format('H:i') }} WIB</span></div>
-                    @if($sakramen->deskripsi)
+                    <h4 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-2">{{ $sakramen->nama_acara }}</h4>
+                    <p class="text-slate-500 text-sm mb-6">{{ $sakramen->lokasi }}</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">event</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->tanggal)->translatedFormat('d F Y') }}</span></div>
+                        <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">schedule</span><span class="text-sm">{{ \Carbon\Carbon::parse($sakramen->waktu_mulai)->format('H:i') }} WIB</span></div>
                         @php
-                            $cleanDeskripsi = trim(preg_replace('/Lampiran:.*$/i', '', $sakramen->deskripsi));
+                            $cleanDeskripsi = $sakramen->deskripsi;
+                            if ($cleanDeskripsi) {
+                                $cleanDeskripsi = trim(preg_replace('/Lampiran:\s*[^\s\r\n]+/i', '', $cleanDeskripsi));
+                                $cleanDeskripsi = trim(preg_replace('/Lampiran:.*$/si', '', $cleanDeskripsi));
+                            }
+                            $lampiran = $sakramen->lampiran;
+                            if (empty($lampiran) && !empty($sakramen->deskripsi) && preg_match('/Lampiran:\s*([^\s\r\n]+)/i', $sakramen->deskripsi, $matches)) {
+                                $lampiran = $matches[1];
+                            }
                         @endphp
                         @if(!empty($cleanDeskripsi))
                             <div class="flex items-center gap-3 text-slate-600"><span class="material-symbols-outlined text-sm">notes</span><span class="text-sm">{{ \Illuminate\Support\Str::limit($cleanDeskripsi, 55) }}</span></div>
                         @endif
-                    @endif
+                    </div>
                 </div>
+
+                @if(!empty($lampiran))
+                    @php
+                        $ext = strtolower(pathinfo($lampiran, PATHINFO_EXTENSION));
+                        $isImage = in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp']);
+                    @endphp
+                    <div class="mt-4 pt-4 border-t border-slate-100 w-full">
+                        @if($isImage)
+                            <div class="group/thumb relative rounded-lg overflow-hidden border border-slate-100 bg-slate-50 max-h-32 flex items-center justify-center">
+                                <img src="{{ asset('storage/' . $lampiran) }}" alt="Lampiran" class="w-full h-full object-cover max-h-32 group-hover/thumb:scale-105 transition-transform duration-300">
+                                <a href="{{ asset('storage/' . $lampiran) }}" target="_blank" class="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-1">
+                                    <span class="material-symbols-outlined text-sm">open_in_new</span> Lihat Gambar
+                                </a>
+                            </div>
+                        @else
+                            <a href="{{ asset('storage/' . $lampiran) }}" target="_blank" class="flex items-center gap-2 text-[#0058bf] hover:text-[#00236f] text-xs font-bold bg-[#eff4ff] px-3 py-2 rounded-lg transition-colors w-full justify-center">
+                                <span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                                <span>Lihat Tata Ibadah (PDF)</span>
+                            </a>
+                        @endif
+                    </div>
+                @endif
             </div>
             @empty
             <div class="church-card lg:col-span-3 text-center text-slate-500 py-12">
