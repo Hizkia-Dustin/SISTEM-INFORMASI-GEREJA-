@@ -202,7 +202,6 @@
             </button>
             <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
                 <a href="{{ route('dashboard.berita.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.berita.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Berita Gereja</a>
-                <a href="{{ route('dashboard.berita.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.berita.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Berita Gereja</a>
             </div>
         </div>
 

@@ -300,8 +300,6 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     // Berita
     Route::get('/berita', [DashboardController::class, 'berita'])->name('dashboard.berita.index');
-    Route::get('/berita/create', [DashboardController::class, 'createBerita'])->name('dashboard.berita.create');
-    Route::post('/berita', [DashboardController::class, 'storeBerita'])->name('dashboard.berita.store');
     Route::get('/berita/{id}', [DashboardController::class, 'showBerita'])->name('dashboard.berita.show');
     Route::get('/berita/{id}/edit', [DashboardController::class, 'editBerita'])->name('dashboard.berita.edit');
     Route::put('/berita/{id}', [DashboardController::class, 'updateBerita'])->name('dashboard.berita.update');
