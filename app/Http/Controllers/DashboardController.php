@@ -61,7 +61,16 @@ class DashboardController extends Controller
         $stats = [
             'keluarga' => \App\Models\Keluarga::count(),
             'jemaat' => $jemaatList->count(),
-            'pemuda' => $jemaatList->where('status_keanggotaan', 'Pemuda')->count(),
+            'pemuda' => $jemaatList->filter(function($j) {
+                if (in_array(strtolower($j->status_keanggotaan ?? ''), ['pemuda'])) {
+                    return true;
+                }
+                if ($j->tanggal_lahir) {
+                    $age = \Carbon\Carbon::parse($j->tanggal_lahir)->age;
+                    return ($age >= 20 && $age <= 35);
+                }
+                return false;
+            })->count(),
             'ama' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Laki-laki', 'L', 'Laki-Laki']))->count(),
             'ina' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Perempuan', 'P']))->count(),
             'aktif' => $jemaatList->filter(fn($j) => $j->status_aktif == true || $j->status_aktif == '1' || $j->status_aktif == 'Aktif')->count(),
@@ -1845,7 +1854,16 @@ class DashboardController extends Controller
         $stats = [
             'keluarga' => \App\Models\Keluarga::count(),
             'jemaat' => $jemaatList->count(),
-            'pemuda' => $jemaatList->where('status_keanggotaan', 'Pemuda')->count(),
+            'pemuda' => $jemaatList->filter(function($j) {
+                if (in_array(strtolower($j->status_keanggotaan ?? ''), ['pemuda'])) {
+                    return true;
+                }
+                if ($j->tanggal_lahir) {
+                    $age = \Carbon\Carbon::parse($j->tanggal_lahir)->age;
+                    return ($age >= 20 && $age <= 35);
+                }
+                return false;
+            })->count(),
             'ama' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Laki-laki', 'L', 'Laki-Laki']))->count(),
             'ina' => $jemaatList->filter(fn($j) => in_array($j->jenis_kelamin, ['Perempuan', 'P']))->count(),
             'aktif' => $jemaatList->filter(fn($j) => $j->status_aktif == true || $j->status_aktif == '1' || $j->status_aktif == 'Aktif')->count(),

@@ -6,7 +6,7 @@
                 'title' => $item->judul,
                 'category' => $item->kategori ?? 'Renungan Pagi',
                 'author' => 'Admin GKI',
-                'date' => $item->created_at->format('d M Y'),
+                'date' => optional($item->created_at)->format('d M Y') ?? '-',
                 'image' => 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=1200&auto=format&fit=crop', // Renungan tidak ada gambar di database
                 'content' => $item->isi,
                 'tags' => []

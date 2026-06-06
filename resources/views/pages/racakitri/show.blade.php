@@ -6,7 +6,7 @@
                 'title' => $item->judul,
                 'category' => $item->kategori ?? 'Racakitri',
                 'author' => 'Admin GKI',
-                'date' => $item->created_at->format('d M Y'),
+                'date' => optional($item->created_at)->format('d M Y') ?? '-',
                 'image' => $item->gambar ? asset('storage/' . $item->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=1200&auto=format&fit=crop',
                 'content' => $item->isi,
                 'tags' => ['Racakitri', 'GKI Pakuwon']

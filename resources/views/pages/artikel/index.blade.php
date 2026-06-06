@@ -37,7 +37,7 @@
                             'title' => $dbArticle->judul,
                             'category' => $dbArticle->kategori ?? 'Artikel',
                             'author' => 'Admin GKI',
-                            'date' => $dbArticle->created_at->format('d M Y'),
+                            'date' => optional($dbArticle->created_at)->format('d M Y') ?? '-',
                             'excerpt' => Str::cleanExcerpt($dbArticle->isi, 100),
                             'image' => $dbArticle->gambar ? asset('storage/' . $dbArticle->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop',
                         ];

@@ -20,7 +20,7 @@
     <div class="p-12">
         <div class="flex items-center gap-4 mb-6">
             <span class="px-3 py-1 bg-blue-50 text-primary text-[10px] font-extrabold rounded uppercase tracking-widest">{{ $warta->kategori }}</span>
-            <span class="text-xs text-gray-400 font-bold tracking-widest">{{ $warta->created_at->format('d F Y') }}</span>
+            <span class="text-xs text-gray-400 font-bold tracking-widest">{{ optional($warta->created_at)->format('d F Y') ?? '-' }}</span>
         </div>
 
         <h1 class="text-3xl font-extrabold text-gray-800 leading-tight mb-8">{{ $warta->judul }}</h1>

@@ -6,7 +6,7 @@
                 'title' => $article->judul,
                 'category' => $article->kategori ?? 'Artikel',
                 'author' => 'Admin GKI',
-                'date' => $article->created_at->format('d M Y'),
+                'date' => optional($article->created_at)->format('d M Y') ?? '-',
                 'image' => $article->gambar ? asset('storage/' . $article->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=1200&auto=format&fit=crop',
                 'content' => $article->isi,
                 'tags' => ['Informasi', 'GKI Pakuwon']

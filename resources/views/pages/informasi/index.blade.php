@@ -33,7 +33,7 @@
                             'title' => $dbInformasi->judul,
                             'category' => $dbInformasi->kategori ?? 'Informasi',
                             'author' => 'Admin GKI',
-                            'date' => $dbInformasi->created_at->format('d M Y'),
+                            'date' => optional($dbInformasi->created_at)->format('d M Y') ?? '-',
                             'excerpt' => Str::cleanExcerpt($dbInformasi->isi, 100),
                             'image' => $dbInformasi->gambar ? asset('storage/' . $dbInformasi->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop',
                         ];

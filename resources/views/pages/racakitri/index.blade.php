@@ -33,7 +33,7 @@
                             'title' => $dbRacakitri->judul,
                             'category' => $dbRacakitri->kategori ?? 'Racakitri',
                             'author' => 'Admin GKI',
-                            'date' => $dbRacakitri->created_at->format('d M Y'),
+                            'date' => optional($dbRacakitri->created_at)->format('d M Y') ?? '-',
                             'excerpt' => Str::cleanExcerpt($dbRacakitri->isi, 100),
                             'image' => $dbRacakitri->gambar ? asset('storage/' . $dbRacakitri->gambar) : 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=800&auto=format&fit=crop',
                         ];
