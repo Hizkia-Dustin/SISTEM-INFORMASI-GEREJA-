@@ -751,17 +751,22 @@ class DashboardController extends Controller
     // 8. Jadwal Ibadah
     public function jadwal()
     {
-        $jadwal = \App\Models\Jadwal::latest()->get();
+        $this->ensureJadwalSchema();
+        $jadwal = \App\Models\Jadwal::query()
+            ->orderByDesc(\Illuminate\Support\Facades\Schema::hasColumn('jadwal', 'created_at') ? 'created_at' : 'id')
+            ->get();
         return view('dashboard.jadwal.index', compact('jadwal'));
     }
 
     public function createJadwal()
     {
+        $this->ensureJadwalSchema();
         return view('dashboard.jadwal.form', ['type' => 'Tambah', 'jadwal' => new \App\Models\Jadwal()]);
     }
 
     public function storeJadwal(Request $request)
     {
+        $this->ensureJadwalSchema();
         $data = $request->validate([
             'nama' => 'required|string|max:255',
             'tanggal' => 'required|date',
@@ -794,12 +799,14 @@ class DashboardController extends Controller
 
     public function editJadwal($id)
     {
+        $this->ensureJadwalSchema();
         $jadwal = \App\Models\Jadwal::findOrFail($id);
         return view('dashboard.jadwal.form', ['type' => 'Edit', 'jadwal' => $jadwal]);
     }
 
     public function updateJadwal(Request $request, $id)
     {
+        $this->ensureJadwalSchema();
         $jadwal = \App\Models\Jadwal::findOrFail($id);
         $data = $request->validate([
             'nama' => 'required|string|max:255',
@@ -833,6 +840,7 @@ class DashboardController extends Controller
 
     public function destroyJadwal($id)
     {
+        $this->ensureJadwalSchema();
         \App\Models\Jadwal::destroy($id);
         return redirect()->back()->with('success', 'Jadwal ibadah berhasil dihapus.');
     }
@@ -840,13 +848,11 @@ class DashboardController extends Controller
     // 9. Jadwal Pelayanan (Tugas)
     public function tugas()
     {
-        $tugas = \App\Models\Tugas::latest()->get();
-        $pelayanList = \App\Models\Pelayan::query()
-            ->where(function ($query) {
-                $query->whereNull('status')
-                    ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw('LOWER(status)'), ['ditolak', 'tidak aktif', 'nonaktif']);
-            })
-            ->orderBy('nama')
+        $this->ensureTugasSchema();
+        $tugas = \App\Models\Tugas::query()
+            ->orderByDesc(\Illuminate\Support\Facades\Schema::hasColumn('tugas', 'created_at') ? 'created_at' : 'id')
+            ->get();
+        $pelayanList = $this->activePelayanQuery()
             ->get()
             ->map(fn ($item) => $this->formatPelayanOption($item))
             ->filter()
@@ -858,6 +864,7 @@ class DashboardController extends Controller
 
     public function createTugas()
     {
+        $this->ensureTugasSchema();
         return view('dashboard.tugas.form', [
             'type' => 'Tambah',
             'tugas' => new \App\Models\Tugas(),
@@ -867,6 +874,7 @@ class DashboardController extends Controller
 
     public function storeTugas(Request $request)
     {
+        $this->ensureTugasSchema();
         $data = $this->mapTugasRequest($request);
         \App\Models\Tugas::create($data);
         return redirect()->route('dashboard.tugas.index')->with('success', 'Jadwal pelayanan berhasil ditambahkan.');
@@ -874,6 +882,7 @@ class DashboardController extends Controller
 
     public function editTugas($id)
     {
+        $this->ensureTugasSchema();
         $tugas = \App\Models\Tugas::findOrFail($id);
         return view('dashboard.tugas.form', [
             'type' => 'Edit',
@@ -884,6 +893,7 @@ class DashboardController extends Controller
 
     public function updateTugas(Request $request, $id)
     {
+        $this->ensureTugasSchema();
         $tugas = \App\Models\Tugas::findOrFail($id);
         $tugas->update($this->mapTugasRequest($request));
         return redirect()->route('dashboard.tugas.index')->with('success', 'Jadwal pelayanan berhasil diperbarui.');
@@ -891,6 +901,7 @@ class DashboardController extends Controller
 
     public function destroyTugas($id)
     {
+        $this->ensureTugasSchema();
         \App\Models\Tugas::destroy($id);
         return redirect()->back()->with('success', 'Jadwal pelayanan berhasil dihapus.');
     }
@@ -1458,13 +1469,7 @@ class DashboardController extends Controller
 
     private function getTugasFormData(\App\Models\Tugas $tugas): array
     {
-        $pelayan = \App\Models\Pelayan::query()
-            ->where(function ($query) {
-                $query->whereNull('status')
-                    ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw('LOWER(status)'), ['ditolak', 'tidak aktif', 'nonaktif']);
-            })
-            ->orderBy('nama')
-            ->get();
+        $pelayan = $this->activePelayanQuery()->get();
 
         $allOptions = $pelayan->map(fn ($item) => $this->formatPelayanOption($item))->filter()->unique()->values();
         $optionsFor = function (array $keywords) use ($pelayan, $allOptions) {
@@ -1522,6 +1527,24 @@ class DashboardController extends Controller
         return $role ? $name . ' - ' . $role : $name;
     }
 
+    private function activePelayanQuery()
+    {
+        $query = \App\Models\Pelayan::query();
+
+        if (\Illuminate\Support\Facades\Schema::hasColumn('pelayan', 'status')) {
+            $query->where(function ($statusQuery) {
+                $statusQuery->whereNull('status')
+                    ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw('LOWER(status)'), ['ditolak', 'tidak aktif', 'nonaktif']);
+            });
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasColumn('pelayan', 'nama')) {
+            $query->orderBy('nama');
+        }
+
+        return $query;
+    }
+
     private function parseTugasRoles(string $description): array
     {
         $roles = [];
@@ -1554,6 +1577,86 @@ class DashboardController extends Controller
             'penerima_tamu_3' => 'Penerima Tamu 3',
             default => str_replace('_', ' ', ucwords($key, '_')),
         };
+    }
+
+    private function ensureJadwalSchema(): void
+    {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('jadwal')) {
+            \Illuminate\Support\Facades\Schema::create('jadwal', function (\Illuminate\Database\Schema\Blueprint $table) {
+                $table->id();
+                $table->string('nama_acara')->nullable();
+                $table->string('nama')->nullable();
+                $table->date('tanggal')->nullable();
+                $table->time('waktu_mulai')->nullable();
+                $table->time('waktu')->nullable();
+                $table->string('lokasi')->nullable();
+                $table->string('jenis')->nullable();
+                $table->integer('jumlah_hadir')->nullable();
+                $table->string('lampiran')->nullable();
+                $table->text('deskripsi')->nullable();
+                $table->timestamps();
+            });
+
+            return;
+        }
+
+        $columns = [
+            'nama_acara' => fn ($table) => $table->string('nama_acara')->nullable(),
+            'nama' => fn ($table) => $table->string('nama')->nullable(),
+            'tanggal' => fn ($table) => $table->date('tanggal')->nullable(),
+            'waktu_mulai' => fn ($table) => $table->time('waktu_mulai')->nullable(),
+            'waktu' => fn ($table) => $table->time('waktu')->nullable(),
+            'lokasi' => fn ($table) => $table->string('lokasi')->nullable(),
+            'jenis' => fn ($table) => $table->string('jenis')->nullable(),
+            'jumlah_hadir' => fn ($table) => $table->integer('jumlah_hadir')->nullable(),
+            'lampiran' => fn ($table) => $table->string('lampiran')->nullable(),
+            'deskripsi' => fn ($table) => $table->text('deskripsi')->nullable(),
+            'created_at' => fn ($table) => $table->timestamp('created_at')->nullable(),
+            'updated_at' => fn ($table) => $table->timestamp('updated_at')->nullable(),
+        ];
+
+        foreach ($columns as $column => $definition) {
+            if (!\Illuminate\Support\Facades\Schema::hasColumn('jadwal', $column)) {
+                \Illuminate\Support\Facades\Schema::table('jadwal', function (\Illuminate\Database\Schema\Blueprint $table) use ($definition) {
+                    $definition($table);
+                });
+            }
+        }
+    }
+
+    private function ensureTugasSchema(): void
+    {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('tugas')) {
+            \Illuminate\Support\Facades\Schema::create('tugas', function (\Illuminate\Database\Schema\Blueprint $table) {
+                $table->id();
+                $table->string('judul')->nullable();
+                $table->text('deskripsi')->nullable();
+                $table->string('penerima')->nullable();
+                $table->date('deadline')->nullable();
+                $table->string('status')->default('pending');
+                $table->timestamps();
+            });
+
+            return;
+        }
+
+        $columns = [
+            'judul' => fn ($table) => $table->string('judul')->nullable(),
+            'deskripsi' => fn ($table) => $table->text('deskripsi')->nullable(),
+            'penerima' => fn ($table) => $table->string('penerima')->nullable(),
+            'deadline' => fn ($table) => $table->date('deadline')->nullable(),
+            'status' => fn ($table) => $table->string('status')->default('pending'),
+            'created_at' => fn ($table) => $table->timestamp('created_at')->nullable(),
+            'updated_at' => fn ($table) => $table->timestamp('updated_at')->nullable(),
+        ];
+
+        foreach ($columns as $column => $definition) {
+            if (!\Illuminate\Support\Facades\Schema::hasColumn('tugas', $column)) {
+                \Illuminate\Support\Facades\Schema::table('tugas', function (\Illuminate\Database\Schema\Blueprint $table) use ($definition) {
+                    $definition($table);
+                });
+            }
+        }
     }
 
     // ==========================================
