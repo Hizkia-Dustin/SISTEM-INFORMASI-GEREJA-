@@ -3,12 +3,12 @@
 
 @section('content')
 <!-- Page Header -->
-<div class="flex items-center justify-between mb-10">
-    <div>
+<div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 mb-10">
+    <div class="min-w-0">
         <h1 class="text-2xl font-extrabold text-gray-800 tracking-tight">Selamat Datang, Admin</h1>
         <p class="text-gray-400 text-sm font-medium mt-1">Berikut adalah ringkasan statistik jemaat GKI Pakuwon hari ini.</p>
     </div>
-    <div class="flex gap-3">
+    <div class="flex flex-wrap gap-3 shrink-0">
         <a href="{{ url('/') }}" class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             Homepage
@@ -39,7 +39,7 @@
 </div>
 
 <!-- Stats Grid -->
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-4 mb-10">
     <!-- Jumlah Keluarga -->
     <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary transition-all duration-300">
         <p class="text-gray-400 text-[9px] font-bold uppercase tracking-wider mb-1">Keluarga</p>
@@ -96,9 +96,9 @@
 </div>
 
 <!-- Charts Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
     <!-- Bar Chart: Sektor -->
-    <div class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+    <div class="xl:col-span-2 min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
         <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
             <div>
                 <h2 class="text-lg font-bold text-gray-800">Statistik Keluarga & Jemaat per Sektor</h2>
@@ -151,9 +151,9 @@
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
     <!-- Jemaat Terbaru Table -->
-    <div class="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="xl:col-span-2 min-w-0 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
             <div>
                 <h2 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Jemaat Baru Terdaftar</h2>
