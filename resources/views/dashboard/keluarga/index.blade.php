@@ -57,7 +57,7 @@
                         <span class="px-3 py-1 rounded-lg bg-gray-50 text-gray-600 text-[11px] font-bold">Sektor {{ $k->wilayah_pelayanan }}</span>
                     </td>
                     <td class="px-8 py-5">
-                        <span class="px-2.5 py-1 rounded-lg {{ $k->status == 'Aktif' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500' }} text-[10px] font-extrabold uppercase">{{ $k->status ?? 'Tidak Diketahui' }}</span>
+                        <span class="px-2.5 py-1 rounded-lg {{ $k->status == 'Aktif' ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-500' }} text-[10px] font-extrabold uppercase">{{ $k->status ?? 'Tidak Diketahui' }}</span>
                     </td>
                     <td class="px-8 py-5 text-right">
                         <div class="flex items-center justify-end gap-3">

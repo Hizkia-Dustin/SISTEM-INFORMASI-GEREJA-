@@ -10,7 +10,7 @@
 
 @php
     $isActive = ($jemaat->status_keanggotaan === 'Aktif' || (string) $jemaat->status_aktif === '1');
-    $statusClass = $isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-gray-500';
+    $statusClass = $isActive ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-500';
     $riwayatPelayanan = $jemaat->riwayatPelayanan ?? collect();
 @endphp
 
@@ -92,7 +92,7 @@
                         <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
                             <div class="flex items-center justify-between mb-4">
                                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $item['label'] }}</span>
-                                <span class="px-2 py-0.5 {{ ($item['value'] === 'Ya') ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600' }} text-[9px] font-extrabold rounded uppercase">
+                                <span class="px-2 py-0.5 {{ ($item['value'] === 'Ya') ? 'bg-blue-100 text-blue-700' : 'bg-gray-200 text-gray-600' }} text-[9px] font-extrabold rounded uppercase">
                                     {{ $item['value'] === 'Ya' ? 'Sudah' : 'Belum' }}
                                 </span>
                             </div>
@@ -129,7 +129,7 @@
                                             <div>
                                                 <div class="flex flex-wrap items-center gap-3 mb-2">
                                                     <h4 class="text-base font-extrabold text-gray-900">{{ $history->bidang_pelayanan }}</h4>
-                                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase {{ $history->status === 'Aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600' }}">{{ $history->status }}</span>
+                                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase {{ $history->status === 'Aktif' ? 'bg-blue-100 text-blue-700' : 'bg-gray-200 text-gray-600' }}">{{ $history->status }}</span>
                                                 </div>
                                                 <p class="text-sm font-bold text-gray-600">{{ $history->peran ?: 'Pelayan' }}</p>
                                                 <p class="text-xs text-gray-400 mt-1">

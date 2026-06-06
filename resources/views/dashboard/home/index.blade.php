@@ -7,7 +7,7 @@
         ['label' => 'Pemuda/Pemudi', 'value' => $stats['pemuda'] ?? 0, 'icon' => 'diversity_3', 'tone' => 'bg-purple-50 text-purple-600'],
         ['label' => 'Laki-laki (Ama)', 'value' => $stats['ama'] ?? 0, 'icon' => 'person', 'tone' => 'bg-indigo-50 text-indigo-600'],
         ['label' => 'Perempuan (Ina)', 'value' => $stats['ina'] ?? 0, 'icon' => 'person', 'tone' => 'bg-pink-50 text-pink-500'],
-        ['label' => 'Jemaat Aktif', 'value' => $stats['aktif'] ?? 0, 'icon' => 'verified', 'tone' => 'bg-emerald-50 text-emerald-600'],
+        ['label' => 'Jemaat Aktif', 'value' => $stats['aktif'] ?? 0, 'icon' => 'verified', 'tone' => 'bg-blue-50 text-blue-600'],
     ];
 @endphp
 
@@ -171,7 +171,7 @@
                                     <td class="px-6 py-4 font-medium text-slate-500">{{ $j->keluarga ? ($j->keluarga->wilayah_pelayanan ?: 'Tanpa Sektor') : '-' }}</td>
                                     <td class="px-6 py-4">
                                         @php $isActive = $j->status_aktif == true || $j->status_aktif == '1' || $j->status_aktif == 'Aktif'; @endphp
-                                        <span class="rounded-lg border px-3 py-1 text-[10px] font-bold {{ $isActive ? 'border-emerald-100 bg-emerald-50 text-emerald-600' : 'border-slate-100 bg-slate-50 text-slate-500' }}">
+                                        <span class="rounded-lg border px-3 py-1 text-[10px] font-bold {{ $isActive ? 'border-blue-100 bg-blue-50 text-blue-600' : 'border-slate-100 bg-slate-50 text-slate-500' }}">
                                             {{ $isActive ? 'Aktif' : 'Tidak Aktif' }}
                                         </span>
                                     </td>
