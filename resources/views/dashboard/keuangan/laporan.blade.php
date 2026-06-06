@@ -2,6 +2,46 @@
 @section('title', 'Laporan Keuangan')
 
 @section('content')
+<style>
+@media print {
+    /* Hide layout elements */
+    aside, header, nav, footer, form, button, .col-span-4, .grid-cols-3, a, .px-5, .py-2.5 {
+        display: none !important;
+    }
+    /* Reset layout grid to block */
+    .grid-cols-12 {
+        display: block !important;
+    }
+    /* Ensure only col-span-8 contents print */
+    body {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .col-span-8 {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+    }
+    .overflow-x-auto {
+        overflow: visible !important;
+    }
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+    th, td {
+        padding: 6px 4px !important;
+        font-size: 11px !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+}
+</style>
 <x-dashboard.page-header title="Laporan Keuangan" subtitle="Buku kas, rekap kategori, dan unduhan laporan akuntansi.">
     <a href="{{ route('dashboard.keuangan.index') }}" class="px-5 py-2.5 bg-white border border-gray-100 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all">
         Kembali
