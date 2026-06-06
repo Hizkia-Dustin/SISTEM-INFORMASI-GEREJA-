@@ -8,33 +8,6 @@
     backUrl="{{ route('dashboard.tugas.index') }}"
 />
 
-@php
-    $fieldValue = function (string $field, ?string $fallback = null) use ($tugasRoles, $tugas) {
-        return old($field, $tugasRoles[$field] ?? $fallback ?? '');
-    };
-
-    $renderPelayanSelect = function (string $label, string $name, $options, ?string $fallback = null) use ($fieldValue) {
-        $selected = $fieldValue($name, $fallback);
-        $options = collect($options ?? [])->filter()->unique()->values();
-@endphp
-        <div>
-            <label class="block mb-2 font-medium text-gray-700 text-sm">{{ $label }}</label>
-            <div class="relative">
-                <select name="{{ $name }}" class="w-full pr-10 px-4 py-3 rounded-xl border border-gray-200 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm shadow-sm appearance-none cursor-pointer">
-                    <option value="">{{ $options->isEmpty() ? 'Belum ada pelayan aktif' : 'Pilih Nama Pelayan...' }}</option>
-                    @foreach($options as $option)
-                        <option value="{{ $option }}" {{ $selected === $option ? 'selected' : '' }}>{{ $option }}</option>
-                    @endforeach
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
-            </div>
-        </div>
-@php
-    };
-@endphp
-
 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 xl:p-12 overflow-hidden relative">
     @if(($pelayanOptions['all'] ?? collect())->isEmpty())
         <div class="mb-8 rounded-2xl border border-amber-100 bg-amber-50 px-5 py-4 text-sm font-semibold text-amber-700">
@@ -57,10 +30,10 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
                     Pelayan Utama
                 </h3>
-                {{ $renderPelayanSelect('Pengkhotbah', 'pengkhotbah', $pelayanOptions['pengkhotbah'] ?? collect(), $tugas->penerima ?? null) }}
-                {{ $renderPelayanSelect('Liturgis', 'liturgis', $pelayanOptions['liturgis'] ?? collect()) }}
-                {{ $renderPelayanSelect('Doa Syafaat', 'doa_syafaat', $pelayanOptions['doa_syafaat'] ?? collect()) }}
-                {{ $renderPelayanSelect('Warta Jemaat', 'warta', $pelayanOptions['warta'] ?? collect()) }}
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Pengkhotbah', 'name' => 'pengkhotbah', 'options' => $pelayanOptions['pengkhotbah'] ?? collect(), 'selected' => $tugasRoles['pengkhotbah'] ?? $tugas->penerima ?? ''])
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Liturgis', 'name' => 'liturgis', 'options' => $pelayanOptions['liturgis'] ?? collect(), 'selected' => $tugasRoles['liturgis'] ?? ''])
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Doa Syafaat', 'name' => 'doa_syafaat', 'options' => $pelayanOptions['doa_syafaat'] ?? collect(), 'selected' => $tugasRoles['doa_syafaat'] ?? ''])
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Warta Jemaat', 'name' => 'warta', 'options' => $pelayanOptions['warta'] ?? collect(), 'selected' => $tugasRoles['warta'] ?? ''])
             </div>
 
             <div class="flex flex-col gap-8">
@@ -68,16 +41,16 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     Tim Musik & Liturgis
                 </h3>
-                {{ $renderPelayanSelect('Pemusik', 'pemusik', $pelayanOptions['pemusik'] ?? collect()) }}
-                {{ $renderPelayanSelect('Song Leader', 'song_leader', $pelayanOptions['song_leader'] ?? collect()) }}
-                {{ $renderPelayanSelect('Liturgis Sekolah Minggu', 'liturgis_sm', $pelayanOptions['liturgis_sm'] ?? collect()) }}
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Pemusik', 'name' => 'pemusik', 'options' => $pelayanOptions['pemusik'] ?? collect(), 'selected' => $tugasRoles['pemusik'] ?? ''])
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Song Leader', 'name' => 'song_leader', 'options' => $pelayanOptions['song_leader'] ?? collect(), 'selected' => $tugasRoles['song_leader'] ?? ''])
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Liturgis Sekolah Minggu', 'name' => 'liturgis_sm', 'options' => $pelayanOptions['liturgis_sm'] ?? collect(), 'selected' => $tugasRoles['liturgis_sm'] ?? ''])
 
                 <div class="grid grid-cols-1 gap-4">
                     <label class="block font-bold text-primary text-[11px] uppercase tracking-widest">Pengumpul Persembahan (1-4)</label>
-                    {{ $renderPelayanSelect('Petugas 1', 'pengumpul_1', $pelayanOptions['pengumpul'] ?? collect()) }}
-                    {{ $renderPelayanSelect('Petugas 2', 'pengumpul_2', $pelayanOptions['pengumpul'] ?? collect()) }}
-                    {{ $renderPelayanSelect('Petugas 3', 'pengumpul_3', $pelayanOptions['pengumpul'] ?? collect()) }}
-                    {{ $renderPelayanSelect('Petugas 4', 'pengumpul_4', $pelayanOptions['pengumpul'] ?? collect()) }}
+                    @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Petugas 1', 'name' => 'pengumpul_1', 'options' => $pelayanOptions['pengumpul'] ?? collect(), 'selected' => $tugasRoles['pengumpul_1'] ?? ''])
+                    @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Petugas 2', 'name' => 'pengumpul_2', 'options' => $pelayanOptions['pengumpul'] ?? collect(), 'selected' => $tugasRoles['pengumpul_2'] ?? ''])
+                    @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Petugas 3', 'name' => 'pengumpul_3', 'options' => $pelayanOptions['pengumpul'] ?? collect(), 'selected' => $tugasRoles['pengumpul_3'] ?? ''])
+                    @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Petugas 4', 'name' => 'pengumpul_4', 'options' => $pelayanOptions['pengumpul'] ?? collect(), 'selected' => $tugasRoles['pengumpul_4'] ?? ''])
                 </div>
             </div>
 
@@ -86,9 +59,9 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                     Penerima Tamu (Usher)
                 </h3>
-                {{ $renderPelayanSelect('Penerima Tamu 1', 'penerima_tamu_1', $pelayanOptions['penerima_tamu'] ?? collect()) }}
-                {{ $renderPelayanSelect('Penerima Tamu 2', 'penerima_tamu_2', $pelayanOptions['penerima_tamu'] ?? collect()) }}
-                {{ $renderPelayanSelect('Penerima Tamu 3', 'penerima_tamu_3', $pelayanOptions['penerima_tamu'] ?? collect()) }}
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Penerima Tamu 1', 'name' => 'penerima_tamu_1', 'options' => $pelayanOptions['penerima_tamu'] ?? collect(), 'selected' => $tugasRoles['penerima_tamu_1'] ?? ''])
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Penerima Tamu 2', 'name' => 'penerima_tamu_2', 'options' => $pelayanOptions['penerima_tamu'] ?? collect(), 'selected' => $tugasRoles['penerima_tamu_2'] ?? ''])
+                @include('dashboard.tugas.partials.pelayan-select', ['label' => 'Penerima Tamu 3', 'name' => 'penerima_tamu_3', 'options' => $pelayanOptions['penerima_tamu'] ?? collect(), 'selected' => $tugasRoles['penerima_tamu_3'] ?? ''])
 
                 <div class="mt-auto flex flex-col gap-3">
                     <button type="submit" class="w-full py-4 bg-primary text-white rounded-2xl text-sm font-bold shadow-xl shadow-primary/20 hover:bg-blue-700 transition-all">

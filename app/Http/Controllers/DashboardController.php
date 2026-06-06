@@ -1572,12 +1572,14 @@ class DashboardController extends Controller
         $optionsFor = function (array $keywords) use ($pelayan, $allOptions) {
             $filtered = $pelayan
                 ->filter(function ($item) use ($keywords) {
-                    $haystack = strtolower(implode(' ', [
-                        $item->posisi,
-                        $item->komisi_tujuan,
-                        $item->area_layanan,
-                        $item->kelompok_layanan,
-                    ]));
+                    $haystack = strtolower(implode(' ', array_filter([
+                        data_get($item, 'posisi'),
+                        data_get($item, 'komisi_tujuan'),
+                        data_get($item, 'area_layanan'),
+                        data_get($item, 'kelompok_layanan'),
+                        data_get($item, 'jabatan_tampilan'),
+                        data_get($item, 'kategori_halaman'),
+                    ])));
 
                     foreach ($keywords as $keyword) {
                         if (str_contains($haystack, strtolower($keyword))) {
@@ -1614,8 +1616,11 @@ class DashboardController extends Controller
 
     private function formatPelayanOption($pelayan): ?string
     {
-        $name = $pelayan->nama_tampilan ?: $pelayan->nama;
-        $role = $pelayan->posisi ?: $pelayan->komisi_tujuan;
+        $name = data_get($pelayan, 'nama_tampilan') ?: data_get($pelayan, 'nama');
+        $role = data_get($pelayan, 'posisi')
+            ?: data_get($pelayan, 'komisi_tujuan')
+            ?: data_get($pelayan, 'jabatan_tampilan')
+            ?: data_get($pelayan, 'kelompok_layanan');
 
         if (!$name) {
             return null;
