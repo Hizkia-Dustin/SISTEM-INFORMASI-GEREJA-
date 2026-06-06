@@ -414,9 +414,9 @@
                                 $videoUrl = asset('storage/' . $item->gambar);
                                 $videoExt = strtolower(pathinfo(parse_url($videoUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
                             @endphp
-                            @if(in_array($videoExt, ['mp4', 'webm', 'ogg']))
+                            @if(in_array($videoExt, ['mp4', 'webm', 'ogg', 'mov']))
                                 <video controls class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition-transform duration-500" muted loop playsinline preload="metadata">
-                                    <source src="{{ $videoUrl }}" type="video/{{ $videoExt }}">
+                                    <source src="{{ $videoUrl }}" type="{{ $videoExt === 'mov' ? 'video/quicktime' : 'video/' . $videoExt }}">
                                     Your browser does not support the video tag.
                                 </video>
                             @else

@@ -6,12 +6,13 @@
         $imageUrl = $article->image;
         $imagePath = parse_url($imageUrl, PHP_URL_PATH);
         $imageExt = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
-        $isVideo = in_array($imageExt, ['mp4', 'webm', 'ogg']);
+        $isVideo = in_array($imageExt, ['mp4', 'webm', 'ogg', 'mov']);
+        $videoMime = $imageExt === 'mov' ? 'video/quicktime' : 'video/' . $imageExt;
     @endphp
     <div class="aspect-[16/10] overflow-hidden relative">
         @if($isVideo)
             <video muted loop playsinline preload="metadata" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                <source src="{{ $imageUrl }}" type="video/{{ $imageExt }}">
+                <source src="{{ $imageUrl }}" type="{{ $videoMime }}">
                 Your browser does not support the video tag.
             </video>
         @else
