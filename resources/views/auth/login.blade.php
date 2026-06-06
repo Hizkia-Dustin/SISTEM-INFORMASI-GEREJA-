@@ -118,9 +118,6 @@
                     <div class="space-y-2" x-data="{ show: false }">
                         <div class="flex items-center justify-between ml-1">
                             <label for="password" class="text-sm font-bold text-blue-800/80">Kata Sandi</label>
-                            @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}" class="text-xs font-bold text-teal-600 hover:underline">Lupa Sandi?</a>
-                            @endif
                         </div>
                         <div class="group relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-teal-600 transition-colors">
@@ -152,7 +149,7 @@
 
                 <!-- Help Link -->
                 <p class="mt-10 text-center text-sm text-gray-600 font-medium">
-                    Belum punya akun? <a href="{{ route('register') }}" class="text-teal-600 font-bold hover:underline">Daftar / Hubungi Sekretariat</a>
+                    Belum punya akun? <span class="text-teal-600 font-bold">Hubungi Sekretariat</span>
                 </p>
 
                 <!-- Small Footer -->

@@ -115,7 +115,6 @@
                     <div class="space-y-2" x-data="{ show: false }">
                         <div class="flex items-center justify-between ml-1">
                             <label for="password" class="text-sm font-bold text-primary-container/80">Kata Sandi</label>
-                            <a href="#" class="text-xs font-bold text-secondary hover:underline">Lupa Sandi?</a>
                         </div>
                         <div class="group relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline group-focus-within:text-secondary transition-colors">
