@@ -1581,81 +1581,89 @@ class DashboardController extends Controller
 
     private function ensureJadwalSchema(): void
     {
-        if (!\Illuminate\Support\Facades\Schema::hasTable('jadwal')) {
-            \Illuminate\Support\Facades\Schema::create('jadwal', function (\Illuminate\Database\Schema\Blueprint $table) {
-                $table->id();
-                $table->string('nama_acara')->nullable();
-                $table->string('nama')->nullable();
-                $table->date('tanggal')->nullable();
-                $table->time('waktu_mulai')->nullable();
-                $table->time('waktu')->nullable();
-                $table->string('lokasi')->nullable();
-                $table->string('jenis')->nullable();
-                $table->integer('jumlah_hadir')->nullable();
-                $table->string('lampiran')->nullable();
-                $table->text('deskripsi')->nullable();
-                $table->timestamps();
-            });
-
-            return;
-        }
-
-        $columns = [
-            'nama_acara' => fn ($table) => $table->string('nama_acara')->nullable(),
-            'nama' => fn ($table) => $table->string('nama')->nullable(),
-            'tanggal' => fn ($table) => $table->date('tanggal')->nullable(),
-            'waktu_mulai' => fn ($table) => $table->time('waktu_mulai')->nullable(),
-            'waktu' => fn ($table) => $table->time('waktu')->nullable(),
-            'lokasi' => fn ($table) => $table->string('lokasi')->nullable(),
-            'jenis' => fn ($table) => $table->string('jenis')->nullable(),
-            'jumlah_hadir' => fn ($table) => $table->integer('jumlah_hadir')->nullable(),
-            'lampiran' => fn ($table) => $table->string('lampiran')->nullable(),
-            'deskripsi' => fn ($table) => $table->text('deskripsi')->nullable(),
-            'created_at' => fn ($table) => $table->timestamp('created_at')->nullable(),
-            'updated_at' => fn ($table) => $table->timestamp('updated_at')->nullable(),
-        ];
-
-        foreach ($columns as $column => $definition) {
-            if (!\Illuminate\Support\Facades\Schema::hasColumn('jadwal', $column)) {
-                \Illuminate\Support\Facades\Schema::table('jadwal', function (\Illuminate\Database\Schema\Blueprint $table) use ($definition) {
-                    $definition($table);
+        try {
+            if (!\Illuminate\Support\Facades\Schema::hasTable('jadwal')) {
+                \Illuminate\Support\Facades\Schema::create('jadwal', function (\Illuminate\Database\Schema\Blueprint $table) {
+                    $table->id();
+                    $table->string('nama_acara')->nullable();
+                    $table->string('nama')->nullable();
+                    $table->date('tanggal')->nullable();
+                    $table->time('waktu_mulai')->nullable();
+                    $table->time('waktu')->nullable();
+                    $table->string('lokasi')->nullable();
+                    $table->string('jenis')->nullable();
+                    $table->integer('jumlah_hadir')->nullable();
+                    $table->string('lampiran')->nullable();
+                    $table->text('deskripsi')->nullable();
+                    $table->timestamps();
                 });
+
+                return;
             }
+
+            $columns = [
+                'nama_acara' => fn ($table) => $table->string('nama_acara')->nullable(),
+                'nama' => fn ($table) => $table->string('nama')->nullable(),
+                'tanggal' => fn ($table) => $table->date('tanggal')->nullable(),
+                'waktu_mulai' => fn ($table) => $table->time('waktu_mulai')->nullable(),
+                'waktu' => fn ($table) => $table->time('waktu')->nullable(),
+                'lokasi' => fn ($table) => $table->string('lokasi')->nullable(),
+                'jenis' => fn ($table) => $table->string('jenis')->nullable(),
+                'jumlah_hadir' => fn ($table) => $table->integer('jumlah_hadir')->nullable(),
+                'lampiran' => fn ($table) => $table->string('lampiran')->nullable(),
+                'deskripsi' => fn ($table) => $table->text('deskripsi')->nullable(),
+                'created_at' => fn ($table) => $table->timestamp('created_at')->nullable(),
+                'updated_at' => fn ($table) => $table->timestamp('updated_at')->nullable(),
+            ];
+
+            foreach ($columns as $column => $definition) {
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('jadwal', $column)) {
+                    \Illuminate\Support\Facades\Schema::table('jadwal', function (\Illuminate\Database\Schema\Blueprint $table) use ($definition) {
+                        $definition($table);
+                    });
+                }
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('ensureJadwalSchema failed: ' . $e->getMessage());
         }
     }
 
     private function ensureTugasSchema(): void
     {
-        if (!\Illuminate\Support\Facades\Schema::hasTable('tugas')) {
-            \Illuminate\Support\Facades\Schema::create('tugas', function (\Illuminate\Database\Schema\Blueprint $table) {
-                $table->id();
-                $table->string('judul')->nullable();
-                $table->text('deskripsi')->nullable();
-                $table->string('penerima')->nullable();
-                $table->date('deadline')->nullable();
-                $table->string('status')->default('pending');
-                $table->timestamps();
-            });
-
-            return;
-        }
-
-        $columns = [
-            'judul' => fn ($table) => $table->string('judul')->nullable(),
-            'deskripsi' => fn ($table) => $table->text('deskripsi')->nullable(),
-            'penerima' => fn ($table) => $table->string('penerima')->nullable(),
-            'deadline' => fn ($table) => $table->date('deadline')->nullable(),
-            'status' => fn ($table) => $table->string('status')->default('pending'),
-            'created_at' => fn ($table) => $table->timestamp('created_at')->nullable(),
-            'updated_at' => fn ($table) => $table->timestamp('updated_at')->nullable(),
-        ];
-
-        foreach ($columns as $column => $definition) {
-            if (!\Illuminate\Support\Facades\Schema::hasColumn('tugas', $column)) {
-                \Illuminate\Support\Facades\Schema::table('tugas', function (\Illuminate\Database\Schema\Blueprint $table) use ($definition) {
-                    $definition($table);
+        try {
+            if (!\Illuminate\Support\Facades\Schema::hasTable('tugas')) {
+                \Illuminate\Support\Facades\Schema::create('tugas', function (\Illuminate\Database\Schema\Blueprint $table) {
+                    $table->id();
+                    $table->string('judul')->nullable();
+                    $table->text('deskripsi')->nullable();
+                    $table->string('penerima')->nullable();
+                    $table->date('deadline')->nullable();
+                    $table->string('status')->default('pending');
+                    $table->timestamps();
                 });
+
+                return;
             }
+
+            $columns = [
+                'judul' => fn ($table) => $table->string('judul')->nullable(),
+                'deskripsi' => fn ($table) => $table->text('deskripsi')->nullable(),
+                'penerima' => fn ($table) => $table->string('penerima')->nullable(),
+                'deadline' => fn ($table) => $table->date('deadline')->nullable(),
+                'status' => fn ($table) => $table->string('status')->default('pending'),
+                'created_at' => fn ($table) => $table->timestamp('created_at')->nullable(),
+                'updated_at' => fn ($table) => $table->timestamp('updated_at')->nullable(),
+            ];
+
+            foreach ($columns as $column => $definition) {
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('tugas', $column)) {
+                    \Illuminate\Support\Facades\Schema::table('tugas', function (\Illuminate\Database\Schema\Blueprint $table) use ($definition) {
+                        $definition($table);
+                    });
+                }
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('ensureTugasSchema failed: ' . $e->getMessage());
         }
     }
 
