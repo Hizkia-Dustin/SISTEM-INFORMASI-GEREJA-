@@ -54,8 +54,52 @@ class DashboardController extends Controller
             ->all();
     }
 
+    private function ensureKeluargaSchema(): void
+    {
+        try {
+            if (!\Illuminate\Support\Facades\Schema::hasTable('keluarga')) {
+                \Illuminate\Support\Facades\Schema::create('keluarga', function (\Illuminate\Database\Schema\Blueprint $table) {
+                    $table->id();
+                    $table->string('no_kk')->nullable();
+                    $table->string('nama_kepala_keluarga')->nullable();
+                    $table->text('alamat_keluarga')->nullable();
+                    $table->string('wilayah_pelayanan')->nullable();
+                    $table->date('tanggal_registrasi')->nullable();
+                    $table->string('status')->default('Aktif');
+                    $table->string('lampiran_kk')->nullable();
+                    $table->timestamps();
+                });
+
+                return;
+            }
+
+            $columns = [
+                'no_kk' => fn ($table) => $table->string('no_kk')->nullable(),
+                'nama_kepala_keluarga' => fn ($table) => $table->string('nama_kepala_keluarga')->nullable(),
+                'alamat_keluarga' => fn ($table) => $table->text('alamat_keluarga')->nullable(),
+                'wilayah_pelayanan' => fn ($table) => $table->string('wilayah_pelayanan')->nullable(),
+                'tanggal_registrasi' => fn ($table) => $table->date('tanggal_registrasi')->nullable(),
+                'status' => fn ($table) => $table->string('status')->default('Aktif'),
+                'lampiran_kk' => fn ($table) => $table->string('lampiran_kk')->nullable(),
+                'created_at' => fn ($table) => $table->timestamp('created_at')->nullable(),
+                'updated_at' => fn ($table) => $table->timestamp('updated_at')->nullable(),
+            ];
+
+            foreach ($columns as $column => $definition) {
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('keluarga', $column)) {
+                    \Illuminate\Support\Facades\Schema::table('keluarga', function (\Illuminate\Database\Schema\Blueprint $table) use ($definition) {
+                        $definition($table);
+                    });
+                }
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('ensureKeluargaSchema failed: ' . $e->getMessage());
+        }
+    }
+
     public function index()
     {
+        $this->ensureKeluargaSchema();
         $jemaatList = \App\Models\Jemaat::all();
         
         $stats = [
@@ -126,6 +170,7 @@ class DashboardController extends Controller
     // 2. Keluarga
     public function keluarga() 
     { 
+        $this->ensureKeluargaSchema();
         $query = \App\Models\Keluarga::query();
         if (request('status') == 'tidak_aktif') {
             $query->whereIn('status', ['Pindah', 'Meninggal']);
@@ -138,11 +183,13 @@ class DashboardController extends Controller
         return view('dashboard.keluarga.index', compact('keluarga')); 
     }
     public function createKeluarga() { 
+        $this->ensureKeluargaSchema();
         $sektorList = \App\Models\Sektor::all();
         return view('dashboard.keluarga.form', ['type' => 'Tambah', 'keluarga' => [], 'sektorList' => $sektorList]); 
     }
     public function storeKeluarga(Request $request) 
     {
+        $this->ensureKeluargaSchema();
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'numeric' => 'Bagian ini hanya dapat diisi dengan angka.',
@@ -174,17 +221,19 @@ class DashboardController extends Controller
             $data['lampiran_kk'] = $request->file('lampiran_kk')->store('uploads/keluarga', 'public');
         }
 
-        $keluarga = \App\Models\Keluarga::create($data);
+        $keluarga = \App\Models\Keluarga::create($this->filterPayloadForTable('keluarga', $data));
         $this->notifyAdmins('Keluarga baru ditambahkan', $keluarga->nama_kepala_keluarga . ' masuk ke data keluarga.', route('dashboard.keluarga.index'), 'success');
         return redirect()->route('dashboard.keluarga.index')->with('success', 'Data keluarga berhasil ditambahkan.');
     }
 
     public function showKeluarga($id) { 
+        $this->ensureKeluargaSchema();
         $keluarga = \App\Models\Keluarga::findOrFail($id);
         return view('dashboard.keluarga.detail', compact('keluarga')); 
     }
     
     public function editKeluarga($id) { 
+        $this->ensureKeluargaSchema();
         $keluargaModel = \App\Models\Keluarga::findOrFail($id);
         $keluarga = [
             'id' => $keluargaModel->id,
@@ -201,6 +250,7 @@ class DashboardController extends Controller
 
     public function updateKeluarga(Request $request, $id) 
     {
+        $this->ensureKeluargaSchema();
         $messages = [
             'required' => 'Ada yang belum diisi dan harus diisi.',
             'digits' => 'Nomor KK harus terdiri dari tepat 16 digit angka.',
@@ -231,12 +281,13 @@ class DashboardController extends Controller
             $data['lampiran_kk'] = $request->file('lampiran_kk')->store('uploads/keluarga', 'public');
         }
 
-        $keluarga->update($data);
+        $keluarga->update($this->filterPayloadForTable('keluarga', $data));
 
         return redirect()->route('dashboard.keluarga.index')->with('success', 'Data keluarga berhasil diperbarui.');
     }
 
     public function destroyKeluarga($id) { 
+        $this->ensureKeluargaSchema();
         \App\Models\Keluarga::destroy($id);
         return redirect()->back()->with('success', 'Data keluarga berhasil dihapus.'); 
     }
@@ -401,6 +452,7 @@ class DashboardController extends Controller
     // 4. Sektor
     public function sektor(Request $request) 
     { 
+        $this->ensureKeluargaSchema();
         $sektors = \App\Models\Sektor::latest()->get();
         $selectedSektorId = $request->query('sektor_id');
 
@@ -1024,79 +1076,6 @@ class DashboardController extends Controller
     { 
         \App\Models\ProgramKerja::destroy($id);
         return redirect()->back()->with('success', 'Program kerja berhasil dihapus.'); 
-    }
-
-    // 11. Berita
-    public function berita() 
-    { 
-        $berita = \App\Models\Berita::latest()->get();
-        return view('dashboard.berita.index', compact('berita')); 
-    }
-    
-    public function createBerita() 
-    { 
-        return view('dashboard.berita.form', ['type' => 'Tambah', 'berita' => new \App\Models\Berita()]); 
-    }
-
-    public function storeBerita(Request $request)
-    {
-        $this->validateImageUpload($request);
-        $data = $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:255',
-            'isi' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
-        $data['konten'] = $data['isi'];
-        $data['penulis'] = auth()->user()->name ?? 'Admin Gereja';
-        $data['publish_at'] = now();
-        if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('uploads/berita', 'public');
-        }
-        
-        $berita = \App\Models\Berita::create($this->filterPayloadForTable('berita', $data));
-        $this->notifyAdmins('Berita baru dipublikasikan', ($berita->judul ?? 'Berita baru') . ' telah ditambahkan.', route('dashboard.berita.index'), 'success');
-        return redirect()->route('dashboard.berita.index')->with('success', 'Berita berhasil ditambahkan.');
-    }
-    
-    public function showBerita($id) 
-    { 
-        $berita = \App\Models\Berita::findOrFail($id);
-        return view('dashboard.berita.detail', compact('berita')); 
-    }
-    
-    public function editBerita($id) 
-    { 
-        $berita = \App\Models\Berita::findOrFail($id);
-        return view('dashboard.berita.form', ['type' => 'Edit', 'berita' => $berita]); 
-    }
-
-    public function updateBerita(Request $request, $id)
-    {
-        $berita = \App\Models\Berita::findOrFail($id);
-        $this->validateImageUpload($request);
-        $data = $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:255',
-            'isi' => 'required|string',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
-        $data['konten'] = $data['isi'];
-        
-        if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('uploads/berita', 'public');
-        }
-        
-        $berita->update($this->filterPayloadForTable('berita', $data));
-        return redirect()->route('dashboard.berita.index')->with('success', 'Berita berhasil diperbarui.');
-    }
-    
-    public function destroyBerita($id) 
-    { 
-        \App\Models\Berita::destroy($id);
-        return redirect()->back()->with('success', 'Berita berhasil dihapus.'); 
     }
 
     // Warta
@@ -1987,6 +1966,7 @@ class DashboardController extends Controller
 
     public function exportJemaatPdf()
     {
+        $this->ensureKeluargaSchema();
         $jemaatList = \App\Models\Jemaat::with('keluarga')->get();
         $stats = [
             'keluarga' => \App\Models\Keluarga::count(),

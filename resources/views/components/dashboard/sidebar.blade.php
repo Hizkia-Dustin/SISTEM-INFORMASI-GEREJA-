@@ -191,20 +191,6 @@
             </div>
         </div>
 
-        <!-- 11. Berita Gereja -->
-        <div x-data="{ open: {{ request()->routeIs('dashboard.berita.*') ? 'true' : 'false' }} }">
-            <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">
-                <div class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                    Berita Gereja
-                </div>
-                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M19 9l-7 7-7-7"/></svg>
-            </button>
-            <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
-                <a href="{{ route('dashboard.berita.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.berita.index') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Lihat Berita Gereja</a>
-            </div>
-        </div>
-
         <!-- 12. Artikel -->
         <div x-data="{ open: {{ request()->routeIs('dashboard.artikel.*') ? 'true' : 'false' }} }">
             <button type="button" @click="open = !open" class="{{ $navItemClass }} w-full justify-between">

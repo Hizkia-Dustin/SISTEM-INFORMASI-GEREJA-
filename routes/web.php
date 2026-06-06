@@ -298,13 +298,6 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
     Route::put('/program-kerja/{id}', [DashboardController::class, 'updateProgramKerja'])->name('dashboard.program_kerja.update');
     Route::delete('/program-kerja/{id}', [DashboardController::class, 'destroyProgramKerja'])->name('dashboard.program_kerja.destroy');
 
-    // Berita
-    Route::get('/berita', [DashboardController::class, 'berita'])->name('dashboard.berita.index');
-    Route::get('/berita/{id}', [DashboardController::class, 'showBerita'])->name('dashboard.berita.show');
-    Route::get('/berita/{id}/edit', [DashboardController::class, 'editBerita'])->name('dashboard.berita.edit');
-    Route::put('/berita/{id}', [DashboardController::class, 'updateBerita'])->name('dashboard.berita.update');
-    Route::delete('/berita/{id}', [DashboardController::class, 'destroyBerita'])->name('dashboard.berita.destroy');
-
     // Warta
     Route::get('/warta', [DashboardController::class, 'warta'])->name('dashboard.warta.index');
     Route::get('/warta/create', [DashboardController::class, 'createWarta'])->name('dashboard.warta.create');
