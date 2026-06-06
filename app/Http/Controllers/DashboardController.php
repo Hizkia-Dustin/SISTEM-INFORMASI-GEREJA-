@@ -1769,17 +1769,20 @@ class DashboardController extends Controller
     // ==========================================
     public function pendeta()
     {
+        $this->ensurePendetaSchema();
         $pendetas = \App\Models\Pendeta::latest()->get();
         return view('dashboard.pendeta.index', compact('pendetas'));
     }
 
     public function createPendeta()
     {
+        $this->ensurePendetaSchema();
         return view('dashboard.pendeta.form', ['type' => 'Tambah', 'pendeta' => new \App\Models\Pendeta()]);
     }
 
     public function storePendeta(Request $request)
     {
+        $this->ensurePendetaSchema();
         $data = $request->validate([
             'nama' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',
@@ -1797,6 +1800,7 @@ class DashboardController extends Controller
         if ($request->hasFile('foto_file')) {
             $data['foto'] = asset('storage/' . $request->file('foto_file')->store('uploads/pendeta', 'public'));
         }
+        unset($data['foto_file']);
 
         // Clean arrays
         $data['riwayat_pelayanan'] = array_values(array_filter($data['riwayat_pelayanan'] ?? []));
@@ -1809,12 +1813,14 @@ class DashboardController extends Controller
 
     public function editPendeta($id)
     {
+        $this->ensurePendetaSchema();
         $pendeta = \App\Models\Pendeta::findOrFail($id);
         return view('dashboard.pendeta.form', ['type' => 'Edit', 'pendeta' => $pendeta]);
     }
 
     public function updatePendeta(Request $request, $id)
     {
+        $this->ensurePendetaSchema();
         $pendeta = \App\Models\Pendeta::findOrFail($id);
         $data = $request->validate([
             'nama' => 'required|string|max:255',
@@ -1833,6 +1839,7 @@ class DashboardController extends Controller
         if ($request->hasFile('foto_file')) {
             $data['foto'] = asset('storage/' . $request->file('foto_file')->store('uploads/pendeta', 'public'));
         }
+        unset($data['foto_file']);
 
         // Clean arrays
         $data['riwayat_pelayanan'] = array_values(array_filter($data['riwayat_pelayanan'] ?? []));
@@ -1845,8 +1852,73 @@ class DashboardController extends Controller
 
     public function destroyPendeta($id)
     {
+        $this->ensurePendetaSchema();
         \App\Models\Pendeta::destroy($id);
         return redirect()->route('dashboard.pendeta.index')->with('success', 'Profil pendeta berhasil dihapus.');
+    }
+
+    private function ensurePendetaSchema(): void
+    {
+        try {
+            if (!\Illuminate\Support\Facades\Schema::hasTable('pendetas')) {
+                \Illuminate\Support\Facades\Schema::create('pendetas', function (\Illuminate\Database\Schema\Blueprint $table) {
+                    $table->id();
+                    $table->string('nama');
+                    $table->string('jabatan');
+                    $table->text('foto')->nullable();
+                    $table->string('pasangan')->nullable();
+                    $table->string('email')->nullable();
+                    $table->text('visi_pelayanan')->nullable();
+                    $table->string('jadwal_konseling')->nullable();
+                    $table->json('riwayat_pelayanan')->nullable();
+                    $table->json('pendidikan')->nullable();
+                    $table->string('status')->default('Aktif');
+                    $table->timestamps();
+                });
+                return;
+            }
+
+            \Illuminate\Support\Facades\Schema::table('pendetas', function (\Illuminate\Database\Schema\Blueprint $table) {
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'nama')) {
+                    $table->string('nama')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'jabatan')) {
+                    $table->string('jabatan')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'foto')) {
+                    $table->text('foto')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'pasangan')) {
+                    $table->string('pasangan')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'email')) {
+                    $table->string('email')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'visi_pelayanan')) {
+                    $table->text('visi_pelayanan')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'jadwal_konseling')) {
+                    $table->string('jadwal_konseling')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'riwayat_pelayanan')) {
+                    $table->json('riwayat_pelayanan')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'pendidikan')) {
+                    $table->json('pendidikan')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'status')) {
+                    $table->string('status')->default('Aktif');
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'created_at')) {
+                    $table->timestamp('created_at')->nullable();
+                }
+                if (!\Illuminate\Support\Facades\Schema::hasColumn('pendetas', 'updated_at')) {
+                    $table->timestamp('updated_at')->nullable();
+                }
+            });
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('ensurePendetaSchema failed: ' . $e->getMessage());
+        }
     }
 
     // ==========================================
