@@ -1,11 +1,16 @@
 <x-layouts.main title="Hubungi & Temukan Kami" :fullWidth="true">
     @php
-        $phone = \App\Models\Setting::get('phone', '+62 812-3456-7890');
+        $phone = \App\Models\Setting::get('phone', '082110039115');
         $email = \App\Models\Setting::get('email', 'info@gkipakuwon.or.id');
         $address = \App\Models\Setting::get('address', 'Jl. Pakuwon Indah Raya No. 12, Surabaya, Jawa Timur');
         $mapsLink = \App\Models\Setting::get('maps_link');
         $instagram = \App\Models\Setting::get('instagram_link');
         $youtube = \App\Models\Setting::get('youtube_link');
+
+        $waPhone = preg_replace('/[^0-9]/', '', $phone);
+        if (str_starts_with($waPhone, '0')) {
+            $waPhone = '62' . substr($waPhone, 1);
+        }
 
         $embedUrl = '';
         $fallbackEmbed = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.575230303866!2d112.6732386!3d-7.2890697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fc20c3848b61%3A0xeab43ad18e47bf1b!2sGKI%20Pakuwon!5e0!3m2!1sid!2sid!4v1717640000000!5m2!1sid!2sid';
@@ -87,7 +92,7 @@
                     pesan: '', 
                     whatsappUrl() {
                         const text = `Halo GKI Pakuwon,\n\nSaya: ${this.nama}\nEmail: ${this.email}\nKeperluan: ${this.subjek}\n\nPesan:\n${this.pesan}`;
-                        return 'https://wa.me/{{ preg_replace('/[^0-9]/', '', $phone) }}?text=' + encodeURIComponent(text);
+                        return 'https://wa.me/{{ $waPhone }}?text=' + encodeURIComponent(text);
                     }
                 }">
                     <div x-show="!submitted">
