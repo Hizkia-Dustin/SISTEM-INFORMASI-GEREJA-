@@ -97,9 +97,11 @@
             </button>
             <div x-show="open" x-collapse x-cloak class="pl-12 flex flex-col gap-1 mb-2">
                 <a href="{{ route('dashboard.keuangan.create') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.create') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Tambah Data Keuangan</a>
-                <a href="{{ route('dashboard.keuangan.index') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && !request('kategori') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Ibadah</a>
-                <a href="{{ route('dashboard.keuangan.index', ['kategori' => 'diakoni']) }}" class="text-xs font-medium py-2 {{ request('kategori') == 'diakoni' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Diakoni Sosial</a>
-                <a href="{{ route('dashboard.keuangan.index', ['kategori' => 'khusus']) }}" class="text-xs font-medium py-2 {{ request('kategori') == 'khusus' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Khusus</a>
+                <a href="{{ route('dashboard.keuangan.index', ['tab' => 'ibadah']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && request('tab', 'ibadah') == 'ibadah' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Ibadah</a>
+                <a href="{{ route('dashboard.keuangan.index', ['tab' => 'diakoni']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && request('tab') == 'diakoni' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Diakoni Sosial</a>
+                <a href="{{ route('dashboard.keuangan.index', ['tab' => 'khusus']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && request('tab') == 'khusus' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Persembahan Khusus</a>
+                <a href="{{ route('dashboard.keuangan.index', ['tab' => 'pembangunan']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && request('tab') == 'pembangunan' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Pembangunan</a>
+                <a href="{{ route('dashboard.keuangan.index', ['tab' => 'operasional']) }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.index') && request('tab') == 'operasional' ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Operasional</a>
                 <a href="{{ route('dashboard.keuangan.laporan') }}" class="text-xs font-medium py-2 {{ request()->routeIs('dashboard.keuangan.laporan*') ? 'text-primary font-bold' : 'text-gray-400 hover:text-primary' }}">Laporan Keuangan</a>
             </div>
         </div>

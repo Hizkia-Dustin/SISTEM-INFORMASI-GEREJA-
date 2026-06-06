@@ -68,7 +68,12 @@
                         @endif
                         {{ $renunganUtama->judul }}
                     </h2>
-                    <p class="text-slate-600 mb-6 italic leading-relaxed">"{{ strip_tags($renunganUtama->isi) }}"</p>
+                    <p class="text-slate-600 mb-6 italic leading-relaxed">
+                        "{{ Str::limit(strip_tags($renunganUtama->isi), 180) }}"
+                        @if(strlen(strip_tags($renunganUtama->isi)) > 180)
+                            <a href="{{ route('renungan.show', $renunganUtama->id) }}" class="text-[#0058bf] hover:underline font-bold text-xs inline-block ml-1">Baca Selengkapnya →</a>
+                        @endif
+                    </p>
                     @else
                     <h2 class="font-[Manrope] font-semibold text-[#001142] text-2xl mb-4">Mazmur 23:1 - TUHAN adalah gembalaku, takkan kekurangan aku.</h2>
                     <p class="text-slate-600 mb-6 italic leading-relaxed">"Di tengah badai kehidupan yang tak menentu, ingatlah bahwa kita memiliki Gembala yang Agung. Dia tidak hanya menuntun, tetapi juga mencukupkan segala kebutuhan kita tepat pada waktu-Nya."</p>

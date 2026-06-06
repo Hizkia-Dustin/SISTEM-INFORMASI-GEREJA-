@@ -14,6 +14,14 @@
     $khusus = $keuangan->where('kategori', 'Persembahan Khusus');
     $khususPemasukan = $khusus->where('jenis_transaksi', 'Pemasukan');
     $khususPengeluaran = $khusus->where('jenis_transaksi', 'Pengeluaran');
+
+    $pembangunan = $keuangan->where('kategori', 'Pembangunan');
+    $pembangunanPemasukan = $pembangunan->where('jenis_transaksi', 'Pemasukan');
+    $pembangunanPengeluaran = $pembangunan->where('jenis_transaksi', 'Pengeluaran');
+
+    $operasional = $keuangan->where('kategori', 'Operasional');
+    $operasionalPemasukan = $operasional->where('jenis_transaksi', 'Pemasukan');
+    $operasionalPengeluaran = $operasional->where('jenis_transaksi', 'Pengeluaran');
 @endphp
 <x-dashboard.page-header title="Manajemen Keuangan" subtitle="Catatan arus kas persembahan dan pengeluaran gereja.">
     <a href="{{ route('dashboard.keuangan.create') }}" class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all flex items-center gap-2">
@@ -24,7 +32,7 @@
 
 <!-- Financial Tabs -->
 <div x-data="{ 
-    activeTab: 'ibadah',
+    activeTab: '{{ request()->query('tab', 'ibadah') }}',
     activeSubTab: 'pemasukan'
 }">
     <div class="flex items-center justify-between mb-8 border-b border-gray-100">
@@ -46,6 +54,18 @@
                 :class="activeTab === 'khusus' ? 'text-primary border-primary' : 'text-gray-400 border-transparent'"
                 class="pb-4 px-2 text-sm font-bold border-b-2 transition-all">
                 Persembahan Khusus
+            </button>
+            <button 
+                @click="activeTab = 'pembangunan'"
+                :class="activeTab === 'pembangunan' ? 'text-primary border-primary' : 'text-gray-400 border-transparent'"
+                class="pb-4 px-2 text-sm font-bold border-b-2 transition-all">
+                Pembangunan
+            </button>
+            <button 
+                @click="activeTab = 'operasional'"
+                :class="activeTab === 'operasional' ? 'text-primary border-primary' : 'text-gray-400 border-transparent'"
+                class="pb-4 px-2 text-sm font-bold border-b-2 transition-all">
+                Operasional
             </button>
         </div>
 
@@ -160,6 +180,82 @@
                 </thead>
                 <tbody>
                     @forelse($khususPengeluaran as $k)
+                    <tr class="border-b border-gray-50"><td class="px-8 py-4">{{ \Carbon\Carbon::parse($k->tanggal)->format('d/m/Y') }}</td><td class="px-8 py-4">{{ $k->keterangan }}</td><td class="px-8 py-4 font-bold text-rose-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td><td class="px-8 py-4 text-right"><a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="text-gray-400 hover:text-primary"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a></td></tr>
+                    @empty
+                    <tr><td colspan="4" class="px-8 py-4 text-center text-gray-400">Belum ada data</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tab Content: Pembangunan -->
+    <div x-show="activeTab === 'pembangunan'" x-transition>
+        <div class="flex items-center gap-4 mb-6">
+            <button @click="activeSubTab = 'pemasukan'" :class="activeSubTab === 'pemasukan' ? 'bg-primary text-white' : 'bg-gray-50 text-gray-500'" class="px-6 py-2 rounded-xl text-xs font-bold transition-all">Pemasukan</button>
+            <button @click="activeSubTab = 'pengeluaran'" :class="activeSubTab === 'pengeluaran' ? 'bg-primary text-white' : 'bg-gray-50 text-gray-500'" class="px-6 py-2 rounded-xl text-xs font-bold transition-all">Pengeluaran</button>
+        </div>
+
+        <div x-show="activeSubTab === 'pemasukan'" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <tr><th class="px-8 py-4">No</th><th class="px-8 py-4">Tanggal</th><th class="px-8 py-4">Keterangan</th><th class="px-8 py-4">Nominal (Rp)</th><th class="px-8 py-4 text-right">Aksi</th></tr>
+                </thead>
+                <tbody>
+                    @forelse($pembangunanPemasukan as $index => $k)
+                    <tr class="border-b border-gray-50"><td class="px-8 py-4">{{ $loop->iteration }}</td><td class="px-8 py-4">{{ \Carbon\Carbon::parse($k->tanggal)->format('d/m/Y') }}</td><td class="px-8 py-4">{{ $k->keterangan }}</td><td class="px-8 py-4 font-bold text-emerald-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td><td class="px-8 py-4 text-right"><a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="text-gray-400 hover:text-primary"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a></td></tr>
+                    @empty
+                    <tr><td colspan="5" class="px-8 py-4 text-center text-gray-400">Belum ada data</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div x-show="activeSubTab === 'pengeluaran'" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <tr><th class="px-8 py-4">Tanggal</th><th class="px-8 py-4">Keterangan</th><th class="px-8 py-4">Nominal (Rp)</th><th class="px-8 py-4 text-right">Aksi</th></tr>
+                </thead>
+                <tbody>
+                    @forelse($pembangunanPengeluaran as $k)
+                    <tr class="border-b border-gray-50"><td class="px-8 py-4">{{ \Carbon\Carbon::parse($k->tanggal)->format('d/m/Y') }}</td><td class="px-8 py-4">{{ $k->keterangan }}</td><td class="px-8 py-4 font-bold text-rose-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td><td class="px-8 py-4 text-right"><a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="text-gray-400 hover:text-primary"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a></td></tr>
+                    @empty
+                    <tr><td colspan="4" class="px-8 py-4 text-center text-gray-400">Belum ada data</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tab Content: Operasional -->
+    <div x-show="activeTab === 'operasional'" x-transition>
+        <div class="flex items-center gap-4 mb-6">
+            <button @click="activeSubTab = 'pemasukan'" :class="activeSubTab === 'pemasukan' ? 'bg-primary text-white' : 'bg-gray-50 text-gray-500'" class="px-6 py-2 rounded-xl text-xs font-bold transition-all">Pemasukan</button>
+            <button @click="activeSubTab = 'pengeluaran'" :class="activeSubTab === 'pengeluaran' ? 'bg-primary text-white' : 'bg-gray-50 text-gray-500'" class="px-6 py-2 rounded-xl text-xs font-bold transition-all">Pengeluaran</button>
+        </div>
+
+        <div x-show="activeSubTab === 'pemasukan'" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <tr><th class="px-8 py-4">No</th><th class="px-8 py-4">Tanggal</th><th class="px-8 py-4">Keterangan</th><th class="px-8 py-4">Nominal (Rp)</th><th class="px-8 py-4 text-right">Aksi</th></tr>
+                </thead>
+                <tbody>
+                    @forelse($operasionalPemasukan as $index => $k)
+                    <tr class="border-b border-gray-50"><td class="px-8 py-4">{{ $loop->iteration }}</td><td class="px-8 py-4">{{ \Carbon\Carbon::parse($k->tanggal)->format('d/m/Y') }}</td><td class="px-8 py-4">{{ $k->keterangan }}</td><td class="px-8 py-4 font-bold text-emerald-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td><td class="px-8 py-4 text-right"><a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="text-gray-400 hover:text-primary"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a></td></tr>
+                    @empty
+                    <tr><td colspan="5" class="px-8 py-4 text-center text-gray-400">Belum ada data</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div x-show="activeSubTab === 'pengeluaran'" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <tr><th class="px-8 py-4">Tanggal</th><th class="px-8 py-4">Keterangan</th><th class="px-8 py-4">Nominal (Rp)</th><th class="px-8 py-4 text-right">Aksi</th></tr>
+                </thead>
+                <tbody>
+                    @forelse($operasionalPengeluaran as $k)
                     <tr class="border-b border-gray-50"><td class="px-8 py-4">{{ \Carbon\Carbon::parse($k->tanggal)->format('d/m/Y') }}</td><td class="px-8 py-4">{{ $k->keterangan }}</td><td class="px-8 py-4 font-bold text-rose-600">{{ number_format($k->jumlah, 0, ',', '.') }}</td><td class="px-8 py-4 text-right"><a href="{{ route('dashboard.keuangan.edit', $k->id) }}" class="text-gray-400 hover:text-primary"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></a></td></tr>
                     @empty
                     <tr><td colspan="4" class="px-8 py-4 text-center text-gray-400">Belum ada data</td></tr>

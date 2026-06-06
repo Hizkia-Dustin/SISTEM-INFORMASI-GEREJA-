@@ -12,15 +12,15 @@
     <div class="grid grid-cols-4 gap-4 items-end">
         <div>
             <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Periode Awal</label>
-            <input type="date" name="periode_awal" value="{{ $periodeAwal }}" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10">
+            <input type="date" name="periode_awal" value="{{ $periodeAwal }}" onchange="this.form.submit()" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10">
         </div>
         <div>
             <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Periode Akhir</label>
-            <input type="date" name="periode_akhir" value="{{ $periodeAkhir }}" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10">
+            <input type="date" name="periode_akhir" value="{{ $periodeAkhir }}" onchange="this.form.submit()" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10">
         </div>
         <div>
             <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Kategori</label>
-            <select name="kategori" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10">
+            <select name="kategori" onchange="this.form.submit()" class="w-full bg-gray-50 border-none rounded-xl py-3 px-4 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-primary/10">
                 <option value="">Semua Kategori</option>
                 @foreach($kategoriList as $item)
                     <option value="{{ $item }}" @selected($kategori === $item)>{{ $item }}</option>
@@ -28,7 +28,6 @@
             </select>
         </div>
         <div class="flex gap-3">
-            <button type="submit" class="flex-1 px-5 py-3 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all">Terapkan</button>
             <a href="{{ route('dashboard.keuangan.laporan.download', request()->query()) }}" class="flex-1 px-5 py-3 bg-emerald-500 text-white rounded-xl text-sm font-bold text-center shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all">Excel</a>
             <a href="{{ route('dashboard.keuangan.laporan.pdf', request()->query()) }}" class="flex-1 px-5 py-3 bg-rose-500 text-white rounded-xl text-sm font-bold text-center shadow-lg shadow-rose-500/20 hover:bg-rose-600 transition-all">PDF</a>
         </div>

@@ -37,14 +37,14 @@
                 <label class="text-[11px] font-bold text-primary uppercase tracking-widest">Nominal (Rp)</label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-5 flex items-center text-gray-400 font-bold text-sm">Rp</span>
-                    <input type="number" name="jumlah" value="{{ old('jumlah', $keuangan->jumlah ?? '') }}" placeholder="0" class="w-full pl-12 pr-5 py-3.5 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-bold text-gray-700">
+                    <input type="number" name="jumlah" value="{{ old('jumlah', $keuangan->jumlah ?? '') }}" min="0" placeholder="0" class="w-full pl-12 pr-5 py-3.5 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-bold text-gray-700">
                 </div>
             </div>
         </div>
 
         <div class="flex items-center gap-4 pt-8 border-t border-gray-50">
             <button type="submit" class="px-8 py-3.5 bg-primary text-white rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-blue-700 transition-all">
-                Tambah Data Keuangan
+                {{ $type == 'Edit' ? 'Simpan Perubahan' : 'Tambah Data Keuangan' }}
             </button>
             <button type="reset" class="px-8 py-3.5 bg-gray-50 text-gray-400 rounded-xl text-sm font-bold hover:bg-gray-100 transition-all">
                 Reset

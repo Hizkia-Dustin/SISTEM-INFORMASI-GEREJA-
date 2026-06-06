@@ -330,6 +330,9 @@ class DashboardController extends Controller
     public function storeKeuangan(Request $request)
     {
         $data = $request->except(['_token', '_method']);
+        if (isset($data['jumlah'])) {
+            $data['jumlah'] = abs((float)$data['jumlah']);
+        }
         \App\Models\Keuangan::create($data);
         $this->notifyAdmins('Data keuangan ditambahkan', 'Catatan keuangan baru telah masuk ke sistem.', route('dashboard.keuangan.index'), 'success');
         return redirect()->route('dashboard.keuangan.index')->with('success', 'Data keuangan berhasil ditambahkan.');
@@ -343,6 +346,9 @@ class DashboardController extends Controller
     {
         $keuangan = \App\Models\Keuangan::findOrFail($id);
         $data = $request->except(['_token', '_method']);
+        if (isset($data['jumlah'])) {
+            $data['jumlah'] = abs((float)$data['jumlah']);
+        }
         $keuangan->update($data);
         return redirect()->route('dashboard.keuangan.index')->with('success', 'Data keuangan berhasil diperbarui.');
     }
