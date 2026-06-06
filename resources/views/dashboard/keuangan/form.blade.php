@@ -23,8 +23,8 @@
             </x-form.select>
 
             <x-form.select label="Jenis Transaksi" name="jenis_transaksi">
-                <option value="Pemasukan" {{ (old('jenis_transaksi', $keuangan->jenis_transaksi ?? '')) == 'Pemasukan' ? 'selected' : '' }}>Pemasukan (Kredit)</option>
-                <option value="Pengeluaran" {{ (old('jenis_transaksi', $keuangan->jenis_transaksi ?? '')) == 'Pengeluaran' ? 'selected' : '' }}>Pengeluaran (Debit)</option>
+                <option value="Pemasukan" {{ (old('jenis_transaksi', $keuangan->jenis_transaksi ?? '')) == 'Pemasukan' ? 'selected' : '' }}>Pemasukan (Debit Kas)</option>
+                <option value="Pengeluaran" {{ (old('jenis_transaksi', $keuangan->jenis_transaksi ?? '')) == 'Pengeluaran' ? 'selected' : '' }}>Pengeluaran (Kredit Kas)</option>
             </x-form.select>
 
             <div class="col-span-2">
@@ -39,7 +39,7 @@
                     <span class="absolute inset-y-0 left-0 pl-5 flex items-center text-gray-400 font-bold text-sm">Rp</span>
                     <input type="number" name="jumlah" value="{{ old('jumlah', isset($keuangan->jumlah) ? abs((float) $keuangan->jumlah) : '') }}" min="0" step="1" inputmode="numeric" placeholder="0" class="w-full pl-12 pr-5 py-3.5 rounded-xl border border-gray-100 bg-gray-50/30 outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all text-sm font-bold text-gray-700">
                 </div>
-                <p class="text-xs text-gray-400 font-medium">Isi nominal positif saja. Pemasukan atau pengeluaran ditentukan dari jenis transaksi.</p>
+                <p class="text-xs text-gray-400 font-medium">Isi nominal positif saja. Pemasukan dicatat Dr Kas / Cr Pendapatan, pengeluaran dicatat Dr Beban / Cr Kas.</p>
             </div>
         </div>
 

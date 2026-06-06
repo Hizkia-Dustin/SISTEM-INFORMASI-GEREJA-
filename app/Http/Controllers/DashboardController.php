@@ -504,7 +504,8 @@ class DashboardController extends Controller
         }
 
         $keuangan = $query->get();
-        $laporan = $this->buildLaporanKeuangan($keuangan);
+        $saldoAwal = $this->getSaldoAwalKeuangan($periodeAwal, $kategori);
+        $laporan = $this->buildLaporanKeuangan($keuangan, $saldoAwal);
         $kategoriList = \App\Models\Keuangan::query()
             ->select('kategori')
             ->whereNotNull('kategori')
@@ -552,34 +553,86 @@ class DashboardController extends Controller
             $query->where('kategori', $kategori);
         }
 
-        return [$this->buildLaporanKeuangan($query->get()), $periodeAwal, $periodeAkhir, $kategori];
+        $saldoAwal = $this->getSaldoAwalKeuangan($periodeAwal, $kategori);
+
+        return [$this->buildLaporanKeuangan($query->get(), $saldoAwal), $periodeAwal, $periodeAkhir, $kategori];
     }
 
-    private function buildLaporanKeuangan($keuangan): array
+    private function getSaldoAwalKeuangan(string $periodeAwal, ?string $kategori = null): float
     {
-        $saldo = 0;
-        $totalDebit = 0;
-        $totalKredit = 0;
+        $baseQuery = \App\Models\Keuangan::query()
+            ->whereDate('tanggal', '<', $periodeAwal);
+
+        if (!empty($kategori)) {
+            $baseQuery->where('kategori', $kategori);
+        }
+
+        $pemasukan = (clone $baseQuery)
+            ->where('jenis_transaksi', 'Pemasukan')
+            ->sum('jumlah');
+        $pengeluaran = (clone $baseQuery)
+            ->where('jenis_transaksi', 'Pengeluaran')
+            ->sum('jumlah');
+
+        return (float) $pemasukan - (float) $pengeluaran;
+    }
+
+    private function buildLaporanKeuangan($keuangan, float $saldoAwal = 0): array
+    {
+        $saldo = $saldoAwal;
+        $totalPemasukan = 0;
+        $totalPengeluaran = 0;
+        $totalJurnalDebit = 0;
+        $totalJurnalKredit = 0;
         $rows = [];
+        $ringkasanAkun = [];
+
+        $catatAkun = function (string $akun, float $debit, float $kredit) use (&$ringkasanAkun) {
+            if (!isset($ringkasanAkun[$akun])) {
+                $ringkasanAkun[$akun] = [
+                    'akun' => $akun,
+                    'debit' => 0,
+                    'kredit' => 0,
+                    'saldo' => 0,
+                    'posisi' => 'Seimbang',
+                ];
+            }
+
+            $ringkasanAkun[$akun]['debit'] += $debit;
+            $ringkasanAkun[$akun]['kredit'] += $kredit;
+            $ringkasanAkun[$akun]['saldo'] = $ringkasanAkun[$akun]['debit'] - $ringkasanAkun[$akun]['kredit'];
+            $ringkasanAkun[$akun]['posisi'] = $ringkasanAkun[$akun]['saldo'] >= 0 ? 'Debit' : 'Kredit';
+        };
 
         foreach ($keuangan as $item) {
             $isPemasukan = $item->jenis_transaksi === 'Pemasukan';
-            $jumlah = (float) $item->jumlah;
-            $debit = $isPemasukan ? $jumlah : 0;
-            $kredit = $isPemasukan ? 0 : $jumlah;
-            $saldo += $debit - $kredit;
-            $totalDebit += $debit;
-            $totalKredit += $kredit;
+            $jumlah = abs((float) $item->jumlah);
+            $kategori = $item->kategori ?: 'Lainnya';
+            $debitKas = $isPemasukan ? $jumlah : 0;
+            $kreditKas = $isPemasukan ? 0 : $jumlah;
+            $akunDebit = $isPemasukan ? 'Kas' : 'Beban - ' . $kategori;
+            $akunKredit = $isPemasukan ? 'Pendapatan - ' . $kategori : 'Kas';
+
+            $saldo += $debitKas - $kreditKas;
+            $totalPemasukan += $debitKas;
+            $totalPengeluaran += $kreditKas;
+            $totalJurnalDebit += $jumlah;
+            $totalJurnalKredit += $jumlah;
+
+            $catatAkun($akunDebit, $jumlah, 0);
+            $catatAkun($akunKredit, 0, $jumlah);
 
             $rows[] = [
                 'tanggal' => \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d'),
                 'nomor_bukti' => 'KAS-' . str_pad((string) $item->id, 5, '0', STR_PAD_LEFT),
                 'uraian' => $item->keterangan,
-                'kategori' => $item->kategori,
-                'akun_debit' => $isPemasukan ? 'Kas' : $item->kategori,
-                'akun_kredit' => $isPemasukan ? $item->kategori : 'Kas',
-                'debit' => $debit,
-                'kredit' => $kredit,
+                'kategori' => $kategori,
+                'akun_debit' => $akunDebit,
+                'akun_kredit' => $akunKredit,
+                'debit' => $debitKas,
+                'kredit' => $kreditKas,
+                'jurnal_debit' => $jumlah,
+                'jurnal_kredit' => $jumlah,
                 'saldo' => $saldo,
                 'jenis_transaksi' => $item->jenis_transaksi,
             ];
@@ -592,10 +645,10 @@ class DashboardController extends Controller
                 $pengeluaran = $items->where('jenis_transaksi', 'Pengeluaran')->sum('jumlah');
 
                 return [
-                    'kategori' => $namaKategori,
-                    'pemasukan' => $pemasukan,
-                    'pengeluaran' => $pengeluaran,
-                    'saldo' => $pemasukan - $pengeluaran,
+                    'kategori' => $namaKategori ?: 'Lainnya',
+                    'pemasukan' => abs((float) $pemasukan),
+                    'pengeluaran' => abs((float) $pengeluaran),
+                    'saldo' => abs((float) $pemasukan) - abs((float) $pengeluaran),
                 ];
             })
             ->values();
@@ -603,8 +656,15 @@ class DashboardController extends Controller
         return [
             'rows' => $rows,
             'rekap_kategori' => $rekapKategori,
-            'total_debit' => $totalDebit,
-            'total_kredit' => $totalKredit,
+            'ringkasan_akun' => array_values($ringkasanAkun),
+            'saldo_awal' => $saldoAwal,
+            'total_debit' => $totalPemasukan,
+            'total_kredit' => $totalPengeluaran,
+            'total_pemasukan' => $totalPemasukan,
+            'total_pengeluaran' => $totalPengeluaran,
+            'mutasi_bersih' => $totalPemasukan - $totalPengeluaran,
+            'total_jurnal_debit' => $totalJurnalDebit,
+            'total_jurnal_kredit' => $totalJurnalKredit,
             'saldo_akhir' => $saldo,
         ];
     }

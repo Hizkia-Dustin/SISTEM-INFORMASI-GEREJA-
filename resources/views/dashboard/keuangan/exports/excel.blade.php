@@ -25,14 +25,18 @@
         <tr><td colspan="9" class="subtitle">Kategori: {{ $kategori ?: 'Semua Kategori' }}</td></tr>
         <tr><td colspan="9">&nbsp;</td></tr>
         <tr>
-            <td colspan="3" class="section">Total Debit / Pemasukan</td>
-            <td colspan="3" class="section">Total Kredit / Pengeluaran</td>
-            <td colspan="3" class="section">Saldo Akhir</td>
+            <td colspan="2" class="section">Saldo Awal</td>
+            <td colspan="2" class="section">Kas Masuk</td>
+            <td colspan="2" class="section">Kas Keluar</td>
+            <td colspan="2" class="section">Mutasi Bersih</td>
+            <td class="section">Saldo Akhir</td>
         </tr>
         <tr>
-            <td colspan="3" class="money debit">{{ $laporan['total_debit'] }}</td>
-            <td colspan="3" class="money kredit">{{ $laporan['total_kredit'] }}</td>
-            <td colspan="3" class="money">{{ $laporan['saldo_akhir'] }}</td>
+            <td colspan="2" class="money">{{ $laporan['saldo_awal'] }}</td>
+            <td colspan="2" class="money debit">{{ $laporan['total_pemasukan'] }}</td>
+            <td colspan="2" class="money kredit">{{ $laporan['total_pengeluaran'] }}</td>
+            <td colspan="2" class="money">{{ $laporan['mutasi_bersih'] }}</td>
+            <td class="money">{{ $laporan['saldo_akhir'] }}</td>
         </tr>
         <tr><td colspan="9">&nbsp;</td></tr>
         <tr><td colspan="9" class="section">Buku Kas Umum</td></tr>
@@ -43,9 +47,13 @@
             <th>Kategori</th>
             <th>Akun Debit</th>
             <th>Akun Kredit</th>
-            <th>Debit</th>
-            <th>Kredit</th>
+            <th>Kas Masuk</th>
+            <th>Kas Keluar</th>
             <th>Saldo</th>
+        </tr>
+        <tr class="total">
+            <td colspan="8" class="right">Saldo awal sebelum periode</td>
+            <td class="money">{{ $laporan['saldo_awal'] }}</td>
         </tr>
         @forelse($laporan['rows'] as $row)
             <tr>
@@ -64,9 +72,33 @@
         @endforelse
         <tr class="total">
             <td colspan="6" class="right">Total</td>
-            <td class="money">{{ $laporan['total_debit'] }}</td>
-            <td class="money">{{ $laporan['total_kredit'] }}</td>
+            <td class="money">{{ $laporan['total_pemasukan'] }}</td>
+            <td class="money">{{ $laporan['total_pengeluaran'] }}</td>
             <td class="money">{{ $laporan['saldo_akhir'] }}</td>
+        </tr>
+        <tr><td colspan="9">&nbsp;</td></tr>
+        <tr><td colspan="9" class="section">Ringkasan Akun Jurnal</td></tr>
+        <tr>
+            <th colspan="4">Akun</th>
+            <th colspan="2">Debit</th>
+            <th colspan="2">Kredit</th>
+            <th>Saldo Normal</th>
+        </tr>
+        @forelse($laporan['ringkasan_akun'] as $akun)
+            <tr>
+                <td colspan="4">{{ $akun['akun'] }}</td>
+                <td colspan="2" class="money">{{ $akun['debit'] ?: '' }}</td>
+                <td colspan="2" class="money">{{ $akun['kredit'] ?: '' }}</td>
+                <td class="center">{{ $akun['posisi'] }}</td>
+            </tr>
+        @empty
+            <tr><td colspan="9" class="center">Belum ada akun jurnal.</td></tr>
+        @endforelse
+        <tr class="total">
+            <td colspan="4" class="right">Total Jurnal</td>
+            <td colspan="2" class="money">{{ $laporan['total_jurnal_debit'] }}</td>
+            <td colspan="2" class="money">{{ $laporan['total_jurnal_kredit'] }}</td>
+            <td class="center">{{ $laporan['total_jurnal_debit'] == $laporan['total_jurnal_kredit'] ? 'Seimbang' : 'Tidak Seimbang' }}</td>
         </tr>
         <tr><td colspan="9">&nbsp;</td></tr>
         <tr><td colspan="9" class="section">Rekap Kategori</td></tr>

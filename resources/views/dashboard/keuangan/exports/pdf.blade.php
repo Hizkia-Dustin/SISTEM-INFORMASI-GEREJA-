@@ -29,13 +29,17 @@
 
     <table class="summary">
         <tr>
-            <td class="label">Total Debit / Pemasukan</td>
-            <td class="label">Total Kredit / Pengeluaran</td>
+            <td class="label">Saldo Awal</td>
+            <td class="label">Kas Masuk</td>
+            <td class="label">Kas Keluar</td>
+            <td class="label">Mutasi Bersih</td>
             <td class="label">Saldo Akhir</td>
         </tr>
         <tr>
-            <td class="value debit">Rp {{ number_format($laporan['total_debit'], 0, ',', '.') }}</td>
-            <td class="value kredit">Rp {{ number_format($laporan['total_kredit'], 0, ',', '.') }}</td>
+            <td class="value">Rp {{ number_format($laporan['saldo_awal'], 0, ',', '.') }}</td>
+            <td class="value debit">Rp {{ number_format($laporan['total_pemasukan'], 0, ',', '.') }}</td>
+            <td class="value kredit">Rp {{ number_format($laporan['total_pengeluaran'], 0, ',', '.') }}</td>
+            <td class="value">Rp {{ number_format($laporan['mutasi_bersih'], 0, ',', '.') }}</td>
             <td class="value">Rp {{ number_format($laporan['saldo_akhir'], 0, ',', '.') }}</td>
         </tr>
     </table>
@@ -50,12 +54,16 @@
                 <th>Kategori</th>
                 <th>Akun Debit</th>
                 <th>Akun Kredit</th>
-                <th>Debit</th>
-                <th>Kredit</th>
+                <th>Kas Masuk</th>
+                <th>Kas Keluar</th>
                 <th>Saldo</th>
             </tr>
         </thead>
         <tbody>
+            <tr class="total">
+                <td colspan="8" class="right">Saldo awal sebelum periode</td>
+                <td class="right">{{ number_format($laporan['saldo_awal'], 0, ',', '.') }}</td>
+            </tr>
             @forelse($laporan['rows'] as $row)
                 <tr>
                     <td class="center">{{ \Carbon\Carbon::parse($row['tanggal'])->format('d/m/Y') }}</td>
@@ -73,9 +81,39 @@
             @endforelse
             <tr class="total">
                 <td colspan="6" class="right">Total</td>
-                <td class="right">{{ number_format($laporan['total_debit'], 0, ',', '.') }}</td>
-                <td class="right">{{ number_format($laporan['total_kredit'], 0, ',', '.') }}</td>
+                <td class="right">{{ number_format($laporan['total_pemasukan'], 0, ',', '.') }}</td>
+                <td class="right">{{ number_format($laporan['total_pengeluaran'], 0, ',', '.') }}</td>
                 <td class="right">{{ number_format($laporan['saldo_akhir'], 0, ',', '.') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section">Ringkasan Akun Jurnal</div>
+    <table class="report">
+        <thead>
+            <tr>
+                <th>Akun</th>
+                <th>Debit</th>
+                <th>Kredit</th>
+                <th>Saldo Normal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($laporan['ringkasan_akun'] as $akun)
+                <tr>
+                    <td>{{ $akun['akun'] }}</td>
+                    <td class="right">{{ $akun['debit'] > 0 ? number_format($akun['debit'], 0, ',', '.') : '-' }}</td>
+                    <td class="right">{{ $akun['kredit'] > 0 ? number_format($akun['kredit'], 0, ',', '.') : '-' }}</td>
+                    <td class="center">{{ $akun['posisi'] }}</td>
+                </tr>
+            @empty
+                <tr><td colspan="4" class="center">Belum ada akun jurnal.</td></tr>
+            @endforelse
+            <tr class="total">
+                <td class="right">Total Jurnal</td>
+                <td class="right">{{ number_format($laporan['total_jurnal_debit'], 0, ',', '.') }}</td>
+                <td class="right">{{ number_format($laporan['total_jurnal_kredit'], 0, ',', '.') }}</td>
+                <td class="center">{{ $laporan['total_jurnal_debit'] == $laporan['total_jurnal_kredit'] ? 'Seimbang' : 'Tidak Seimbang' }}</td>
             </tr>
         </tbody>
     </table>

@@ -4,22 +4,19 @@
 @section('content')
 <style>
 @media print {
-    /* Hide layout elements */
-    aside, header, nav, footer, form, button, .col-span-4, .grid-cols-3, a, .px-5, .py-2.5 {
+    aside, header, nav, footer, form, button, .no-print {
         display: none !important;
     }
-    /* Reset layout grid to block */
-    .grid-cols-12 {
+    .print-stack {
         display: block !important;
     }
-    /* Ensure only col-span-8 contents print */
     body {
         background: white !important;
         color: black !important;
         padding: 0 !important;
         margin: 0 !important;
     }
-    .col-span-8 {
+    .print-full {
         width: 100% !important;
         max-width: 100% !important;
         box-shadow: none !important;
@@ -48,7 +45,7 @@
     </a>
 </x-dashboard.page-header>
 
-<form method="GET" action="{{ route('dashboard.keuangan.laporan') }}" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
+<form method="GET" action="{{ route('dashboard.keuangan.laporan') }}" class="no-print bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
     <div class="grid grid-cols-4 gap-4 items-end">
         <div>
             <label class="block mb-2 text-[10px] font-extrabold text-gray-400 uppercase tracking-widest">Periode Awal</label>
@@ -74,30 +71,38 @@
     </div>
 </form>
 
-<div class="grid grid-cols-3 gap-6 mb-8">
-    <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
-        <p class="text-emerald-600 text-[10px] font-bold uppercase tracking-widest mb-1">Total Debit / Pemasukan</p>
-        <h3 class="text-2xl font-extrabold text-emerald-700">Rp {{ number_format($laporan['total_debit'], 0, ',', '.') }}</h3>
+<div class="grid grid-cols-5 gap-4 mb-8">
+    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-1">Saldo Awal</p>
+        <h3 class="text-xl font-extrabold text-gray-800">Rp {{ number_format($laporan['saldo_awal'], 0, ',', '.') }}</h3>
     </div>
-    <div class="bg-rose-50 p-6 rounded-2xl border border-rose-100">
-        <p class="text-rose-600 text-[10px] font-bold uppercase tracking-widest mb-1">Total Kredit / Pengeluaran</p>
-        <h3 class="text-2xl font-extrabold text-rose-700">Rp {{ number_format($laporan['total_kredit'], 0, ',', '.') }}</h3>
+    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-100">
+        <p class="text-emerald-600 text-[10px] font-bold uppercase tracking-widest mb-1">Kas Masuk</p>
+        <h3 class="text-xl font-extrabold text-emerald-700">Rp {{ number_format($laporan['total_pemasukan'], 0, ',', '.') }}</h3>
     </div>
-    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100">
-        <p class="text-primary text-[10px] font-bold uppercase tracking-widest mb-1">Saldo Akhir</p>
-        <h3 class="text-2xl font-extrabold text-primary">Rp {{ number_format($laporan['saldo_akhir'], 0, ',', '.') }}</h3>
+    <div class="bg-rose-50 p-5 rounded-2xl border border-rose-100">
+        <p class="text-rose-600 text-[10px] font-bold uppercase tracking-widest mb-1">Kas Keluar</p>
+        <h3 class="text-xl font-extrabold text-rose-700">Rp {{ number_format($laporan['total_pengeluaran'], 0, ',', '.') }}</h3>
+    </div>
+    <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
+        <p class="text-primary text-[10px] font-bold uppercase tracking-widest mb-1">Mutasi Bersih</p>
+        <h3 class="text-xl font-extrabold text-primary">Rp {{ number_format($laporan['mutasi_bersih'], 0, ',', '.') }}</h3>
+    </div>
+    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-900 shadow-sm">
+        <p class="text-blue-100 text-[10px] font-bold uppercase tracking-widest mb-1">Saldo Akhir</p>
+        <h3 class="text-xl font-extrabold text-white">Rp {{ number_format($laporan['saldo_akhir'], 0, ',', '.') }}</h3>
     </div>
 </div>
 
-<div class="grid grid-cols-12 gap-8">
-    <div class="col-span-8">
+<div class="print-stack grid grid-cols-12 gap-8">
+    <div class="print-full col-span-8">
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="px-8 py-5 border-b border-gray-50 bg-gray-50/30 flex items-center justify-between">
                 <div>
                     <h3 class="text-sm font-bold text-gray-700 uppercase tracking-widest">Buku Kas Umum</h3>
                     <p class="text-xs text-gray-400 mt-1">{{ \Carbon\Carbon::parse($periodeAwal)->format('d M Y') }} - {{ \Carbon\Carbon::parse($periodeAkhir)->format('d M Y') }}</p>
                 </div>
-                <button onclick="window.print()" class="px-4 py-2 bg-white border border-gray-100 text-gray-500 rounded-xl text-xs font-bold hover:bg-gray-50 transition-all">Cetak / PDF</button>
+                <button onclick="window.print()" class="no-print px-4 py-2 bg-white border border-gray-100 text-gray-500 rounded-xl text-xs font-bold hover:bg-gray-50 transition-all">Cetak / PDF</button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
@@ -107,12 +112,16 @@
                             <th class="px-6 py-4">No. Bukti</th>
                             <th class="px-6 py-4">Uraian</th>
                             <th class="px-6 py-4">Akun</th>
-                            <th class="px-6 py-4 text-right">Debit</th>
-                            <th class="px-6 py-4 text-right">Kredit</th>
+                            <th class="px-6 py-4 text-right">Kas Masuk</th>
+                            <th class="px-6 py-4 text-right">Kas Keluar</th>
                             <th class="px-6 py-4 text-right">Saldo</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr class="border-b border-gray-50 bg-slate-50">
+                            <td colspan="6" class="px-6 py-4 font-bold text-gray-500">Saldo awal sebelum periode</td>
+                            <td class="px-6 py-4 text-right font-extrabold text-gray-800">{{ number_format($laporan['saldo_awal'], 0, ',', '.') }}</td>
+                        </tr>
                         @forelse($laporan['rows'] as $row)
                             <tr class="border-b border-gray-50">
                                 <td class="px-6 py-4 text-gray-500">{{ \Carbon\Carbon::parse($row['tanggal'])->format('d/m/Y') }}</td>
@@ -140,7 +149,41 @@
         </div>
     </div>
 
-    <div class="col-span-4">
+    <div class="print-full col-span-4 space-y-8">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-50 bg-gray-50/30">
+                <h3 class="text-sm font-bold text-gray-700 uppercase tracking-widest">Ringkasan Akun</h3>
+                <p class="text-xs text-gray-400 mt-1">Total jurnal debit dan kredit harus sama.</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        <tr>
+                            <th class="px-5 py-3">Akun</th>
+                            <th class="px-5 py-3 text-right">Debit</th>
+                            <th class="px-5 py-3 text-right">Kredit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($laporan['ringkasan_akun'] as $akun)
+                            <tr class="border-b border-gray-50">
+                                <td class="px-5 py-3 font-bold text-gray-700">{{ $akun['akun'] }}</td>
+                                <td class="px-5 py-3 text-right text-emerald-700 font-bold">{{ $akun['debit'] > 0 ? number_format($akun['debit'], 0, ',', '.') : '-' }}</td>
+                                <td class="px-5 py-3 text-right text-rose-700 font-bold">{{ $akun['kredit'] > 0 ? number_format($akun['kredit'], 0, ',', '.') : '-' }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="3" class="px-6 py-8 text-center text-gray-400">Belum ada akun.</td></tr>
+                        @endforelse
+                        <tr class="bg-gray-50">
+                            <td class="px-5 py-3 font-extrabold text-gray-800">Total Jurnal</td>
+                            <td class="px-5 py-3 text-right font-extrabold text-gray-800">{{ number_format($laporan['total_jurnal_debit'], 0, ',', '.') }}</td>
+                            <td class="px-5 py-3 text-right font-extrabold text-gray-800">{{ number_format($laporan['total_jurnal_kredit'], 0, ',', '.') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-50 bg-gray-50/30">
                 <h3 class="text-sm font-bold text-gray-700 uppercase tracking-widest">Rekap Kategori</h3>
