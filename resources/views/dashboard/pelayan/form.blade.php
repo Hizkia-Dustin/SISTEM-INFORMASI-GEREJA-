@@ -46,7 +46,6 @@
             <x-form.input label="Tanggal Mulai" name="tanggal_mulai" type="date" value="{{ old('tanggal_mulai', $pelayan->tanggal_mulai ?? now()->toDateString()) }}" />
 
             <x-form.input label="Urutan Tampil" name="urutan" type="number" value="{{ old('urutan', $pelayan->urutan ?? 0) }}" placeholder="0, 1, 2..." />
-            <x-form.input label="Ikon Material Symbols" name="ikon" value="{{ old('ikon', $pelayan->ikon ?? '') }}" placeholder="music_note, mic, groups..." />
 
             <div class="md:col-span-2">
                 <label class="block mb-3 font-bold text-primary text-[11px] uppercase tracking-widest">Foto Pelayan</label>
