@@ -7,7 +7,6 @@ root: public_html/public
 
 features:
   - php 8.4
-  - node lts
   - mysql
   - ssl
 
@@ -28,7 +27,7 @@ commands:
   - sed -ri "s/(# )?DB_CONNECTION=.*/DB_CONNECTION=mysql/g" .env
   - sed -ri "s/(# )?DB_HOST=.*/DB_HOST=localhost/g" .env
   - sed -ri "s/(# )?DB_PORT=.*/DB_PORT=3306/g" .env
-  - sed -ri "s/(# )?DB_DATABASE=.*/DB_DATABASE=${DATABASE}/g" .env
+  - sed -ri "s/(# )?DB_DATABASE=.*/DB_DATABASE=${USERNAME}_laravel/g" .env
   - sed -ri "s/(# )?DB_USERNAME=.*/DB_USERNAME=${USERNAME}/g" .env
   - sed -ri "s/(# )?DB_PASSWORD=.*/DB_PASSWORD=${MYPASSWD}/g" .env
   - php artisan key:generate --force
