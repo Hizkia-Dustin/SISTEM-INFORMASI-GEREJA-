@@ -35,8 +35,6 @@ commands:
   - php artisan migrate --force
   - php artisan db:seed --class=UserSeeder --force
   - php artisan storage:link
-  - npm install
-  - npm run build
   - rm -f public/hot
   - chmod 0750 -R storage bootstrap/cache || true
   - php artisan optimize:clear
