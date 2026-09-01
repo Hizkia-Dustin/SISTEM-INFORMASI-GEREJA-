@@ -10,6 +10,14 @@ features:
   - node lts
   - mysql
 
+nginx:
+  fastcgi: "on"
+  locations:
+    - match: /
+      try_files: $uri $uri/ /index.php$is_args$args
+    - match: ~ \.[^\/]+(?<!\.php)$
+      try_files: $uri =404
+
 commands:
   - composer install --no-dev --optimize-autoloader
   - cp .env.example .env
@@ -21,7 +29,7 @@ commands:
   - sed -ri "s/(# )?DB_PORT=.*/DB_PORT=3306/g" .env
   - sed -ri "s/(# )?DB_DATABASE=.*/DB_DATABASE=${DATABASE}/g" .env
   - sed -ri "s/(# )?DB_USERNAME=.*/DB_USERNAME=${USERNAME}/g" .env
-  - sed -ri "s/(# )?DB_PASSWORD=.*/DB_PASSWORD=${MYPASSWD}/g" .env
+  - sed -ri "s/(# )?DB_PASSWORD=.*/DB_PASSWORD=${PASSWORD}/g" .env
   - php artisan key:generate --force
   - php artisan migrate --force
   - php artisan db:seed --class=UserSeeder --force
@@ -29,6 +37,7 @@ commands:
   - npm install
   - npm run build
   - rm -f public/hot
+  - chmod 0750 -R storage bootstrap/cache || true
   - php artisan optimize:clear
   - php artisan cache:clear
   - php artisan config:clear
